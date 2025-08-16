@@ -98,7 +98,7 @@ const ProcessingIndicator = ({
                 <div key={key} className="flex items-center space-x-3">
                   <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
                     isCompleted 
-                      ? 'bg-clinical-green text-white' 
+                      ? 'bg-clinical-green text-[var(--color-surface-alt)]' 
                       : isActive 
                         ? 'bg-primary text-primary-foreground' 
                         : 'bg-muted text-muted-foreground'

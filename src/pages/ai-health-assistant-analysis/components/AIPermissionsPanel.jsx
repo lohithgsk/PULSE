@@ -120,7 +120,7 @@ const AIPermissionsPanel = ({
                     ? 'bg-primary' :'bg-muted'
                 }`}
               >
-                <div className={`w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${
+                <div className={`w-5 h-5 bg-[var(--color-surface)] rounded-full shadow-sm transition-transform ${
                   category?.enabled ? 'translate-x-6' : 'translate-x-0.5'
                 }`} />
               </button>
@@ -142,7 +142,7 @@ const AIPermissionsPanel = ({
                         ? 'bg-primary' :'bg-muted'
                     }`}
                   >
-                    <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${
+                    <div className={`w-4 h-4 bg-[var(--color-surface)] rounded-full shadow-sm transition-transform ${
                       subcategory?.enabled ? 'translate-x-5' : 'translate-x-0.5'
                     }`} />
                   </button>

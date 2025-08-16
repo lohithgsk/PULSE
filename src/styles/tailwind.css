@@ -10,13 +10,13 @@
     --color-background: #FAFBFC; /* gray-50 */
     --color-foreground: #1E293B; /* slate-800 */
     --color-border: rgba(148, 163, 184, 0.2); /* slate-400 with opacity */
-    --color-input: #FFFFFF; /* white */
+    --color-input: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     --color-ring: #2563EB; /* blue-600 */
     
     /* Card Colors */
-    --color-card: #FFFFFF; /* white */
+    --color-card: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     --color-card-foreground: #1E293B; /* slate-800 */
-    --color-popover: #FFFFFF; /* white */
+    --color-popover: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     --color-popover-foreground: #1E293B; /* slate-800 */
     
     /* Muted Colors */
@@ -25,30 +25,30 @@
     
     /* Primary Colors */
     --color-primary: #2563EB; /* blue-600 */
-    --color-primary-foreground: #FFFFFF; /* white */
+    --color-primary-foreground: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     
     /* Secondary Colors */
     --color-secondary: #64748B; /* slate-500 */
-    --color-secondary-foreground: #FFFFFF; /* white */
+    --color-secondary-foreground: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     
     /* Accent Colors */
     --color-accent: #059669; /* emerald-600 */
-    --color-accent-foreground: #FFFFFF; /* white */
+    --color-accent-foreground: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     
     /* State Colors */
     --color-success: #10B981; /* emerald-500 */
-    --color-success-foreground: #FFFFFF; /* white */
+    --color-success-foreground: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     --color-warning: #F59E0B; /* amber-500 */
-    --color-warning-foreground: #FFFFFF; /* white */
+    --color-warning-foreground: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     --color-error: #EF4444; /* red-500 */
-    --color-error-foreground: #FFFFFF; /* white */
+    --color-error-foreground: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     --color-destructive: #EF4444; /* red-500 */
-    --color-destructive-foreground: #FFFFFF; /* white */
+    --color-destructive-foreground: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     
     /* Medical Trust Palette - Brand Colors */
     --color-medical-trust: #2563EB; /* blue-600 */
     --color-clinical-green: #059669; /* emerald-600 */
-    --color-surface-clean: #FFFFFF; /* white */
+    --color-surface-clean: #[var(--color-surface-alt)]F; /* [var(--color-surface-alt)] */
     --color-text-primary: #1E293B; /* slate-800 */
     --color-text-secondary: #64748B; /* slate-500 */
     --color-clinical-amber: #F59E0B; /* amber-500 */

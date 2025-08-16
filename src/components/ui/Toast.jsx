@@ -42,15 +42,15 @@ const icons = {
 const colors = {
   success: 'bg-emerald-600 border-2 border-emerald-400',
   error: 'bg-red-600 border-2 border-red-400',
-  info: 'bg-blue-600 border-2 border-blue-400',
+  info: 'bg-[var(--color-primary)] border-2 border-[var(--color-primary-hover)]',
   warning: 'bg-amber-600 border-2 border-amber-400',
 };
 
 const iconBackgrounds = {
-  success: 'bg-white/20 text-white',
-  error: 'bg-white/20 text-white',
-  info: 'bg-white/20 text-white',
-  warning: 'bg-white/20 text-white',
+  success: 'bg-[var(--color-surface)]/20 text-[var(--color-text-inverse)]',
+  error: 'bg-[var(--color-surface)]/20 text-[var(--color-text-inverse)]',
+  info: 'bg-[var(--color-surface)]/20 text-[var(--color-text-inverse)]',
+  warning: 'bg-[var(--color-surface)]/20 text-[var(--color-text-inverse)]',
 };
 
 function Toast({ message, type = 'info', duration = 4000, onClose }) {
@@ -61,7 +61,7 @@ function Toast({ message, type = 'info', duration = 4000, onClose }) {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-50 flex items-center space-x-4 px-5 py-4 rounded-xl shadow-2xl ${colors[type] || colors.info} backdrop-blur-sm text-white animate-slide-in transform transition-all duration-300 hover:scale-105 hover:shadow-3xl w-80 min-h-[4rem]`}
+  className={`fixed bottom-6 right-6 z-50 flex items-center space-x-4 px-5 py-4 rounded-xl shadow-2xl ${colors[type] || colors.info} backdrop-blur-sm animate-slide-in transform transition-all duration-300 hover:scale-105 hover:shadow-3xl w-80 min-h-[4rem]`}
       role="alert"
     >
       {/* Icon container with background */}
@@ -73,13 +73,13 @@ function Toast({ message, type = 'info', duration = 4000, onClose }) {
 
       {/* Message content */}
       <div className="flex-1 min-w-0 max-w-[200px]">
-        <p className="text-sm font-medium leading-relaxed text-white/95 pr-2 break-words line-clamp-2">{message}</p>
+  <p className="text-sm font-medium leading-relaxed text-[var(--color-text-inverse)]/95 pr-2 break-words line-clamp-2">{message}</p>
       </div>
 
       {/* Close button */}
       <button
         onClick={onClose}
-        className="flex items-center justify-center w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-200 transform hover:scale-110 flex-shrink-0"
+  className="flex items-center justify-center w-6 h-6 rounded-full bg-[var(--color-surface)]/10 hover:bg-[var(--color-surface)]/20 text-[var(--color-text-inverse)]/80 hover:text-[var(--color-text-inverse)] focus:outline-none focus:ring-2 focus:ring-[var(--color-surface)]/30 transition-all duration-200 transform hover:scale-110 flex-shrink-0"
         aria-label="Close notification"
         title="Close"
       >
@@ -94,7 +94,7 @@ function Toast({ message, type = 'info', duration = 4000, onClose }) {
 
       {/* Progress bar */}
       <div
-        className="absolute bottom-0 left-0 h-1 bg-white/30 rounded-b-xl animate-progress"
+  className="absolute bottom-0 left-0 h-1 bg-[var(--color-surface)]/30 rounded-b-xl animate-progress"
         style={{
           animation: `progress ${duration}ms linear forwards`,
         }}

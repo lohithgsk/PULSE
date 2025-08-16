@@ -305,7 +305,7 @@ const ConsentAccessManagement = () => {
                 <button
                   key={tab?.id}
                   onClick={() => setActiveTab(tab?.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-clinical ${
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm [var(--color-surface-alt)]space-nowrap transition-clinical ${
                     activeTab === tab?.id
                       ? 'border-primary text-primary' :'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                   }`}

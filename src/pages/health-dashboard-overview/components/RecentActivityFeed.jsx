@@ -36,7 +36,7 @@ const RecentActivityFeed = ({ activities, onViewAll }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
             <p className="text-sm font-medium text-card-foreground truncate">{activity?.title}</p>
-            <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">
+            <span className="text-xs text-muted-foreground [var(--color-surface-alt)]space-nowrap ml-2">
               {formatTimeAgo(activity?.timestamp)}
             </span>
           </div>
@@ -67,7 +67,7 @@ const RecentActivityFeed = ({ activities, onViewAll }) => {
               </span>
               <div className="group relative">
                 <Icon name="Info" size={12} className="text-muted-foreground cursor-help" />
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover text-xs text-popover-foreground rounded shadow-medical-modal opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-tooltip">
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover text-xs text-popover-foreground rounded shadow-medical-modal opacity-0 group-hover:opacity-100 transition-opacity [var(--color-surface-alt)]space-nowrap z-tooltip">
                   {activity?.storageType === 'ipfs' ?'Encrypted data stored on IPFS network' :'Metadata stored on Ethereum blockchain'
                   }
                 </div>

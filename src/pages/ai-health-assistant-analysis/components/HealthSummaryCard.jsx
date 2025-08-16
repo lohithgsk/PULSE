@@ -36,7 +36,7 @@ const HealthSummaryCard = ({
         <h4 className="text-sm font-medium text-foreground">{title}</h4>
       </div>
       <div className="pl-6">
-        <p className="text-sm text-muted-foreground whitespace-pre-line">{content}</p>
+        <p className="text-sm text-muted-foreground [var(--color-surface-alt)]space-pre-line">{content}</p>
       </div>
     </div>
   );

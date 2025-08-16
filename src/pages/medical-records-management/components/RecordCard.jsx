@@ -96,7 +96,7 @@ const RecordCard = ({
               {record?.isEncrypted && (
                 <div className="group relative">
                   <Icon name="Lock" size={14} className="text-clinical-green" />
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover border border-border rounded text-xs text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-tooltip">
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover border border-border rounded text-xs text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity [var(--color-surface-alt)]space-nowrap z-tooltip">
                     End-to-end encrypted
                   </div>
                 </div>
@@ -104,7 +104,7 @@ const RecordCard = ({
               {record?.hasAISummary && (
                 <div className="group relative">
                   <Icon name="Brain" size={14} className="text-primary" />
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover border border-border rounded text-xs text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-tooltip">
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover border border-border rounded text-xs text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity [var(--color-surface-alt)]space-nowrap z-tooltip">
                     AI summary available
                   </div>
                 </div>
