@@ -1,9 +1,12 @@
 import React from "react";
 import Routes from "./Routes";
+import { SessionProvider } from './context/SessionContext';
 
 function App() {
   return (
-    <Routes />
+    <SessionProvider>
+      <Routes />
+    </SessionProvider>
   );
 }
 

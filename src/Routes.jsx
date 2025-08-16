@@ -9,6 +9,7 @@ import WalletConnectionAuthentication from './pages/wallet-connection-authentica
 import HealthDashboardOverview from './pages/health-dashboard-overview';
 import ConsentAccessManagement from './pages/consent-access-management';
 import MedicalRecordsManagement from './pages/medical-records-management';
+import ProtectedRoute from './components/ui/ProtectedRoute';
 
 const Routes = () => {
   return (
@@ -16,14 +17,16 @@ const Routes = () => {
       <ErrorBoundary>
       <ScrollToTop />
       <RouterRoutes>
-        {/* Define your route here */}
-        <Route path="/" element={<AIHealthAssistantAnalysis />} />
-        <Route path="/emergency-access-contacts" element={<EmergencyAccessContacts />} />
-        <Route path="/ai-health-assistant-analysis" element={<AIHealthAssistantAnalysis />} />
-        <Route path="/wallet-connection-authentication" element={<WalletConnectionAuthentication />} />
-        <Route path="/health-dashboard-overview" element={<HealthDashboardOverview />} />
-        <Route path="/consent-access-management" element={<ConsentAccessManagement />} />
-        <Route path="/medical-records-management" element={<MedicalRecordsManagement />} />
+  {/* Public route: allows users to connect a wallet */}
+  <Route path="/wallet-connection-authentication" element={<WalletConnectionAuthentication />} />
+
+  {/* Protected routes: require authenticated session */}
+  <Route path="/" element={<ProtectedRoute><AIHealthAssistantAnalysis /></ProtectedRoute>} />
+  <Route path="/ai-health-assistant-analysis" element={<ProtectedRoute><AIHealthAssistantAnalysis /></ProtectedRoute>} />
+  <Route path="/emergency-access-contacts" element={<ProtectedRoute><EmergencyAccessContacts /></ProtectedRoute>} />
+  <Route path="/health-dashboard-overview" element={<ProtectedRoute><HealthDashboardOverview /></ProtectedRoute>} />
+  <Route path="/consent-access-management" element={<ProtectedRoute><ConsentAccessManagement /></ProtectedRoute>} />
+  <Route path="/medical-records-management" element={<ProtectedRoute><MedicalRecordsManagement /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </RouterRoutes>
       </ErrorBoundary>
