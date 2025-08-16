@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSession } from '../../context/SessionContext';
 import AuthenticationGate from './AuthenticationGate';
 import { blockchainService } from '../../utils/blockchainService';
@@ -13,12 +13,20 @@ const ProtectedRoute = ({ children }) => {
   const [toast, setToast] = useState(null); // { message, type }
   const currentWalletRef = useRef(null);
 
+  // Automatically clear toast after 3 seconds
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
   const handleWalletConnect = async (walletId) => {
     setError(null);
     setIsConnecting(true);
     currentWalletRef.current = walletId;
     try {
-  if (walletId === 'metamask') {
+      if (walletId === 'metamask') {
         const info = await blockchainService.connectWallet();
         login({
           provider: info?.type || 'MetaMask',
@@ -33,18 +41,28 @@ const ProtectedRoute = ({ children }) => {
       }
 
       if (walletId === 'walletconnect') {
-        // Add a safety timeout so closing the QR modal doesn't leave the UI spinning forever
         let timeoutId;
+        let info = null;
+        let connectError = null;
         try {
           const connectPromise = connectWithWalletConnect();
           const timeoutPromise = new Promise((_, reject) => {
             timeoutId = setTimeout(() => {
+              setToast({ message: 'WalletConnect connection timed out.', type: 'error' });
               reject(new Error('WalletConnect cancelled or timed out.'));
-            }, 25000);
+            }, 30000);
           });
 
-          const info = await Promise.race([connectPromise, timeoutPromise]);
-          clearTimeout(timeoutId);
+          info = await Promise.race([connectPromise, timeoutPromise]);
+        } catch (err) {
+          connectError = err;
+        } finally {
+          if (timeoutId) clearTimeout(timeoutId);
+          // Always disconnect to ensure session is closed
+          try { await disconnectWalletConnect(); } catch (_) {}
+        }
+
+        if (info) {
           login({
             provider: info?.type || 'WalletConnect',
             address: info?.address || null,
@@ -55,16 +73,13 @@ const ProtectedRoute = ({ children }) => {
           });
           setToast({ message: 'Wallet connected via WalletConnect', type: 'success' });
           return;
-        } catch (err) {
-          // Ensure any dangling session is closed and surface a friendly message
-          try { await disconnectWalletConnect(); } catch (_) {}
-          const msg = err?.message || '';
+        } else {
+          const msg = connectError?.message || '';
           if (/closed|cancel/i.test(msg)) {
+            setToast({ message: 'WalletConnect cancelled by user.', type: 'error' });
             throw new Error('WalletConnect cancelled by user.');
           }
-          throw err;
-        } finally {
-          if (timeoutId) clearTimeout(timeoutId);
+          throw connectError || new Error('WalletConnect failed.');
         }
       }
 
@@ -95,6 +110,7 @@ const ProtectedRoute = ({ children }) => {
           isConnecting={isConnecting}
           error={error}
         />
+        {/* Only render Toast once, outside of AuthenticationGate */}
         {toast && (
           <Toast
             message={toast.message}
@@ -109,6 +125,7 @@ const ProtectedRoute = ({ children }) => {
   return (
     <>
       {children}
+      {/* Only render Toast once, outside of children */}
       {toast && (
         <Toast
           message={toast.message}
