@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
 /**
- * Blockchain service for MedLedger health records management
+ * Blockchain service for PULSE health records management
  */
 class BlockchainService {
   constructor() {

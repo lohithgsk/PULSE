@@ -118,14 +118,14 @@ const HealthDashboardOverview = () => {
     {
       id: 1,
       name: "Specialist Consultation",
-      url: "https://medledger.app/share/abc123def456",
+      url: "https://PULSE.app/share/abc123def456",
       expiryDate: "2025-08-17",
       accessCount: 2
     },
     {
       id: 2,
       name: "Insurance Review",
-      url: "https://medledger.app/share/xyz789uvw012",
+      url: "https://PULSE.app/share/xyz789uvw012",
       expiryDate: "2025-08-20",
       accessCount: 0
     }
@@ -222,7 +222,7 @@ const HealthDashboardOverview = () => {
   const handleShareDID = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'My MedLedger DID',
+        title: 'My PULSE DID',
         text: 'My decentralized health identity',
         url: 'did:ethr:0x1234567890abcdef1234567890abcdef12345678'
       });

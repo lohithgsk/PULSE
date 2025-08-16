@@ -79,7 +79,7 @@ const Header = ({ walletConnected = false, currentNetwork = 'Sepolia', emergency
               </div>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm text-muted-foreground">Connect your wallet to access MedLedger</p>
+                <p className="text-sm text-muted-foreground">Connect your wallet to access PULSE</p>
                 <Button variant="default" size="sm" onClick={handleWalletConnect} className="w-full">
                   Connect Wallet
                 </Button>
@@ -115,7 +115,7 @@ const Header = ({ walletConnected = false, currentNetwork = 'Sepolia', emergency
             <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
               <Icon name="Heart" size={20} className="text-primary-foreground" />
             </div>
-            <span className="text-xl font-semibold text-foreground">MedLedger</span>
+            <span className="text-xl font-semibold text-foreground">PULSE</span>
           </Link>
 
           {/* Desktop Navigation */}

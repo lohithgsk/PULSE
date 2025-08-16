@@ -179,7 +179,7 @@ const WalletStatusCard = ({
             </div>
             <h4 className="text-sm font-medium text-card-foreground mb-2">Wallet Not Connected</h4>
             <p className="text-sm text-muted-foreground mb-4">
-              Connect your wallet to access MedLedger features
+              Connect your wallet to access PULSE features
             </p>
             <Button
               variant="default"

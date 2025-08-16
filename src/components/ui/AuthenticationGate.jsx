@@ -56,7 +56,7 @@ const AuthenticationGate = ({ onWalletConnect, isConnecting = false, error = nul
           <div className="flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mx-auto mb-4">
             <Icon name="Heart" size={32} className="text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-semibold text-foreground mb-2">Welcome to MedLedger</h1>
+          <h1 className="text-2xl font-semibold text-foreground mb-2">Welcome to PULSE</h1>
           <p className="text-muted-foreground">
             Connect your wallet to securely access your decentralized health records
           </p>

@@ -179,7 +179,7 @@ const WalletConnectionAuthentication = () => {
               <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
                 <Icon name="Heart" size={20} className="text-primary-foreground" />
               </div>
-              <span className="text-xl font-semibold text-foreground">MedLedger</span>
+              <span className="text-xl font-semibold text-foreground">PULSE</span>
             </div>
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-muted">
@@ -221,7 +221,7 @@ const WalletConnectionAuthentication = () => {
                     <Icon name="Heart" size={32} className="text-primary-foreground" />
                   </div>
                   <h1 className="text-2xl lg:text-3xl font-semibold text-foreground mb-2">
-                    Welcome to MedLedger
+                    Welcome to PULSE
                   </h1>
                   <p className="text-muted-foreground text-sm lg:text-base">
                     Connect your wallet to securely access your decentralized health records
@@ -286,7 +286,7 @@ const WalletConnectionAuthentication = () => {
             </p>
             
             <div className="flex items-center justify-center space-x-6 text-xs text-muted-foreground">
-              <span>© {new Date()?.getFullYear()} MedLedger</span>
+              <span>© {new Date()?.getFullYear()} PULSE</span>
               <span>•</span>
               <button className="hover:text-foreground transition-clinical">Support</button>
               <span>•</span>

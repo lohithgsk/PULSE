@@ -34,7 +34,7 @@ const SecurityFeatures = () => {
       <div className="text-center mb-6">
         <h3 className="text-lg font-semibold text-foreground mb-2">Your data is protected</h3>
         <p className="text-sm text-muted-foreground">
-          MedLedger uses cutting-edge security to protect your health information
+          PULSE uses cutting-edge security to protect your health information
         </p>
       </div>
       <div className="space-y-3">
@@ -61,7 +61,7 @@ const SecurityFeatures = () => {
           <span className="text-sm font-medium text-clinical-green">Healthcare Certified</span>
         </div>
         <p className="text-xs text-clinical-green/80">
-          MedLedger meets all major healthcare compliance standards including HIPAA, GDPR, and SOC 2 Type II.
+          PULSE meets all major healthcare compliance standards including HIPAA, GDPR, and SOC 2 Type II.
         </p>
       </div>
     </div>

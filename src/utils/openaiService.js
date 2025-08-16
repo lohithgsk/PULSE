@@ -9,7 +9,7 @@ import openai from './openaiClient';
  */
 export async function getHealthAssistantResponse(userMessage, conversationHistory = [], userHealthContext = {}) {
   try {
-    const systemPrompt = `You are MedLedger AI, a sophisticated medical AI assistant specialized in analyzing health records and providing personalized health insights. You have access to the user's medical data through a secure, blockchain-verified system.
+    const systemPrompt = `You are PULSE AI, a sophisticated medical AI assistant specialized in analyzing health records and providing personalized health insights. You have access to the user's medical data through a secure, blockchain-verified system.
 
 Key Responsibilities:
 - Analyze user's medical records and provide accurate health insights

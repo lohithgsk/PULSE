@@ -255,7 +255,7 @@ const AIHealthAssistantAnalysis = () => {
   return (
     <>
       <Helmet>
-        <title>AI Health Assistant & Analysis - MedLedger</title>
+        <title>AI Health Assistant & Analysis - PULSE</title>
         <meta name="description" content="AI-powered medical insights and interactive health consultations with complete transparency about data usage" />
       </Helmet>
       <div className="min-h-screen bg-background">

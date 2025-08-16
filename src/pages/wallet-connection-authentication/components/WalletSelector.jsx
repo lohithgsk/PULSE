@@ -160,7 +160,7 @@ const WalletSelector = ({ onWalletSelect, isConnecting, selectedWallet, error })
             <h4 className="text-sm font-medium text-clinical-green mb-1">Secure Connection</h4>
             <p className="text-xs text-clinical-green/80">
               Your wallet connection is secured with end-to-end encryption. 
-              MedLedger never stores your private keys or personal wallet information.
+              PULSE never stores your private keys or personal wallet information.
             </p>
           </div>
         </div>

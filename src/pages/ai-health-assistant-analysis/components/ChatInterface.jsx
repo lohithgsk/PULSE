@@ -146,7 +146,7 @@ const ChatInterface = ({
               <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
                 <Icon name="Brain" size={14} className="text-primary" />
               </div>
-              <span className="text-xs text-muted-foreground">MedLedger AI Assistant</span>
+              <span className="text-xs text-muted-foreground">PULSE AI Assistant</span>
               {message?.dataAccess && (
                 <div className="flex items-center space-x-1">
                   <Icon name="Database" size={12} className="text-clinical-amber" />
@@ -346,7 +346,7 @@ const ChatInterface = ({
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <Icon name="Brain" size={32} className="text-primary" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">MedLedger AI Health Assistant</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">PULSE AI Health Assistant</h3>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Ask me anything about your health records, get AI-powered insights powered by OpenAI, 
               or request medical summaries. All conversations are encrypted and logged on the blockchain.
@@ -365,7 +365,7 @@ const ChatInterface = ({
                     <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
                       <Icon name="Brain" size={14} className="text-primary" />
                     </div>
-                    <span className="text-xs text-muted-foreground">MedLedger AI Assistant</span>
+                    <span className="text-xs text-muted-foreground">PULSE AI Assistant</span>
                     <div className="flex items-center space-x-1">
                       <Icon name="Shield" size={12} className="text-clinical-green" />
                       <span className="text-xs text-clinical-green">Processing Securely</span>

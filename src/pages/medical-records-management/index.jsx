@@ -303,7 +303,7 @@ const MedicalRecordsManagement = () => {
     // Mock share functionality
     return new Promise(resolve => 
       setTimeout(() => resolve({ 
-        link: 'https://medledger.app/share/abc123def456' 
+        link: 'https://PULSE.app/share/abc123def456' 
       }), 1500)
     );
   };
