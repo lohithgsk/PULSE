@@ -157,7 +157,7 @@ const RecordDetailPanel = ({ record, isOpen, onClose, onDownload, onShare, onGen
                 <div>
                   <h3 className="text-sm font-medium text-foreground mb-2">Full Report</h3>
                   <div className="p-4 rounded-lg bg-muted/50 border border-border">
-                    <pre className="text-sm text-foreground whitespace-pre-wrap font-mono">{record?.fullContent}</pre>
+                    <pre className="text-sm text-foreground [var(--color-surface-alt)]space-pre-wrap font-mono">{record?.fullContent}</pre>
                   </div>
                 </div>
               )}

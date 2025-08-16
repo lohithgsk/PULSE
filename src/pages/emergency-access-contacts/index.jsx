@@ -348,7 +348,7 @@ const EmergencyAccessContacts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+<div className="min-h-screen bg-[var(--color-bg)]">
   <Header emergencyConfigured={emergencyContacts?.length > 0} onEmergencyActivate={() => setActiveTab('break-glass')} />
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-7xl mx-auto">
@@ -390,7 +390,7 @@ const EmergencyAccessContacts = () => {
                 <Icon name="AlertTriangle" size={20} className="text-error" />
                 <div>
                   <h3 className="text-sm font-medium text-error">Emergency Access Active</h3>
-                  <p className="text-sm text-error/80">
+                  <p className="text-[var(--color-text-muted)]">
                     Break glass protocol is currently active. All access is being logged on the blockchain.
                   </p>
                 </div>
@@ -413,7 +413,7 @@ const EmergencyAccessContacts = () => {
                   <button
                     key={tab?.id}
                     onClick={() => setActiveTab(tab?.id)}
-                    className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-clinical ${
+                    className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm [var(--color-surface-alt)]space-nowrap transition-clinical ${
                       activeTab === tab?.id
                         ? 'border-primary text-primary' :'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
                     }`}

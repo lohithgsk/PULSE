@@ -170,28 +170,28 @@ const WalletConnectionAuthentication = () => {
   }, [walletInfo]);
 
   return (
-    <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-[var(--color-bg)]">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border">
+  <div className="sticky top-0 z-10 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-border)]">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
-                <Icon name="Heart" size={20} className="text-primary-foreground" />
+              <div className="flex items-center justify-center w-8 h-8 bg-[var(--color-primary)] rounded-lg">
+                <Icon name="Heart" size={20} className="text-[var(--color-bg)]" />
               </div>
-              <span className="text-xl font-semibold text-foreground">PULSE</span>
+              <span className="text-xl font-semibold text-[var(--color-text)]">PULSE</span>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-muted">
+              <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-[var(--color-primary-light)]">
                 <div className={`w-2 h-2 rounded-full ${
-                  networkStatus === 'connected' ? 'bg-clinical-green' : 'bg-clinical-amber'
+                  networkStatus === 'connected' ? 'bg-[var(--color-success)]' : 'bg-[var(--color-warning)]'
                 }`} />
-                <span className="text-sm text-muted-foreground">{currentNetwork}</span>
+                <span className="text-sm text-[var(--color-text-muted)]">{currentNetwork}</span>
               </div>
               {connectionState === 'connected' && currentNetwork !== 'Sepolia' && (
                 <button
                   onClick={handleNetworkSwitch}
-                  className="text-xs px-2 py-1 bg-clinical-amber/10 text-clinical-amber border border-clinical-amber/30 rounded hover:bg-clinical-amber/20 transition-clinical"
+                  className="text-xs px-2 py-1 bg-[var(--color-warning)]/10 text-[var(--color-warning)] border border-[var(--color-warning)]/30 rounded hover:bg-[var(--color-warning)]/20 transition-colors"
                 >
                   Switch to Sepolia
                 </button>
@@ -217,13 +217,13 @@ const WalletConnectionAuthentication = () => {
               <>
                 {/* Welcome Header */}
                 <div className="text-center mb-8">
-                  <div className="flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mx-auto mb-4">
-                    <Icon name="Heart" size={32} className="text-primary-foreground" />
+                  <div className="flex items-center justify-center w-16 h-16 bg-[var(--color-primary)] rounded-2xl mx-auto mb-4">
+                    <Icon name="Heart" size={32} className="text-[var(--color-bg)]" />
                   </div>
-                  <h1 className="text-2xl lg:text-3xl font-semibold text-foreground mb-2">
+                  <h1 className="text-2xl lg:text-3xl font-semibold text-[var(--color-text)] mb-2">
                     Welcome to PULSE
                   </h1>
-                  <p className="text-muted-foreground text-sm lg:text-base">
+                  <p className="text-[var(--color-text-muted)] text-sm lg:text-base">
                     Connect your wallet to securely access your decentralized health records
                   </p>
                 </div>
@@ -240,7 +240,7 @@ const WalletConnectionAuthentication = () => {
                 <div className="mt-6">
                   <button
                     onClick={() => setShowAdvanced(!showAdvanced)}
-                    className="flex items-center justify-center space-x-2 w-full p-3 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-clinical"
+                    className="flex items-center justify-center space-x-2 w-full p-3 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-primary-light)] transition-colors"
                   >
                     <Icon name={showAdvanced ? "ChevronUp" : "ChevronDown"} size={16} />
                     <span>{showAdvanced ? 'Hide' : 'Show'} Advanced Options</span>

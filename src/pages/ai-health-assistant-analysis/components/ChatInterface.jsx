@@ -168,7 +168,7 @@ const ChatInterface = ({
               : message?.error
               ? 'bg-clinical-red/10 border border-clinical-red/30 text-clinical-red' :'bg-card border border-border text-card-foreground'
           }`}>
-            <p className="text-sm whitespace-pre-wrap">{message?.content}</p>
+            <p className="text-sm [var(--color-surface-alt)]space-pre-wrap">{message?.content}</p>
             
             {/* AI Response Metadata */}
             {isAI && !message?.error && (
