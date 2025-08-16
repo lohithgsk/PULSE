@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
-import Header from '../../components/ui/Header';
 import ActiveConsentCard from './components/ActiveConsentCard';
 import PendingRequestCard from './components/PendingRequestCard';
 import ConsentHistoryCard from './components/ConsentHistoryCard';
@@ -244,7 +243,6 @@ const ConsentAccessManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-  <Header emergencyConfigured={emergencyContacts?.length > 0} onEmergencyActivate={handleEmergencyActivate} />
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">

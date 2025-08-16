@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import Header from '../../components/ui/Header';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 import RecordCard from './components/RecordCard';
@@ -325,7 +324,6 @@ const MedicalRecordsManagement = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-  <Header onEmergencyActivate={() => {}} />
         <div className="flex items-center justify-center h-96">
           <div className="flex items-center space-x-3">
             <div className="animate-spin">
@@ -340,7 +338,6 @@ const MedicalRecordsManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-  <Header onEmergencyActivate={() => {}} />
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar - Filters */}

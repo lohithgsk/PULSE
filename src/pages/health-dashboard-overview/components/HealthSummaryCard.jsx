@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import Skeleton from '../../../components/ui/Skeleton';
 
 const HealthSummaryCard = ({ healthSummary, onRefresh, isRefreshing = false }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,7 +24,11 @@ const HealthSummaryCard = ({ healthSummary, onRefresh, isRefreshing = false }) =
           </div>
           <div>
             <h3 className="text-lg font-semibold text-card-foreground">AI Health Summary</h3>
-            <p className="text-sm text-muted-foreground">Generated {healthSummary?.lastUpdated}</p>
+            {isRefreshing ? (
+              <Skeleton className="h-3 w-40 mt-2" />
+            ) : (
+              <p className="text-sm text-muted-foreground">Generated {healthSummary?.lastUpdated}</p>
+            )}
           </div>
         </div>
         <Button
@@ -40,22 +45,34 @@ const HealthSummaryCard = ({ healthSummary, onRefresh, isRefreshing = false }) =
       {/* Content */}
       <div className="p-6">
         {/* Risk Level Indicator */}
-        <div className={`flex items-center space-x-2 p-3 rounded-lg ${config?.bg} mb-4`}>
-          <Icon name={config?.icon} size={16} className={config?.color} />
-          <span className={`text-sm font-medium ${config?.color}`}>
-            {healthSummary?.riskLevel?.charAt(0)?.toUpperCase() + healthSummary?.riskLevel?.slice(1)} Risk Level
-          </span>
-        </div>
+        {isRefreshing ? (
+          <Skeleton className="h-9 w-52 mb-4" />
+        ) : (
+          <div className={`flex items-center space-x-2 p-3 rounded-lg ${config?.bg} mb-4`}>
+            <Icon name={config?.icon} size={16} className={config?.color} />
+            <span className={`text-sm font-medium ${config?.color}`}>
+              {healthSummary?.riskLevel?.charAt(0)?.toUpperCase() + healthSummary?.riskLevel?.slice(1)} Risk Level
+            </span>
+          </div>
+        )}
 
         {/* Key Insights */}
         <div className="space-y-3 mb-4">
           <h4 className="text-sm font-medium text-card-foreground">Key Health Insights</h4>
-          {healthSummary?.keyInsights?.slice(0, isExpanded ? undefined : 3)?.map((insight, index) => (
-            <div key={index} className="flex items-start space-x-3 p-3 rounded-lg bg-muted/50">
-              <Icon name="Lightbulb" size={16} className="text-primary mt-0.5" />
-              <p className="text-sm text-card-foreground">{insight}</p>
-            </div>
-          ))}
+          {isRefreshing ? (
+            <>
+              <Skeleton className="h-5 w-full" />
+              <Skeleton className="h-5 w-11/12" />
+              <Skeleton className="h-5 w-10/12" />
+            </>
+          ) : (
+            healthSummary?.keyInsights?.slice(0, isExpanded ? undefined : 3)?.map((insight, index) => (
+              <div key={index} className="flex items-start space-x-3 p-3 rounded-lg bg-muted/50">
+                <Icon name="Lightbulb" size={16} className="text-primary mt-0.5" />
+                <p className="text-sm text-card-foreground">{insight}</p>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Expand/Collapse Button */}
@@ -74,16 +91,26 @@ const HealthSummaryCard = ({ healthSummary, onRefresh, isRefreshing = false }) =
 
         {/* Health Metrics */}
         <div className="grid grid-cols-2 gap-4 mb-4">
-          {healthSummary?.metrics?.map((metric, index) => (
-            <div key={index} className="p-3 rounded-lg bg-muted/50">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-muted-foreground">{metric?.label}</span>
-                <Icon name={metric?.icon} size={14} className="text-muted-foreground" />
+          {isRefreshing ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="p-3 rounded-lg bg-muted/50">
+                <Skeleton className="h-4 w-20 mb-2" />
+                <Skeleton className="h-6 w-24 mb-1" />
+                <Skeleton className="h-3 w-16" />
               </div>
-              <p className="text-lg font-semibold text-card-foreground">{metric?.value}</p>
-              <p className="text-xs text-muted-foreground">{metric?.status}</p>
-            </div>
-          ))}
+            ))
+          ) : (
+            healthSummary?.metrics?.map((metric, index) => (
+              <div key={index} className="p-3 rounded-lg bg-muted/50">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs text-muted-foreground">{metric?.label}</span>
+                  <Icon name={metric?.icon} size={14} className="text-muted-foreground" />
+                </div>
+                <p className="text-lg font-semibold text-card-foreground">{metric?.value}</p>
+                <p className="text-xs text-muted-foreground">{metric?.status}</p>
+              </div>
+            ))
+          )}
         </div>
 
         {/* AI Transparency Notice */}

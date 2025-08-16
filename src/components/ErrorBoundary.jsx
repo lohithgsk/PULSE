@@ -19,6 +19,16 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state?.hasError) {
+      // Custom fallback if provided
+      if (this.props?.fallback) {
+        if (typeof this.props.fallback === 'function') {
+          return this.props.fallback({
+            reset: () => this.setState({ hasError: false })
+          });
+        }
+        return this.props.fallback;
+      }
+      // Default fallback UI
       return (
   <div className="min-h-screen flex items-center justify-center bg-[var(--color-background)]">
           <div className="text-center p-8 max-w-md">

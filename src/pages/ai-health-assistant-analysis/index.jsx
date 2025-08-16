@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import Header from '../../components/ui/Header';
 import ChatInterface from './components/ChatInterface';
 import AIPermissionsPanel from './components/AIPermissionsPanel';
 import HealthSummaryCard from './components/HealthSummaryCard';
@@ -16,7 +15,7 @@ const AIHealthAssistantAnalysis = () => {
   const [processingProgress, setProcessingProgress] = useState(0);
   const [walletConnected, setWalletConnected] = useState(true);
   const [currentNetwork, setCurrentNetwork] = useState('Sepolia');
-  const [emergencyConfigured, setEmergencyConfigured] = useState(true);
+  // Header is provided by the global AppLayout
 
   // Mock data for chat messages
   const [messages, setMessages] = useState([
@@ -241,9 +240,7 @@ const AIHealthAssistantAnalysis = () => {
     setCurrentNetwork(currentNetwork === 'Sepolia' ? 'Mainnet' : 'Sepolia');
   };
 
-  const handleEmergencyActivate = () => {
-    console.log('Emergency access activated');
-  };
+  // Emergency banner/actions are handled in their dedicated pages
 
   const tabs = [
     { id: 'chat', label: 'AI Assistant', icon: 'MessageCircle' },
@@ -258,10 +255,7 @@ const AIHealthAssistantAnalysis = () => {
         <title>AI Health Assistant & Analysis - PULSE</title>
         <meta name="description" content="AI-powered medical insights and interactive health consultations with complete transparency about data usage" />
       </Helmet>
-      <div className="min-h-screen bg-background">
-  <Header emergencyConfigured={emergencyConfigured} onEmergencyActivate={handleEmergencyActivate} />
-
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
+  <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
           <div className="max-w-7xl mx-auto">
             {/* Page Header */}
             <div className="mb-8">
@@ -479,8 +473,7 @@ const AIHealthAssistantAnalysis = () => {
           progress={processingProgress}
           estimatedTime="2-3 minutes"
         />
-      </div>
-    </>
+  </>
   );
 };
 

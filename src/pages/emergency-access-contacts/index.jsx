@@ -4,7 +4,6 @@ import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
-import Header from '../../components/ui/Header';
 import EmergencyContactCard from './components/EmergencyContactCard';
 import BreakGlassPanel from './components/BreakGlassPanel';
 import EmergencyAccessSimulator from './components/EmergencyAccessSimulator';
@@ -349,7 +348,6 @@ const EmergencyAccessContacts = () => {
 
   return (
 <div className="min-h-screen bg-[var(--color-bg)]">
-  <Header emergencyConfigured={emergencyContacts?.length > 0} onEmergencyActivate={() => setActiveTab('break-glass')} />
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}

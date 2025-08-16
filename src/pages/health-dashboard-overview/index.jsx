@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/ui/Header';
 import HealthSummaryCard from './components/HealthSummaryCard';
 import RecentActivityFeed from './components/RecentActivityFeed';
 import QuickActionCards from './components/QuickActionCards';
@@ -8,13 +7,17 @@ import ConsentStatusSidebar from './components/ConsentStatusSidebar';
 import SecurityStatusIndicator from './components/SecurityStatusIndicator';
 import WalletStatusCard from './components/WalletStatusCard';
 import Icon from '../../components/AppIcon';
+import { fetchRecentActivities } from '../../utils/activityService';
+import Skeleton from '../../components/ui/Skeleton';
 
 const HealthDashboardOverview = () => {
   const navigate = useNavigate();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isLoadingDashboard, setIsLoadingDashboard] = useState(true);
+  const [activities, setActivities] = useState([]);
   const [walletConnected, setWalletConnected] = useState(true);
   const [currentNetwork, setCurrentNetwork] = useState('Sepolia');
-  const [emergencyConfigured, setEmergencyConfigured] = useState(true);
+  // Header provided globally via AppLayout
 
   // Mock data for health summary
   const healthSummary = {
@@ -36,54 +39,21 @@ const HealthDashboardOverview = () => {
     ]
   };
 
-  // Mock data for recent activities
-  const recentActivities = [
-    {
-      id: 1,
-      type: "ai_summary",
-      title: "AI Health Summary Generated",
-      description: "Comprehensive health analysis completed with latest lab results",
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      transactionHash: "0x1234567890abcdef1234567890abcdef12345678",
-      storageType: "ipfs"
-    },
-    {
-      id: 2,
-      type: "consent_granted",
-      title: "Access Granted to Dr. Sarah Johnson",
-      description: "Cardiology consultation access approved for 30 days",
-      timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
-      transactionHash: "0xabcdef1234567890abcdef1234567890abcdef12",
-      storageType: "blockchain"
-    },
-    {
-      id: 3,
-      type: "record_accessed",
-      title: "Medical Records Viewed",
-      description: "Dr. Michael Chen accessed your recent blood work results",
-      timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000),
-      transactionHash: "0x567890abcdef1234567890abcdef1234567890ab",
-      storageType: "ipfs"
-    },
-    {
-      id: 4,
-      type: "data_shared",
-      title: "Secure Link Created",
-      description: "Temporary access link generated for specialist consultation",
-      timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
-      transactionHash: "0xcdef1234567890abcdef1234567890abcdef1234",
-      storageType: "blockchain"
-    },
-    {
-      id: 5,
-      type: "consent_revoked",
-      title: "Access Revoked",
-      description: "Emergency contact access permissions updated",
-      timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-      transactionHash: "0x234567890abcdef1234567890abcdef123456789",
-      storageType: "blockchain"
-    }
-  ];
+  // Load activities from mock service with latency
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await fetchRecentActivities();
+        if (mounted) setActivities(data);
+      } finally {
+        if (mounted) setIsLoadingDashboard(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // Mock data for approved providers
   const approvedProviders = [
@@ -211,9 +181,7 @@ const HealthDashboardOverview = () => {
     setCurrentNetwork(prev => prev === 'Sepolia' ? 'Mainnet' : 'Sepolia');
   };
 
-  const handleEmergencyActivate = () => {
-    console.log('Emergency access activated');
-  };
+  // Emergency actions handled in dedicated pages
 
   const handleCopyDID = () => {
     navigator.clipboard?.writeText('did:ethr:0x1234567890abcdef1234567890abcdef12345678');
@@ -230,10 +198,7 @@ const HealthDashboardOverview = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-  <Header emergencyConfigured={emergencyConfigured} onEmergencyActivate={handleEmergencyActivate} />
-
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
+  <div>
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
           <Icon name="Home" size={16} />
@@ -256,18 +221,19 @@ const HealthDashboardOverview = () => {
             <HealthSummaryCard
               healthSummary={healthSummary}
               onRefresh={handleRefreshSummary}
-              isRefreshing={isRefreshing}
+              isRefreshing={isRefreshing || isLoadingDashboard}
             />
 
             {/* Quick Actions */}
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-6">Quick Actions</h2>
-              <QuickActionCards onEmergencyAccess={handleEmergencyAccess} />
+              <QuickActionCards onEmergencyAccess={handleEmergencyAccess} isLoading={isLoadingDashboard} />
             </div>
 
             {/* Recent Activity */}
             <RecentActivityFeed
-              activities={recentActivities}
+              activities={activities}
+              isLoading={isLoadingDashboard}
               onViewAll={handleViewAllActivities}
             />
 
@@ -311,8 +277,7 @@ const HealthDashboardOverview = () => {
             />
           </div>
         </div>
-      </div>
-    </div>
+  </div>
   );
 };
 

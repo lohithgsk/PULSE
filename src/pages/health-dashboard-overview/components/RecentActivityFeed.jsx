@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import Skeleton from '../../../components/ui/Skeleton';
 
-const RecentActivityFeed = ({ activities, onViewAll }) => {
+const RecentActivityFeed = ({ activities, onViewAll, isLoading = false }) => {
   const [visibleCount, setVisibleCount] = useState(5);
 
   const activityTypeConfig = {
@@ -104,7 +105,20 @@ const RecentActivityFeed = ({ activities, onViewAll }) => {
       </div>
       {/* Activity List */}
       <div className="divide-y divide-border">
-        {activities?.length === 0 ? (
+        {isLoading ? (
+          <div className="p-6 space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-start space-x-4">
+                <Skeleton className="w-10 h-10 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-2/3" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-3 w-1/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : activities?.length === 0 ? (
           <div className="p-8 text-center">
             <div className="flex items-center justify-center w-16 h-16 bg-muted/50 rounded-lg mx-auto mb-4">
               <Icon name="Activity" size={24} className="text-muted-foreground" />
