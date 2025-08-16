@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
 import { useSession } from '../../context/SessionContext';
 import { blockchainService } from '../../utils/blockchainService';
-import { connectWithWalletConnect } from '../../utils/walletConnectService';
+import { connectWithWalletConnect, disconnectWalletConnect } from '../../utils/walletConnectService';
 
 const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwork: currentNetworkProp = undefined, emergencyConfigured = false, onWalletConnect, onNetworkSwitch, onEmergencyActivate }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWalletDropdownOpen, setIsWalletDropdownOpen] = useState(false);
+  const [isWalletConnecting, setIsWalletConnecting] = useState(false);
+  const currentWalletRef = useRef(null);
+  const cancelRejectRef = useRef(null);
   const session = (() => { try { return useSession(); } catch { return null; } })();
 
   const walletConnected = typeof walletConnectedProp === 'boolean'
@@ -39,7 +42,9 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
     try {
       if (onWalletConnect) return onWalletConnect();
       if (!session) return;
+      setIsWalletConnecting(true);
       try {
+        currentWalletRef.current = 'metamask';
         const info = await blockchainService.connectWallet();
         session.login({
           provider: info?.type || 'MetaMask',
@@ -50,19 +55,50 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
           balance: info?.balance,
         });
       } catch (e) {
-        const info = await connectWithWalletConnect();
-        session.login({
-          provider: info?.type || 'WalletConnect',
-          address: info?.address,
-          did: info?.did,
-          chainId: info?.chainId,
-          network: info?.network,
-          balance: info?.balance,
-        });
+        // Fallback to WalletConnect with cancel/timeout handling
+        currentWalletRef.current = 'walletconnect';
+        let timeoutId;
+        try {
+          const connectPromise = connectWithWalletConnect();
+          const timeoutPromise = new Promise((_, reject) => {
+            timeoutId = setTimeout(() => reject(new Error('WalletConnect cancelled or timed out.')), 25000);
+          });
+          const cancelPromise = new Promise((_, reject) => {
+            cancelRejectRef.current = reject;
+          });
+          const info = await Promise.race([connectPromise, timeoutPromise, cancelPromise]);
+          clearTimeout(timeoutId);
+          session.login({
+            provider: info?.type || 'WalletConnect',
+            address: info?.address,
+            did: info?.did,
+            chainId: info?.chainId,
+            network: info?.network,
+            balance: info?.balance,
+          });
+        } catch (err) {
+          try { await disconnectWalletConnect(); } catch (_) {}
+          // Swallow cancel/timeout errors to allow user to retry without noise
+        } finally {
+          if (timeoutId) clearTimeout(timeoutId);
+          cancelRejectRef.current = null;
+        }
       }
     } finally {
+      setIsWalletConnecting(false);
       setIsWalletDropdownOpen(false);
     }
+  };
+
+  const handleCancelConnect = async () => {
+    // Cancels WalletConnect flow and stops any spinner
+    if (currentWalletRef.current === 'walletconnect') {
+      try { await disconnectWalletConnect(); } catch (_) {}
+      if (cancelRejectRef.current) {
+        cancelRejectRef.current(new Error('User cancelled'));
+      }
+    }
+    setIsWalletConnecting(false);
   };
 
   const handleNetworkSwitch = async () => {
@@ -130,9 +166,23 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
             ) : (
               <div className="space-y-3">
                 <p className="text-sm text-muted-foreground">Connect your wallet to access PULSE</p>
-                <Button variant="default" size="sm" onClick={handleWalletConnect} className="w-full">
-                  Connect Wallet
-                </Button>
+                {isWalletConnecting ? (
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={handleCancelConnect} className="w-full">
+                      Cancel
+                    </Button>
+                    <Button variant="default" size="sm" disabled className="w-full">
+                      <span className="inline-flex items-center gap-2">
+                        <Icon name="Loader2" size={16} className="animate-spin" />
+                        Connecting...
+                      </span>
+                    </Button>
+                  </div>
+                ) : (
+                  <Button variant="default" size="sm" onClick={handleWalletConnect} className="w-full">
+                    Connect Wallet
+                  </Button>
+                )}
               </div>
             )}
           </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Icon from '../AppIcon';
 
 
-const AuthenticationGate = ({ onWalletConnect, isConnecting = false, error = null }) => {
+const AuthenticationGate = ({ onWalletConnect, onCancelConnect, isConnecting = false, error = null }) => {
   const [selectedWallet, setSelectedWallet] = useState(null);
 
   const walletOptions = [
@@ -112,6 +112,19 @@ const AuthenticationGate = ({ onWalletConnect, isConnecting = false, error = nul
             </button>
           ))}
         </div>
+
+        {/* Cancel action when connecting */}
+        {isConnecting && (
+          <div className="mb-6">
+            <button
+              type="button"
+              onClick={onCancelConnect}
+              className="w-full py-2 text-sm rounded-md border border-border hover:bg-muted transition-clinical"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
 
         {/* Security Features */}
         <div className="space-y-3 mb-6">
