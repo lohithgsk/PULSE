@@ -161,8 +161,8 @@ const ConsentHistoryCard = ({ historyItem, onViewTransaction }) => {
       </div>
       {/* Details Modal */}
       {showDetailsModal && (
-        <div className="fixed inset-0 z-modal bg-black/50 flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-popover/80 backdrop-blur-md rounded-lg shadow-medical-modal max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-modal flex items-center justify-center p-4 bg-black/60 backdrop-blur">
+          <div className="w-full max-w-md bg-popover bg-opacity-90 rounded-lg shadow-medical-modal border border-white/20">
             <div className="flex items-center justify-between p-6 border-b border-border">
               <div>
                 <h3 className="text-lg font-semibold text-popover-foreground">Consent History Details</h3>
@@ -176,7 +176,8 @@ const ConsentHistoryCard = ({ historyItem, onViewTransaction }) => {
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            {/* Make modal content scrollable */}
+            <div className="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
               {/* Action Summary */}
               <div>
                 <h4 className="text-sm font-medium text-popover-foreground mb-2">Action Summary</h4>

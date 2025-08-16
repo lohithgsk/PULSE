@@ -60,7 +60,7 @@ const ActiveConsentCard = ({ consent, onRevoke, onViewDetails }) => {
 
   return (
     <>
-      <div className="bg-card border border-border rounded-lg p-4 hover:shadow-medical-card transition-clinical">
+      <div className="bg-card border border-border rounded-lg p-4 hover:shadow-medical-card transition-clinical backdrop-blur-lg bg-card/70 border border-white/20">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center space-x-3">
@@ -152,8 +152,8 @@ const ActiveConsentCard = ({ consent, onRevoke, onViewDetails }) => {
       </div>
       {/* Revoke Confirmation Modal */}
       {showRevokeModal && (
-        <div className="fixed inset-0 z-modal bg-black/50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-popover/80 backdrop-blur-md rounded-lg shadow-medical-modal">
+        <div className="fixed inset-0 z-modal bg-black/60 flex items-center justify-center p-4 backdrop-blur-xl">
+          <div className="w-full max-w-md bg-popover bg-opacity-90 backdrop-blur rounded-lg shadow-medical-modal border border-white/20">
             <div className="p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-error/10 rounded-lg flex items-center justify-center">
