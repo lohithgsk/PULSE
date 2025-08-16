@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
+import { useSession } from '../../context/SessionContext';
+import { blockchainService } from '../../utils/blockchainService';
+import { connectWithWalletConnect } from '../../utils/walletConnectService';
 
-const Header = ({ walletConnected = false, currentNetwork = 'Sepolia', emergencyConfigured = false, onWalletConnect, onNetworkSwitch, onEmergencyActivate }) => {
+const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwork: currentNetworkProp = undefined, emergencyConfigured = false, onWalletConnect, onNetworkSwitch, onEmergencyActivate }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWalletDropdownOpen, setIsWalletDropdownOpen] = useState(false);
+  const session = (() => { try { return useSession(); } catch { return null; } })();
+
+  const walletConnected = typeof walletConnectedProp === 'boolean'
+    ? walletConnectedProp
+    : !!session?.isAuthenticated;
+  const currentNetwork = currentNetworkProp || session?.wallet?.network || 'Unknown';
 
   const navigationItems = [
     { label: 'Dashboard', path: '/health-dashboard-overview', icon: 'Activity', tooltip: 'Health overview and recent activity' },
@@ -26,16 +35,52 @@ const Header = ({ walletConnected = false, currentNetwork = 'Sepolia', emergency
     return location?.pathname === path;
   };
 
-  const handleWalletConnect = () => {
-    if (onWalletConnect) {
-      onWalletConnect();
+  const handleWalletConnect = async () => {
+    try {
+      if (onWalletConnect) return onWalletConnect();
+      if (!session) return;
+      try {
+        const info = await blockchainService.connectWallet();
+        session.login({
+          provider: info?.type || 'MetaMask',
+          address: info?.address,
+          did: info?.did,
+          chainId: info?.chainId,
+          network: info?.network,
+          balance: info?.balance,
+        });
+      } catch (e) {
+        const info = await connectWithWalletConnect();
+        session.login({
+          provider: info?.type || 'WalletConnect',
+          address: info?.address,
+          did: info?.did,
+          chainId: info?.chainId,
+          network: info?.network,
+          balance: info?.balance,
+        });
+      }
+    } finally {
+      setIsWalletDropdownOpen(false);
     }
-    setIsWalletDropdownOpen(false);
   };
 
-  const handleNetworkSwitch = () => {
-    if (onNetworkSwitch) {
-      onNetworkSwitch();
+  const handleNetworkSwitch = async () => {
+    try {
+      if (onNetworkSwitch) return onNetworkSwitch();
+      const ok = await blockchainService.switchToSepolia();
+      if (ok && session) {
+        const status = await blockchainService.getNetworkStatus();
+        session.updateWallet({ network: status?.name, chainId: status?.chainId });
+      }
+    } finally {
+      setIsWalletDropdownOpen(false);
+    }
+  };
+
+  const handleLogout = () => {
+    if (session) {
+      session.logout();
     }
     setIsWalletDropdownOpen(false);
   };
@@ -69,11 +114,16 @@ const Header = ({ walletConnected = false, currentNetwork = 'Sepolia', emergency
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Address</p>
-                  <p className="text-sm font-mono text-foreground">0x1234...5678</p>
+                  <p className="text-sm font-mono text-foreground">{(session?.wallet?.address && `${session.wallet.address.slice(0,6)}...${session.wallet.address.slice(-4)}`) || 'N/A'}</p>
                 </div>
                 <div className="pt-2 border-t border-border">
                   <Button variant="outline" size="sm" onClick={handleNetworkSwitch} className="w-full">
                     Switch Network
+                  </Button>
+                </div>
+                <div>
+                  <Button variant="destructive" size="sm" onClick={handleLogout} className="w-full mt-2">
+                    Logout
                   </Button>
                 </div>
               </div>

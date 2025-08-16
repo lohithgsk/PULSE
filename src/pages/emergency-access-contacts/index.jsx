@@ -349,14 +349,7 @@ const EmergencyAccessContacts = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header
-        walletConnected={walletConnected}
-        currentNetwork={currentNetwork}
-        emergencyConfigured={emergencyContacts?.length > 0}
-        onWalletConnect={handleWalletConnect}
-        onNetworkSwitch={handleNetworkSwitch}
-        onEmergencyActivate={() => setActiveTab('break-glass')}
-      />
+  <Header emergencyConfigured={emergencyContacts?.length > 0} onEmergencyActivate={() => setActiveTab('break-glass')} />
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}

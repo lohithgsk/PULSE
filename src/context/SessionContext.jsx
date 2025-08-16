@@ -30,14 +30,21 @@ export const SessionProvider = ({ children }) => {
     }
   }, [session]);
 
-  const login = ({ provider, address } = {}) => {
-    const wallet = { provider: provider || 'unknown', address: address || null };
+  const login = ({ provider, address, did = null, chainId = null, network = null, balance = null } = {}) => {
+    const wallet = { provider: provider || 'unknown', address: address || null, did, chainId, network, balance };
     setSession({ isAuthenticated: true, wallet, createdAt: new Date().toISOString() });
   };
 
   const logout = () => setSession({ isAuthenticated: false, wallet: null, createdAt: null });
 
-  const value = useMemo(() => ({ ...session, login, logout }), [session]);
+  const updateWallet = (partial = {}) => {
+    setSession((prev) => ({
+      ...prev,
+      wallet: { ...(prev?.wallet || {}), ...partial },
+    }));
+  };
+
+  const value = useMemo(() => ({ ...session, login, logout, updateWallet }), [session]);
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 };

@@ -325,13 +325,7 @@ const MedicalRecordsManagement = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header 
-          walletConnected={true} 
-          currentNetwork="Sepolia"
-          onWalletConnect={() => {}}
-          onNetworkSwitch={() => {}}
-          onEmergencyActivate={() => {}}
-        />
+  <Header onEmergencyActivate={() => {}} />
         <div className="flex items-center justify-center h-96">
           <div className="flex items-center space-x-3">
             <div className="animate-spin">
@@ -346,13 +340,7 @@ const MedicalRecordsManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header 
-        walletConnected={true} 
-        currentNetwork="Sepolia"
-        onWalletConnect={() => {}}
-        onNetworkSwitch={() => {}}
-        onEmergencyActivate={() => {}}
-      />
+  <Header onEmergencyActivate={() => {}} />
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar - Filters */}

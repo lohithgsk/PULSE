@@ -244,14 +244,7 @@ const ConsentAccessManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header
-        walletConnected={walletConnected}
-        currentNetwork={currentNetwork}
-        emergencyConfigured={emergencyContacts?.length > 0}
-        onWalletConnect={handleWalletConnect}
-        onNetworkSwitch={handleNetworkSwitch}
-        onEmergencyActivate={handleEmergencyActivate}
-      />
+  <Header emergencyConfigured={emergencyContacts?.length > 0} onEmergencyActivate={handleEmergencyActivate} />
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">

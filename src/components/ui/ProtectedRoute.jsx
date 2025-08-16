@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSession } from '../../context/SessionContext';
 import AuthenticationGate from './AuthenticationGate';
+import { blockchainService } from '../../utils/blockchainService';
+import { connectWithWalletConnect } from '../../utils/walletConnectService';
 
 // Simple protected route wrapper for client-side gating
 const ProtectedRoute = ({ children }) => {
@@ -9,14 +11,36 @@ const ProtectedRoute = ({ children }) => {
   const [error, setError] = useState(null);
 
   const handleWalletConnect = async (walletId) => {
-    // For now, simulate a wallet connect and mark session authenticated
     setError(null);
     setIsConnecting(true);
     try {
-      // Simulate small delay
-      await new Promise((res) => setTimeout(res, 600));
-      // Minimal session login; later replace with real wallet connect
-      login({ provider: walletId, address: null });
+  if (walletId === 'metamask') {
+        const info = await blockchainService.connectWallet();
+        login({
+          provider: info?.type || 'MetaMask',
+          address: info?.address || null,
+          did: info?.did || null,
+          chainId: info?.chainId || null,
+          network: info?.network || null,
+          balance: info?.balance || null,
+        });
+        return;
+      }
+
+      if (walletId === 'walletconnect') {
+        const info = await connectWithWalletConnect();
+        login({
+          provider: info?.type || 'WalletConnect',
+          address: info?.address || null,
+          did: info?.did || null,
+          chainId: info?.chainId || null,
+          network: info?.network || null,
+          balance: info?.balance || null,
+        });
+        return;
+      }
+
+      throw new Error('Provider not supported yet.');
     } catch (e) {
       setError(e?.message || 'Failed to connect. Please try again.');
     } finally {
