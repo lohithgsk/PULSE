@@ -49,16 +49,16 @@ html, body {
 /* ========= Design System Tokens ========= */
 :root {
   /* Base Background & Surfaces */
-  --color-background: #F6F9F3;        /* app background */
-  --color-surface: #[var(--color-surface-alt)]F;           /* main cards, modals */
-  --color-surface-alt: #F9FAFB;       /* secondary cards, inputs, subtle bg */
-  --color-surface-dark: #111827;      /* dark footer, nav, panels */
+  --color-background: #F6F9F3;            /* app background */
+  --color-surface: #FFFFFF;               /* main cards, modals */
+  --color-surface-alt: #F9FAFB;           /* secondary cards, inputs, subtle bg */
+  --color-surface-dark: #111827;          /* dark footer, nav, panels */
 
   /* Text Hierarchy */
-  --color-text-primary: #111827;      /* high contrast */
-  --color-text-secondary: #374151;    /* body */
-  --color-text-muted: #6B7280;        /* placeholders, captions */
-  --color-text-inverse: #[var(--color-surface-alt)]F;      /* on dark or brand surfaces */
+  --color-text-primary: #111827;          /* high contrast */
+  --color-text-secondary: #374151;        /* body */
+  --color-text-muted: #6B7280;            /* placeholders, captions */
+  --color-text-inverse: #FFFFFF;          /* on dark or brand surfaces */
 
   /* Borders */
   --color-border: #E5E7EB;            /* subtle */
@@ -76,11 +76,11 @@ html, body {
   --color-success: #16A34A;           /* secondary success */
 
   /* Foregrounds for Contrast */
-  --color-primary-foreground: #[var(--color-surface-alt)]F;
-  --color-accent-foreground: #[var(--color-surface-alt)]F;
+  --color-primary-foreground: #FFFFFF;
+  --color-accent-foreground: #FFFFFF;
   --color-warning-foreground: #111827;
-  --color-error-foreground: #[var(--color-surface-alt)]F;
-  --color-success-foreground: #[var(--color-surface-alt)]F;
+  --color-error-foreground: #FFFFFF;
+  --color-success-foreground: #FFFFFF;
 
   /* System */
   --color-foreground: var(--color-text-primary);
@@ -96,21 +96,32 @@ html, body {
 }
 
 /* ========= Typography ========= */
+/* Fluid, accessible typography (mobile-first) */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   color: var(--color-text-primary);
-  line-height: 1.25;
+  line-height: 1.2;
+  text-wrap: balance;
 }
+
+html { /* scale root size slightly between small and large screens */
+  font-size: clamp(15px, 14px + 0.35vw, 18px);
+}
+
+h1 { font-size: clamp(1.9rem, 1.2rem + 2.4vw, 2.5rem); }
+h2 { font-size: clamp(1.5rem, 1.05rem + 1.8vw, 2.1rem); }
+h3 { font-size: clamp(1.25rem, 1.0rem + 1vw, 1.6rem); }
+h4 { font-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.35rem); }
+h5 { font-size: clamp(1rem, 0.9rem + 0.3vw, 1.15rem); }
+h6 { font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1rem); }
 
 p {
   margin-bottom: 1rem;
   color: var(--color-text-secondary);
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
 }
 
-small {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-}
+small { font-size: clamp(0.75rem, 0.7rem + 0.2vw, 0.85rem); color: var(--color-text-muted); }
 
 /* ========= Containers ========= */
 .card {
@@ -149,6 +160,17 @@ button {
   padding: 0.6rem 1.2rem;
   font-size: 0.95rem;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Ensure minimum tap target on mobile for accessibility */
+@media (max-width: 767.98px) {
+  button, a.button-like, [role="button"], input[type="button"], input[type="submit"], .btn { min-height: 44px; }
+}
+
+/* Attribute-based helper: full width only on small screens */
+[data-fullwidth-mobile] { width: 100%; }
+@media (min-width: 768px) {
+  [data-fullwidth-mobile] { width: auto; }
 }
 
 /* Primary (filled) */
@@ -206,6 +228,29 @@ input:focus, textarea:focus, select:focus {
   outline: 2px solid var(--color-ring);
   outline-offset: 2px;
 }
+
+/* Media fluid images & embeds */
+img, svg, video, canvas, audio, iframe, embed, object { max-width: 100%; height: auto; }
+img { image-rendering: auto; }
+
+/* Consistent card spacing utilities (opt-in) */
+/* Reusable card helpers (non-Tailwind @apply to stay vanilla) */
+.card-base { background-color: var(--color-surface); border: 1px solid var(--color-border); border-radius: 0.5rem; box-shadow: var(--shadow-sm); }
+.card-padding { padding: clamp(0.9rem, 0.75rem + 0.6vw, 1.5rem); }
+
+/* Prevent unintended horizontal scroll on nested flex/grids */
+body, #root { overscroll-behavior-y: contain; }
+main { width: 100%; }
+
+/* Utility to clamp long strings without breaking layout */
+.truncate-soft { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-clamp: 2; }
+
+/* Subtle focus ring unification */
+:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 2px; }
+
+/* Smooth transitions baseline */
+.transition-base { transition: all 160ms cubic-bezier(0.4,0,0.2,1); }
 
 /* ========= Utilities ========= */
 .text-muted {

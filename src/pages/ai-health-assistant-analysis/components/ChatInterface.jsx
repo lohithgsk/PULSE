@@ -348,8 +348,7 @@ const ChatInterface = ({
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-2">PULSE AI Health Assistant</h3>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              Ask me anything about your health records, get AI-powered insights powered by OpenAI, 
-              or request medical summaries. All conversations are encrypted and logged on the blockchain.
+              Ask me anything about your health records
             </p>
             <QuickActions />
           </div>
@@ -382,9 +381,9 @@ const ChatInterface = ({
                     </div>
                     <div className="mt-2 text-xs text-muted-foreground">
                       <div className="flex items-center space-x-4">
-                        <span>🔍 Analyzing records</span>
-                        <span>🔐 Encrypting response</span>
-                        <span>⛓️ Logging to blockchain</span>
+                        <span> Analyzing records</span>
+                        <span> Encrypting response</span>
+                        <span> Logging to blockchain</span>
                       </div>
                     </div>
                   </div>
@@ -398,32 +397,45 @@ const ChatInterface = ({
 
       {/* Input Area */}
       <div className="border-t border-border p-4">
-        <div className="flex items-end space-x-3">
-          <div className="flex-1">
+        <div className="flex items-stretch gap-2">
+          <div className="flex-1 flex">
             <textarea
               ref={inputRef}
               value={inputMessage}
               onChange={(e) => setInputMessage(e?.target?.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about your health records, symptoms, medications, or request a comprehensive medical summary..."
-              className="w-full px-4 py-3 border border-border rounded-lg bg-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
-              rows="2"
+              onInput={(e) => { e.target.style.height='auto'; e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px'; }}
+              placeholder="Ask about your health records"
+              className="w-full px-3 py-2 border border-border rounded-md bg-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none leading-relaxed text-sm"
+              rows="1"
               disabled={isLoading || isProcessing}
             />
           </div>
-          <Button
-            onClick={handleSendMessage}
-            disabled={!inputMessage?.trim() || isLoading || isProcessing}
-            iconName="Send"
-            size="lg"
-            className="shrink-0"
-          >
-            {isProcessing ? 'Processing...' : 'Send'}
-          </Button>
+          {/* Send buttons: compact icon on mobile, labeled on larger screens */}
+          <div className="flex items-end">
+            <Button
+              onClick={handleSendMessage}
+              disabled={!inputMessage?.trim() || isLoading || isProcessing}
+              iconName="Send"
+              size="sm"
+              variant="default"
+              className="sm:hidden h-11 w-11 p-0 rounded-full shadow-sm"
+              aria-label={isProcessing ? 'Processing' : 'Send message'}
+            />
+            <Button
+              onClick={handleSendMessage}
+              disabled={!inputMessage?.trim() || isLoading || isProcessing}
+              iconName="Send"
+              size="default"
+              className="hidden sm:inline-flex h-10"
+            >
+              {isProcessing ? 'Processing...' : 'Send'}
+            </Button>
+          </div>
         </div>
         
-        <div className="flex items-center justify-between mt-3 text-xs text-muted-foreground">
-          <div className="flex items-center space-x-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <div className="flex items-center space-x-1">
               <Icon name="Shield" size={12} className="text-clinical-green" />
               <span>End-to-end encrypted</span>
@@ -441,7 +453,7 @@ const ChatInterface = ({
               <span>Powered by OpenAI</span>
             </div>
           </div>
-          <span>Press Enter to send</span>
+          <span className="hidden sm:inline">Press Enter to send</span>
         </div>
       </div>
     </div>

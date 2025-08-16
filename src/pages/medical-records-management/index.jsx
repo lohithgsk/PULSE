@@ -6,6 +6,7 @@ import RecordFilters from './components/RecordFilters';
 import RecordDetailPanel from './components/RecordDetailPanel';
 import BulkActions from './components/BulkActions';
 import ShareModal from './components/ShareModal';
+import UploadRecordModal from './components/UploadRecordModal';
 
 const MedicalRecordsManagement = () => {
   const [selectedRecords, setSelectedRecords] = useState([]);
@@ -28,7 +29,7 @@ const MedicalRecordsManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Mock medical records data
-  const mockRecords = [
+  const initialRecords = [
     {
       id: 'rec_001',
       title: 'Annual Physical Examination',
@@ -167,9 +168,12 @@ const MedicalRecordsManagement = () => {
     }
   ];
 
+  // Make records stateful so we can add uploaded ones
+  const [records, setRecords] = useState(initialRecords);
+
   // Filter and sort records
   const filteredRecords = useMemo(() => {
-    let filtered = [...mockRecords];
+    let filtered = [...records];
 
     // Search filter
     if (filters?.search) {
@@ -237,10 +241,10 @@ const MedicalRecordsManagement = () => {
 
   // Record counts for filters
   const recordCounts = useMemo(() => ({
-    total: mockRecords?.length,
+    total: records?.length,
     filtered: filteredRecords?.length,
-    withAI: mockRecords?.filter(r => r?.hasAISummary)?.length
-  }), [filteredRecords?.length]);
+    withAI: records?.filter(r => r?.hasAISummary)?.length
+  }), [filteredRecords?.length, records]);
 
   // Simulate loading
   useEffect(() => {
@@ -321,6 +325,27 @@ const MedicalRecordsManagement = () => {
     });
   };
 
+  // Upload modal state
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+
+  const handleUploadRecord = (data) => {
+    // Create new record object
+    const newRecord = {
+      id: 'rec_' + Date.now(),
+      title: data.title || 'Untitled Record',
+      category: data.category || 'consultation',
+      provider: data.provider || 'Unknown Provider',
+      date: new Date(data.date || Date.now()).toISOString(),
+      description: data.description || 'No description provided.',
+      isEncrypted: !!data.isEncrypted,
+      storage: data.storage || 'ipfs',
+      hasAISummary: false,
+      keyDetails: [],
+      attachments: data.files?.map(f => ({ name: f.name, size: `${Math.round(f.size/1024)} KB` })) || []
+    };
+    setRecords(prev => [newRecord, ...prev]);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
@@ -338,10 +363,21 @@ const MedicalRecordsManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-6">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Mobile overlay backdrop when filters open */}
+        {!isFiltersCollapsed && (
+          <div
+            className="lg:hidden fixed inset-0 z-40 bg-background/70 backdrop-blur-sm supports-[backdrop-filter]:bg-background/50"
+            onClick={() => setIsFiltersCollapsed(true)}
+          />
+        )}
+        <div className="flex flex-col lg:flex-row gap-6 relative">
           {/* Sidebar - Filters */}
-          <div className="lg:w-80 lg:flex-none lg:sticky lg:top-16 self-start">
+          <div
+            className={`lg:w-80 lg:flex-none lg:sticky lg:top-16 self-start lg:translate-x-0 lg:opacity-100 z-50 lg:z-auto
+            ${isFiltersCollapsed ? 'hidden lg:block' : 'block'}
+            ${!isFiltersCollapsed ? 'lg:relative fixed inset-0 flex justify-center items-start pt-20 px-4 overflow-y-auto' : ''}`}
+          >
             <RecordFilters
               filters={filters}
               onFiltersChange={setFilters}
@@ -359,9 +395,7 @@ const MedicalRecordsManagement = () => {
               <div className="flex items-center justify-between mb-4">
                 <div>
       <h1 className="text-2xl font-semibold text-[var(--color-text)]">Medical Records</h1>
-                  <p className="text-muted-foreground">
-                    Manage and share your complete medical history securely
-                  </p>
+                  
                 </div>
                 <div className="flex items-center space-x-3">
                   <Button
@@ -375,6 +409,7 @@ const MedicalRecordsManagement = () => {
                   <Button
                     iconName="Upload"
                     iconPosition="left"
+                    onClick={() => setIsUploadOpen(true)}
                   >
                     Upload Record
                   </Button>
@@ -415,13 +450,15 @@ const MedicalRecordsManagement = () => {
             </div>
 
             {/* Bulk Actions */}
-            <BulkActions
-              selectedRecords={selectedRecords}
-              onBulkDownload={handleBulkDownload}
-              onBulkShare={handleBulkShare}
-              onDeselectAll={handleDeselectAll}
-              totalRecords={filteredRecords?.length}
-            />
+            <div className="hidden sm:block">
+              <BulkActions
+                selectedRecords={selectedRecords}
+                onBulkDownload={handleBulkDownload}
+                onBulkShare={handleBulkShare}
+                onDeselectAll={handleDeselectAll}
+                totalRecords={filteredRecords?.length}
+              />
+            </div>
 
             {/* Records List */}
             <div className="space-y-4">
@@ -472,6 +509,34 @@ const MedicalRecordsManagement = () => {
         onClose={() => setIsShareModalOpen(false)}
         onShare={handleShare}
       />
+      {/* Upload Modal */}
+      <UploadRecordModal
+        isOpen={isUploadOpen}
+        onClose={() => setIsUploadOpen(false)}
+        onUpload={(data) => { handleUploadRecord(data); setIsUploadOpen(false); }}
+      />
+
+      {/* Mobile FAB for Upload */}
+      <button
+        onClick={() => setIsUploadOpen(true)}
+        className="lg:hidden fixed bottom-20 right-4 z-40 inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        aria-label="Upload Record"
+      >
+        <Icon name="Upload" size={20} />
+      </button>
+
+      {/* Mobile Filters FAB (single source of truth) */}
+      {isFiltersCollapsed && (
+        <button
+          onClick={() => setIsFiltersCollapsed(false)}
+          className="lg:hidden fixed bottom-20 left-4 z-40 inline-flex items-center justify-center w-14 h-14 rounded-full bg-secondary text-secondary-foreground shadow-lg shadow-secondary/30 hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+          aria-label="Show Filters"
+        >
+          <div className="relative">
+            <Icon name="Filter" size={20} />
+          </div>
+        </button>
+      )}
     </div>
   );
 };

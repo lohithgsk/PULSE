@@ -5,7 +5,7 @@ import { cn } from "../../utils/cn";
 import Icon from '../AppIcon';
 
 const buttonVariants = cva(
-    "inline-flex items-center justify-center [var(--color-surface-alt)]space-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
     {
         variants: {
             variant: {
@@ -93,8 +93,10 @@ const Button = React.forwardRef(({
         <button
             className={cn(
                 buttonVariants({ variant, size, className }),
-                fullWidth && "w-full"
+                fullWidth && "w-full",
+                !fullWidth && "data-[fullwidth-mobile]:w-full"
             )}
+            data-fullwidth-mobile={!fullWidth ? true : undefined}
             ref={ref}
             disabled={disabled || loading}
             {...props}
@@ -131,8 +133,10 @@ const Button = React.forwardRef(({
                 className: cn(
                     buttonVariants({ variant, size, className }),
                     fullWidth && "w-full",
+                    !fullWidth && "data-[fullwidth-mobile]:w-full",
                     child?.props?.className
                 ),
+                'data-fullwidth-mobile': !fullWidth ? true : undefined,
                 disabled: disabled || loading || child?.props?.disabled,
                 children: content,
             });
@@ -147,8 +151,10 @@ const Button = React.forwardRef(({
         <Comp
             className={cn(
                 buttonVariants({ variant, size, className }),
-                fullWidth && "w-full"
+                fullWidth && "w-full",
+                !fullWidth && "data-[fullwidth-mobile]:w-full"
             )}
+            data-fullwidth-mobile={!fullWidth ? true : undefined}
             ref={ref}
             disabled={disabled || loading}
             {...props}
