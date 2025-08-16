@@ -9,9 +9,11 @@ import WalletStatusCard from './components/WalletStatusCard';
 import Icon from '../../components/AppIcon';
 import { fetchRecentActivities } from '../../utils/activityService';
 import Skeleton from '../../components/ui/Skeleton';
+import { useI18n } from '../../i18n/I18nProvider';
 
 const HealthDashboardOverview = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoadingDashboard, setIsLoadingDashboard] = useState(true);
   const [activities, setActivities] = useState([]);
@@ -203,14 +205,14 @@ const HealthDashboardOverview = () => {
         <div className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
           <Icon name="Home" size={16} />
           <span>/</span>
-          <span className="text-foreground">Dashboard</span>
+          <span className="text-foreground">{t('nav.dashboard')}</span>
         </div>
 
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-foreground mb-2">Welcome back!</h1>
+          <h1 className="text-3xl font-semibold text-foreground mb-2">{t('dashboard.welcomeBack')}</h1>
           <p className="text-muted-foreground">
-            Here's an overview of your health data and recent activity
+            {t('dashboard.overviewIntro')}
           </p>
         </div>
 
@@ -226,7 +228,7 @@ const HealthDashboardOverview = () => {
 
             {/* Quick Actions */}
             <div>
-              <h2 className="text-xl font-semibold text-foreground mb-6">Quick Actions</h2>
+              <h2 className="text-xl font-semibold text-foreground mb-6">{t('dashboard.quickActions')}</h2>
               <QuickActionCards onEmergencyAccess={handleEmergencyAccess} isLoading={isLoadingDashboard} />
             </div>
 

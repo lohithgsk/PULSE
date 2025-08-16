@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../../components/AppIcon';
 import { blockchainService } from '../../utils/blockchainService';
+import { useI18n } from '../../i18n/I18nProvider';
 
 import WalletSelector from './components/WalletSelector';
 import SecurityFeatures from './components/SecurityFeatures';
@@ -11,6 +12,7 @@ import TrustIndicators from './components/TrustIndicators';
 
 const WalletConnectionAuthentication = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [connectionState, setConnectionState] = useState('disconnected'); // disconnected, connecting, connected
   const [error, setError] = useState(null);
   const [currentNetwork, setCurrentNetwork] = useState('Sepolia');
@@ -84,11 +86,11 @@ const WalletConnectionAuthentication = () => {
           setCurrentNetwork('Sepolia');
           setNetworkStatus('connected');
         } else {
-          setError('Failed to switch to Sepolia network');
+      setError(t('auth.errors.switchToSepoliaFailed'));
         }
       }
     } catch (error) {
-      setError('Network switch failed: ' + error?.message);
+    setError(t('auth.errors.networkSwitchFailed') + ': ' + (error?.message || ''));
     }
   };
 
@@ -193,7 +195,7 @@ const WalletConnectionAuthentication = () => {
                   onClick={handleNetworkSwitch}
                   className="text-xs px-2 py-1 bg-[var(--color-warning)]/10 text-[var(--color-warning)] border border-[var(--color-warning)]/30 rounded hover:bg-[var(--color-warning)]/20 transition-colors"
                 >
-                  Switch to Sepolia
+                  {t('auth.switchToSepolia')}
                 </button>
               )}
             </div>
@@ -221,10 +223,10 @@ const WalletConnectionAuthentication = () => {
                     <Icon name="Heart" size={32} className="text-[var(--color-bg)]" />
                   </div>
                   <h1 className="text-2xl lg:text-3xl font-semibold text-[var(--color-text)] mb-2">
-                    Welcome to PULSE
+                    {t('auth.welcomeTitle')}
                   </h1>
                   <p className="text-[var(--color-text-muted)] text-sm lg:text-base">
-                    Connect your wallet to securely access your decentralized health records
+                    {t('auth.welcomeSubtitle')}
                   </p>
                 </div>
 
@@ -243,7 +245,7 @@ const WalletConnectionAuthentication = () => {
                     className="flex items-center justify-center space-x-2 w-full p-3 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-primary-light)] transition-colors"
                   >
                     <Icon name={showAdvanced ? "ChevronUp" : "ChevronDown"} size={16} />
-                    <span>{showAdvanced ? 'Hide' : 'Show'} Advanced Options</span>
+                    <span>{showAdvanced ? t('common.hide') : t('common.show')} {t('auth.advancedOptions')}</span>
                   </button>
 
                   {showAdvanced && (
@@ -279,18 +281,18 @@ const WalletConnectionAuthentication = () => {
         <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
           <div className="text-center space-y-4">
             <p className="text-xs text-muted-foreground">
-              By connecting, you agree to our{' '}
-              <button className="text-primary hover:underline">Terms of Service</button>
-              {' '}and{' '}
-              <button className="text-primary hover:underline">Privacy Policy</button>
+              {t('auth.legal.byConnecting')}{' '}
+              <button className="text-primary hover:underline">{t('auth.legal.terms')}</button>
+              {' '} {t('auth.legal.and')} {' '}
+              <button className="text-primary hover:underline">{t('auth.legal.privacy')}</button>
             </p>
             
             <div className="flex items-center justify-center space-x-6 text-xs text-muted-foreground">
               <span>© {new Date()?.getFullYear()} PULSE</span>
               <span>•</span>
-              <button className="hover:text-foreground transition-clinical">Support</button>
+              <button className="hover:text-foreground transition-clinical">{t('auth.footer.support')}</button>
               <span>•</span>
-              <button className="hover:text-foreground transition-clinical">Documentation</button>
+              <button className="hover:text-foreground transition-clinical">{t('auth.footer.docs')}</button>
             </div>
           </div>
         </div>

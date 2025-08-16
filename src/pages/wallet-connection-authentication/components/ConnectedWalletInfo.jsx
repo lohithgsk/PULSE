@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
+import { useI18n } from '../../../i18n/I18nProvider';
 
 const ConnectedWalletInfo = ({ 
   walletAddress = '0x1234567890abcdef1234567890abcdef12345678',
@@ -12,6 +13,7 @@ const ConnectedWalletInfo = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const [didCopied, setDidCopied] = useState(false);
+  const { t } = useI18n();
 
   const formatAddress = (address) => {
     return `${address?.slice(0, 6)}...${address?.slice(-4)}`;
@@ -34,9 +36,9 @@ const ConnectedWalletInfo = ({
         <div className="flex items-center justify-center w-16 h-16 bg-clinical-green/10 rounded-2xl mx-auto mb-4">
           <Icon name="CheckCircle" size={32} className="text-clinical-green" />
         </div>
-        <h2 className="text-xl font-semibold text-foreground mb-2">Wallet Connected Successfully</h2>
+        <h2 className="text-xl font-semibold text-foreground mb-2">{t('auth.connected.successTitle')}</h2>
         <p className="text-sm text-muted-foreground">
-          Your decentralized identity is now established and ready to access your health records
+          {t('auth.connected.successBody')}
         </p>
       </div>
 
@@ -46,7 +48,7 @@ const ConnectedWalletInfo = ({
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <Icon name="Wallet" size={16} className="text-primary" />
-              <span className="text-sm font-medium text-foreground">Connected Wallet</span>
+              <span className="text-sm font-medium text-foreground">{t('auth.connected.wallet')}</span>
             </div>
             <span className="text-xs text-muted-foreground">{walletType}</span>
           </div>
@@ -54,13 +56,13 @@ const ConnectedWalletInfo = ({
           <div className="space-y-3">
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-muted-foreground">Wallet Address</span>
+                <span className="text-xs text-muted-foreground">{t('auth.connected.walletAddress')}</span>
                 <button
                   onClick={() => copyToClipboard(walletAddress, setCopied)}
                   className="flex items-center space-x-1 text-xs text-primary hover:text-primary/80 transition-clinical"
                 >
                   <Icon name={copied ? "Check" : "Copy"} size={12} />
-                  <span>{copied ? 'Copied!' : 'Copy'}</span>
+                  <span>{copied ? t('common.copied') || 'Copied!' : t('common.copy') || 'Copy'}</span>
                 </button>
               </div>
               <div className="flex items-center space-x-2">
@@ -70,7 +72,7 @@ const ConnectedWalletInfo = ({
             </div>
 
             <div>
-              <span className="text-xs text-muted-foreground">Balance</span>
+              <span className="text-xs text-muted-foreground">{t('header.balance')}</span>
               <div className="flex items-center space-x-2">
                 <span className="text-sm font-mono text-foreground">{balance} ETH</span>
                 <span className="text-xs text-muted-foreground">($127.45)</span>
@@ -84,20 +86,20 @@ const ConnectedWalletInfo = ({
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <Icon name="Fingerprint" size={16} className="text-primary" />
-              <span className="text-sm font-medium text-foreground">Decentralized Identity</span>
+              <span className="text-sm font-medium text-foreground">{t('auth.connected.did')}</span>
             </div>
             <button
               onClick={() => copyToClipboard(did, setDidCopied)}
               className="flex items-center space-x-1 text-xs text-primary hover:text-primary/80 transition-clinical"
             >
               <Icon name={didCopied ? "Check" : "Copy"} size={12} />
-              <span>{didCopied ? 'Copied!' : 'Copy'}</span>
+              <span>{didCopied ? t('common.copied') || 'Copied!' : t('common.copy') || 'Copy'}</span>
             </button>
           </div>
 
           <div className="space-y-2">
             <p className="text-xs text-muted-foreground">
-              Your unique healthcare identity on the blockchain
+              {t('auth.connected.didDescription')}
             </p>
             <div className="p-2 rounded bg-background/50 border border-border/50">
               <span className="text-xs font-mono text-foreground break-all">{did}</span>
@@ -115,7 +117,7 @@ const ConnectedWalletInfo = ({
             iconName="ArrowRight"
             iconPosition="right"
           >
-            Access Health Dashboard
+            {t('auth.connected.goToDashboard')}
           </Button>
 
           <div className="flex space-x-3">
@@ -126,7 +128,7 @@ const ConnectedWalletInfo = ({
               iconName="Settings"
               iconPosition="left"
             >
-              Wallet Settings
+              {t('auth.connected.walletSettings')}
             </Button>
             <Button 
               variant="outline" 
@@ -136,7 +138,7 @@ const ConnectedWalletInfo = ({
               iconName="LogOut"
               iconPosition="left"
             >
-              Disconnect
+              {t('auth.connected.disconnect')}
             </Button>
           </div>
         </div>
@@ -146,10 +148,9 @@ const ConnectedWalletInfo = ({
           <div className="flex items-start space-x-2">
             <Icon name="Shield" size={16} className="text-clinical-green mt-0.5" />
             <div>
-              <h4 className="text-sm font-medium text-foreground mb-1">Secure Connection Established</h4>
+              <h4 className="text-sm font-medium text-foreground mb-1">{t('auth.connected.secureTitle')}</h4>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Your wallet connection is encrypted and secure. Your private keys never leave your device, 
-                and all health data access is logged immutably on the blockchain.
+                {t('auth.connected.secureBody')}
               </p>
             </div>
           </div>

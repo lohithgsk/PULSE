@@ -1,32 +1,34 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
+import { useI18n } from '../../../i18n/I18nProvider';
 
 const TrustIndicators = () => {
+  const { t } = useI18n();
   const certifications = [
     {
       name: 'HIPAA',
-      description: 'Health Insurance Portability and Accountability Act',
+      description: t('auth.trust.hipaa.desc'),
       icon: 'Shield',
       verified: true,
       color: 'clinical-green'
     },
     {
       name: 'SOC 2',
-      description: 'Service Organization Control 2 Type II',
+      description: t('auth.trust.soc2.desc'),
       icon: 'Lock',
       verified: true,
       color: 'primary'
     },
     {
       name: 'GDPR',
-      description: 'General Data Protection Regulation',
+      description: t('auth.trust.gdpr.desc'),
       icon: 'FileCheck',
       verified: true,
       color: 'clinical-green'
     },
     {
       name: 'ISO 27001',
-      description: 'Information Security Management',
+      description: t('auth.trust.iso.desc'),
       icon: 'Award',
       verified: true,
       color: 'primary'
@@ -35,18 +37,18 @@ const TrustIndicators = () => {
 
   const blockchainFeatures = [
     {
-      title: 'Immutable Records',
-      description: 'All access logs are permanently recorded on Ethereum blockchain',
+      title: t('auth.trust.immutable.title'),
+      description: t('auth.trust.immutable.desc'),
       icon: 'Database'
     },
     {
-      title: 'Zero-Knowledge Proofs',
-      description: 'Verify data integrity without exposing sensitive information',
+      title: t('auth.trust.zkp.title'),
+      description: t('auth.trust.zkp.desc'),
       icon: 'Eye'
     },
     {
-      title: 'Multi-Signature Security',
-      description: 'Critical operations require multiple confirmations',
+      title: t('auth.trust.multisig.title'),
+      description: t('auth.trust.multisig.desc'),
       icon: 'Users'
     }
   ];
@@ -55,7 +57,7 @@ const TrustIndicators = () => {
     <div className="space-y-6">
       {/* Healthcare Compliance */}
       <div>
-        <h3 className="text-sm font-medium text-foreground mb-4">Healthcare Compliance</h3>
+  <h3 className="text-sm font-medium text-foreground mb-4">{t('auth.trust.healthcareCompliance')}</h3>
         <div className="grid grid-cols-2 gap-3">
           {certifications?.map((cert, index) => (
             <div key={index} className="p-3 rounded-lg bg-card border border-border">
@@ -75,7 +77,7 @@ const TrustIndicators = () => {
       </div>
       {/* Blockchain Security */}
       <div>
-        <h3 className="text-sm font-medium text-foreground mb-4">Blockchain Security</h3>
+  <h3 className="text-sm font-medium text-foreground mb-4">{t('auth.trust.blockchainSecurity')}</h3>
         <div className="space-y-3">
           {blockchainFeatures?.map((feature, index) => (
             <div key={index} className="flex items-start space-x-3 p-3 rounded-lg bg-muted/30 border border-border/50">
@@ -94,31 +96,31 @@ const TrustIndicators = () => {
       <div className="p-4 rounded-lg bg-clinical-green/5 border border-clinical-green/20">
         <div className="flex items-center space-x-2 mb-3">
           <Icon name="TrendingUp" size={16} className="text-clinical-green" />
-          <span className="text-sm font-medium text-clinical-green">Security Statistics</span>
+          <span className="text-sm font-medium text-clinical-green">{t('auth.trust.securityStats')}</span>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
             <div className="text-lg font-semibold text-foreground">99.9%</div>
-            <div className="text-xs text-muted-foreground">Uptime</div>
+            <div className="text-xs text-muted-foreground">{t('auth.trust.uptime')}</div>
           </div>
           <div className="text-center">
             <div className="text-lg font-semibold text-foreground">256-bit</div>
-            <div className="text-xs text-muted-foreground">Encryption</div>
+            <div className="text-xs text-muted-foreground">{t('auth.trust.encryption')}</div>
           </div>
           <div className="text-center">
             <div className="text-lg font-semibold text-foreground">0</div>
-            <div className="text-xs text-muted-foreground">Data Breaches</div>
+            <div className="text-xs text-muted-foreground">{t('auth.trust.breaches')}</div>
           </div>
           <div className="text-center">
             <div className="text-lg font-semibold text-foreground">24/7</div>
-            <div className="text-xs text-muted-foreground">Monitoring</div>
+            <div className="text-xs text-muted-foreground">{t('auth.trust.monitoring')}</div>
           </div>
         </div>
       </div>
       {/* Trust Score */}
       <div className="p-4 rounded-lg bg-card border border-border">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-foreground">Trust Score</span>
+          <span className="text-sm font-medium text-foreground">{t('auth.trust.trustScore')}</span>
           <div className="flex items-center space-x-1">
             <Icon name="Star" size={14} className="text-clinical-amber fill-current" />
             <span className="text-sm font-semibold text-foreground">4.9/5</span>
@@ -128,7 +130,7 @@ const TrustIndicators = () => {
           <div className="bg-clinical-green h-2 rounded-full" style={{ width: '98%' }}></div>
         </div>
         <p className="text-xs text-muted-foreground">
-          Based on security audits, compliance certifications, and user feedback
+          {t('auth.trust.trustScoreDesc')}
         </p>
       </div>
     </div>

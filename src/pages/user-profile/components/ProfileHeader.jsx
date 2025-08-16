@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import { useSession } from '../../../context/SessionContext';
 import Button from '../../../components/ui/Button';
+import { useI18n } from '../../../i18n/I18nProvider';
 
 const ProfileHeader = () => {
   let session;
@@ -11,10 +12,11 @@ const ProfileHeader = () => {
     session = null;
   }
   const [isEditing, setIsEditing] = useState(false);
-  const [tempName, setTempName] = useState(session?.user?.name || 'Your Name');
+  const { t } = useI18n();
+  const [tempName, setTempName] = useState(session?.user?.name || t('profile.header.placeholderName') || 'Your Name');
   const [copied, setCopied] = useState(false);
   const name = tempName;
-  const summary = session?.user?.summary || 'Profile & settings.';
+  const summary = session?.user?.summary || (t('profile.header.summary') || 'Profile & settings.');
 
   const handleShare = async () => {
     try {
@@ -38,12 +40,12 @@ const ProfileHeader = () => {
                 onChange={(e) => setTempName(e.target.value)}
                 maxLength={48}
                 className="flex-1 max-w-xs md:max-w-sm px-3 py-2 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                aria-label="Edit name"
+                aria-label={t('profile.header.aria.editName') || 'Edit name'}
               />
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                aria-label="Save name"
+                aria-label={t('profile.header.aria.saveName') || 'Save name'}
                 className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors"
               >
                 <Icon name="Check" size={16} />
@@ -56,7 +58,7 @@ const ProfileHeader = () => {
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <Button variant="outline" size="sm" iconName={copied ? 'Check' : 'Share2'} onClick={handleShare}>
-            {copied ? 'Copied' : 'Share'}
+            {copied ? (t('common.copied') || 'Copied') : (t('common.share') || 'Share')}
           </Button>
           <Button
             variant={isEditing ? 'destructive' : 'default'}
@@ -64,7 +66,7 @@ const ProfileHeader = () => {
             iconName={isEditing ? 'X' : 'Edit3'}
             onClick={() => setIsEditing(v => !v)}
           >
-            {isEditing ? 'Cancel' : 'Edit'}
+            {isEditing ? (t('common.cancel') || 'Cancel') : (t('common.edit') || 'Edit')}
           </Button>
         </div>
       </div>

@@ -2,40 +2,42 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import { blockchainService } from '../../../utils/blockchainService';
+import { useI18n } from '../../../i18n/I18nProvider';
 
 const WalletSelector = ({ onWalletSelect, isConnecting, selectedWallet, error }) => {
   const [connectionError, setConnectionError] = useState(null);
+  const { t } = useI18n();
 
   const walletOptions = [
     {
       id: 'metamask',
-      name: 'MetaMask',
+  name: 'MetaMask',
       icon: 'Wallet',
-      description: 'Connect using MetaMask browser extension',
+  description: t('auth.wallet.metaMaskDesc'),
       available: typeof window?.ethereum !== 'undefined',
       recommended: true
     },
     {
       id: 'walletconnect',
-      name: 'WalletConnect',
+  name: 'WalletConnect',
       icon: 'Link',
-      description: 'Connect using WalletConnect protocol',
+  description: t('auth.wallet.walletConnectDesc'),
       available: true,
       recommended: false
     },
     {
       id: 'coinbase',
-      name: 'Coinbase Wallet',
+  name: 'Coinbase Wallet',
       icon: 'CreditCard',
-      description: 'Connect using Coinbase Wallet',
+  description: t('auth.wallet.coinbaseDesc'),
       available: true,
       recommended: false
     },
     {
       id: 'trust',
-      name: 'Trust Wallet',
+  name: 'Trust Wallet',
       icon: 'Shield',
-      description: 'Connect using Trust Wallet',
+  description: t('auth.wallet.trustDesc'),
       available: true,
       recommended: false
     }
@@ -61,9 +63,9 @@ const WalletSelector = ({ onWalletSelect, isConnecting, selectedWallet, error })
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Choose Your Wallet</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-2">{t('auth.chooseWallet')}</h3>
         <p className="text-sm text-muted-foreground">
-          Connect securely to access your decentralized health records
+          {t('auth.chooseWalletSubtitle')}
         </p>
       </div>
 
@@ -111,7 +113,7 @@ const WalletSelector = ({ onWalletSelect, isConnecting, selectedWallet, error })
                     <span className="font-medium">{wallet?.name}</span>
                     {wallet?.recommended && (
                       <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
-                        Recommended
+                        {t('auth.recommended')}
                       </span>
                     )}
                   </div>
@@ -122,9 +124,9 @@ const WalletSelector = ({ onWalletSelect, isConnecting, selectedWallet, error })
               </div>
               
               {!wallet?.available ? (
-                <span className="text-xs text-muted-foreground">Not Available</span>
+                <span className="text-xs text-muted-foreground">{t('auth.notAvailable')}</span>
               ) : isConnecting && selectedWallet === wallet?.id ? (
-                <span className="text-xs text-primary">Connecting...</span>
+                <span className="text-xs text-primary">{t('common.connecting')}</span>
               ) : (
                 <Icon name="ChevronRight" size={16} className="text-muted-foreground" />
               )}
@@ -136,9 +138,9 @@ const WalletSelector = ({ onWalletSelect, isConnecting, selectedWallet, error })
       {/* Installation Help */}
       {walletOptions?.some(wallet => !wallet?.available) && (
         <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-          <h4 className="text-sm font-medium text-foreground mb-2">Don't have MetaMask?</h4>
+          <h4 className="text-sm font-medium text-foreground mb-2">{t('auth.install.metaMaskTitle')}</h4>
           <p className="text-xs text-muted-foreground mb-3">
-            MetaMask is required to connect to the Ethereum blockchain and access your decentralized health records.
+            {t('auth.install.metaMaskBody')}
           </p>
           <Button
             variant="outline"
@@ -147,7 +149,7 @@ const WalletSelector = ({ onWalletSelect, isConnecting, selectedWallet, error })
             iconPosition="right"
             onClick={() => window.open('https://metamask.io/download/', '_blank')}
           >
-            Install MetaMask
+            {t('auth.install.installMetaMask')}
           </Button>
         </div>
       )}
@@ -157,10 +159,9 @@ const WalletSelector = ({ onWalletSelect, isConnecting, selectedWallet, error })
         <div className="flex items-start space-x-2">
           <Icon name="Shield" size={16} className="text-clinical-green mt-0.5" />
           <div>
-            <h4 className="text-sm font-medium text-clinical-green mb-1">Secure Connection</h4>
+            <h4 className="text-sm font-medium text-clinical-green mb-1">{t('auth.security.title')}</h4>
             <p className="text-xs text-clinical-green/80">
-              Your wallet connection is secured with end-to-end encryption. 
-              PULSE never stores your private keys or personal wallet information.
+              {t('auth.security.body')}
             </p>
           </div>
         </div>

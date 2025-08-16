@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
+import { useI18n } from '../../../i18n/I18nProvider';
 
 const NetworkStatus = ({ currentNetwork = 'Sepolia', networkStatus = 'connected', blockHeight = 4521890 }) => {
   const getNetworkColor = (network) => {
@@ -28,16 +29,17 @@ const NetworkStatus = ({ currentNetwork = 'Sepolia', networkStatus = 'connected'
     }
   };
 
+  const { t } = useI18n();
   const getStatusText = (status) => {
     switch (status) {
       case 'connected':
-        return 'Connected';
+        return t('common.connected') || 'Connected';
       case 'connecting':
-        return 'Connecting...';
+        return t('common.connecting');
       case 'disconnected':
-        return 'Disconnected';
+        return t('common.disconnected') || 'Disconnected';
       default:
-        return 'Unknown';
+        return t('common.unknown') || 'Unknown';
     }
   };
 
@@ -47,7 +49,7 @@ const NetworkStatus = ({ currentNetwork = 'Sepolia', networkStatus = 'connected'
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
             <Icon name="Globe" size={16} className="text-muted-foreground" />
-            <span className="text-sm font-medium text-foreground">Network Status</span>
+            <span className="text-sm font-medium text-foreground">{t('auth.network.status')}</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full ${getStatusColor(networkStatus)}`} />
@@ -57,21 +59,21 @@ const NetworkStatus = ({ currentNetwork = 'Sepolia', networkStatus = 'connected'
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Current Network</span>
+            <span className="text-sm text-muted-foreground">{t('auth.network.current')}</span>
             <span className={`text-sm font-medium ${getNetworkColor(currentNetwork)}`}>
               {currentNetwork}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Block Height</span>
+            <span className="text-sm text-muted-foreground">{t('auth.network.blockHeight')}</span>
             <span className="text-sm font-mono text-foreground">
               #{blockHeight?.toLocaleString()}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Gas Price</span>
+            <span className="text-sm text-muted-foreground">{t('auth.network.gasPrice')}</span>
             <span className="text-sm font-mono text-foreground">12 gwei</span>
           </div>
         </div>
@@ -80,10 +82,10 @@ const NetworkStatus = ({ currentNetwork = 'Sepolia', networkStatus = 'connected'
           <div className="mt-3 p-3 rounded-lg bg-clinical-amber/10 border border-clinical-amber/20">
             <div className="flex items-center space-x-2">
               <Icon name="AlertTriangle" size={14} className="text-clinical-amber" />
-              <span className="text-xs font-medium text-clinical-amber">Testnet Environment</span>
+              <span className="text-xs font-medium text-clinical-amber">{t('auth.network.testnet')}</span>
             </div>
             <p className="text-xs text-clinical-amber/80 mt-1">
-              You're connected to Sepolia testnet. No real ETH will be used for transactions.
+              {t('auth.network.testnetBody')}
             </p>
           </div>
         )}
@@ -91,19 +93,19 @@ const NetworkStatus = ({ currentNetwork = 'Sepolia', networkStatus = 'connected'
       <div className="p-4 rounded-lg bg-muted/30 border border-border">
         <div className="flex items-center space-x-2 mb-2">
           <Icon name="Zap" size={16} className="text-primary" />
-          <span className="text-sm font-medium text-foreground">Transaction Fees</span>
+          <span className="text-sm font-medium text-foreground">{t('auth.network.fees')}</span>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Record Access</span>
+            <span className="text-xs text-muted-foreground">{t('auth.network.feeRecordAccess')}</span>
             <span className="text-xs font-mono text-foreground">~$0.02</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Consent Update</span>
+            <span className="text-xs text-muted-foreground">{t('auth.network.feeConsentUpdate')}</span>
             <span className="text-xs font-mono text-foreground">~$0.05</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Emergency Access</span>
+            <span className="text-xs text-muted-foreground">{t('auth.network.feeEmergency')}</span>
             <span className="text-xs font-mono text-clinical-green">Free</span>
           </div>
         </div>

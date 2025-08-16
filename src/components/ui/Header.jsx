@@ -13,6 +13,7 @@ import { useSession } from '../../context/SessionContext';
 import { blockchainService } from '../../utils/blockchainService';
 import { connectWithWalletConnect, disconnectWalletConnect } from '../../utils/walletConnectService';
 import { useToast } from './ToastProvider';
+import { useI18n } from '../../i18n/I18nProvider';
 
 const Header = ({
   walletConnected: walletConnectedProp = undefined,
@@ -23,6 +24,7 @@ const Header = ({
   onEmergencyActivate,
 }) => {
   const location = useLocation();
+  const { t } = (() => { try { return useI18n(); } catch { return { t: (k, v) => typeof k === 'string' ? k.replace('{network}', v?.network ?? '') : k }; } })();
 
   // Safe optional hooks
   const session = (() => { try { return useSession(); } catch { return null; } })();
@@ -56,12 +58,12 @@ const Header = ({
 
   // Nav model (add all visible items; Profile included)
   const navigationItems = useMemo(() => ([
-    { label: 'Dashboard', path: '/health-dashboard-overview', icon: 'Activity', tooltip: 'Health overview and recent activity' },
-    { label: 'My Records', path: '/medical-records-management', icon: 'FileText', tooltip: 'Complete medical history management' },
-    { label: 'AI Assistant', path: '/ai-health-assistant-analysis', icon: 'Brain', tooltip: 'Interactive health insights and medical Q&A' },
-    { label: 'Access Control', path: '/consent-access-management', icon: 'Shield', tooltip: 'Consent management and emergency access' },
-    { label: 'Profile', path: '/profile', icon: 'User', tooltip: 'View and manage your profile' },
-  ]), []);
+    { label: t('nav.dashboard'), path: '/health-dashboard-overview', icon: 'Activity', tooltip: t('nav.dashboardTip') },
+    { label: t('nav.records'), path: '/medical-records-management', icon: 'FileText', tooltip: t('nav.recordsTip') },
+    { label: t('nav.aiAssistant'), path: '/ai-health-assistant-analysis', icon: 'Brain', tooltip: t('nav.aiAssistantTip') },
+    { label: t('nav.accessControl'), path: '/consent-access-management', icon: 'Shield', tooltip: t('nav.accessControlTip') },
+    { label: t('nav.profile'), path: '/profile', icon: 'User', tooltip: t('nav.profileTip') },
+  ]), [t]);
 
   // Active path logic (Access Control groups emergency contacts as active)
   const isActivePath = (path) => {
@@ -200,11 +202,11 @@ const Header = ({
   // Subcomponents (kept inline for a single file, but now clearly separated)
 
   const Brand = () => (
-    <Link to="/health-dashboard-overview" className="flex items-center gap-3" aria-label="PULSE Home">
+  <Link to="/health-dashboard-overview" className="flex items-center gap-3" aria-label={t('header.homeAriaLabel')}>
       <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
         <Icon name="Heart" size={20} className="text-primary-foreground" />
       </div>
-      <span className="text-xl font-semibold text-foreground">PULSE</span>
+  <span className="text-xl font-semibold text-foreground">PULSE</span>
     </Link>
   );
 
@@ -236,12 +238,12 @@ const Header = ({
     emergencyConfigured ? (
       <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-clinical-amber/10 border border-clinical-amber/20">
         <Icon name="AlertTriangle" size={16} className="text-clinical-amber" />
-        <span className="text-sm font-medium text-clinical-amber">Emergency Access Active</span>
+        <span className="text-sm font-medium text-clinical-amber">{t('header.emergencyActive')}</span>
         <button
           onClick={onEmergencyActivate}
           className="text-xs text-clinical-amber hover:text-clinical-amber/80 transition-clinical"
         >
-          Manage
+          {t('header.manage')}
         </button>
       </div>
     ) : null
@@ -258,7 +260,7 @@ const Header = ({
       >
         <span className={`w-2 h-2 rounded-full ${walletConnected ? 'bg-clinical-green' : 'bg-clinical-red'}`} />
         <span className="text-sm font-medium text-foreground hidden sm:inline">
-          {walletConnected ? `Connected (${currentNetwork || 'Unknown'})` : 'Not Connected'}
+          {walletConnected ? t('header.connectedWithNetwork', { network: currentNetwork || 'Unknown' }) : t('header.notConnected')}
         </span>
         <Icon name="ChevronDown" size={16} className="text-muted-foreground" />
       </button>
@@ -271,26 +273,26 @@ const Header = ({
         >
           <div className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-popover-foreground">Wallet Status</span>
+              <span className="text-sm font-medium text-popover-foreground">{t('header.walletStatus')}</span>
               <span className={`w-2 h-2 rounded-full ${walletConnected ? 'bg-clinical-green' : 'bg-clinical-red'}`} />
             </div>
 
             {walletConnected ? (
               <div className="space-y-3">
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">Network</p>
+                  <p className="text-xs text-muted-foreground mb-1">{t('header.network')}</p>
                   <p className="text-sm font-mono text-foreground">{currentNetwork || 'Unknown'}</p>
                 </div>
 
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">Address</p>
+      <p className="text-xs text-muted-foreground mb-1">{t('header.address')}</p>
                   <div className="flex items-center justify-between gap-2">
                     <p title={address || ''} className="text-sm font-mono text-foreground truncate max-w-[180px]">{shortAddress}</p>
                     {address && (
                       <button
-                        onClick={() => copyToClipboard(address, 'Address copied')}
+        onClick={() => copyToClipboard(address, t('header.addressCopied'))}
                         className="text-xs text-muted-foreground hover:text-foreground"
-                        title="Copy address"
+                        title={t('header.address')}
                       >
                         <Icon name="Copy" size={14} />
                       </button>
@@ -300,13 +302,13 @@ const Header = ({
 
                 {did && (
                   <div>
-                    <p className="text-xs text-muted-foreground mb-1">DID</p>
+          <p className="text-xs text-muted-foreground mb-1">{t('header.did')}</p>
                     <div className="flex items-center justify-between gap-2">
                       <p title={did} className="text-xs font-mono text-foreground truncate max-w-[180px]">{did}</p>
                       <button
-                        onClick={() => copyToClipboard(did, 'DID copied')}
+            onClick={() => copyToClipboard(did, t('header.didCopied'))}
                         className="text-xs text-muted-foreground hover:text-foreground"
-                        title="Copy DID"
+                        title={t('header.did')}
                       >
                         <Icon name="Copy" size={14} />
                       </button>
@@ -316,38 +318,38 @@ const Header = ({
 
                 {balance != null && (
                   <div>
-                    <p className="text-xs text-muted-foreground mb-1">Balance</p>
+          <p className="text-xs text-muted-foreground mb-1">{t('header.balance')}</p>
                     <p className="text-sm font-mono text-foreground">{balance} ETH</p>
                   </div>
                 )}
 
                 <div className="pt-2 border-t border-border space-y-2">
                   <Button variant="outline" size="sm" onClick={handleNetworkSwitch} className="w-full">
-                    Switch Network
+                    {t('header.switchNetwork')}
                   </Button>
                   <Button variant="destructive" size="sm" onClick={handleLogout} className="w-full">
-                    Logout
+                    {t('header.logout')}
                   </Button>
                 </div>
               </div>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm text-muted-foreground">Connect your wallet to access PULSE</p>
+                <p className="text-sm text-muted-foreground">{t('header.connectYourWallet')}</p>
                 {isWalletConnecting ? (
                   <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm" onClick={handleCancelConnect} className="w-full">
-                      Cancel
+                      {t('common.cancel')}
                     </Button>
                     <Button variant="default" size="sm" disabled className="w-full">
                       <span className="inline-flex items-center gap-2">
                         <Icon name="Loader2" size={16} className="animate-spin" />
-                        Connecting...
+                        {t('common.connecting')}
                       </span>
                     </Button>
                   </div>
                 ) : (
                   <Button variant="default" size="sm" onClick={handleWalletConnect} className="w-full">
-                    Connect Wallet
+                    {t('header.connectWallet')}
                   </Button>
                 )}
               </div>
@@ -446,7 +448,7 @@ const Header = ({
             {/* Mobile hamburger */}
             <button
               onClick={() => setNavOpen(v => !v)}
-              aria-label={navOpen ? 'Close navigation' : 'Open navigation'}
+              aria-label={navOpen ? t('common.closeNavigation') : t('common.openNavigation')}
               aria-expanded={navOpen}
               aria-controls="mobile-menu"
               className="md:hidden relative w-11 h-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black z-50"

@@ -5,6 +5,7 @@ import ContactInfoPanel from './components/ContactInfoPanel';
 import SettingsPanel from './components/SettingsPanel';
 import Button from '../../components/ui/Button';
 import Icon from '../../components/AppIcon';
+import { useI18n } from '../../i18n/I18nProvider';
 
 // Note: AppLayout is already applied by the protected route wrapper in Routes.jsx
 // so this page should only return the inner content.
@@ -12,6 +13,7 @@ import Icon from '../../components/AppIcon';
 const UserProfilePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useI18n();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -27,9 +29,9 @@ const UserProfilePage = () => {
         <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mb-4">
           <Icon name="AlertTriangle" size={28} className="text-destructive" />
         </div>
-        <h1 className="text-xl font-semibold text-foreground mb-2">Profile Unavailable</h1>
-        <p className="text-sm text-muted-foreground mb-6 max-w-sm">{error || 'We could not load your profile right now.'}</p>
-        <Button onClick={() => { setIsLoading(true); setError(null); setTimeout(()=> setIsLoading(false), 600); }} iconName="RefreshCw" iconPosition="left">Retry</Button>
+  <h1 className="text-xl font-semibold text-foreground mb-2">{t('profile.error.title') || 'Profile Unavailable'}</h1>
+  <p className="text-sm text-muted-foreground mb-6 max-w-sm">{error || (t('profile.error.body') || 'We could not load your profile right now.')}</p>
+  <Button onClick={() => { setIsLoading(true); setError(null); setTimeout(()=> setIsLoading(false), 600); }} iconName="RefreshCw" iconPosition="left">{t('common.retry') || 'Retry'}</Button>
       </div>
     );
   }

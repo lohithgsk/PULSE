@@ -1,40 +1,43 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
+import { useI18n } from '../../../i18n/I18nProvider';
 
 const SecurityFeatures = () => {
+  const { t } = useI18n();
+
   const features = [
     {
       icon: 'Shield',
-      title: 'End-to-End Encryption',
-      description: 'Your medical data is encrypted and only accessible with your private keys',
-      highlight: 'AES-256 encryption'
+      title: t('auth.features.e2ee.title'),
+      description: t('auth.features.e2ee.desc'),
+      highlight: t('auth.features.e2ee.highlight')
     },
     {
       icon: 'Lock',
-      title: 'Blockchain Security',
-      description: 'Immutable audit trails ensure your data integrity and access history',
-      highlight: 'Ethereum-secured'
+      title: t('auth.features.blockchain.title'),
+      description: t('auth.features.blockchain.desc'),
+      highlight: t('auth.features.blockchain.highlight')
     },
     {
       icon: 'Eye',
-      title: 'Full Transparency',
-      description: 'You control who can access your data and can revoke permissions anytime',
-      highlight: 'Complete control'
+      title: t('auth.features.transparency.title'),
+      description: t('auth.features.transparency.desc'),
+      highlight: t('auth.features.transparency.highlight')
     },
     {
       icon: 'FileCheck',
-      title: 'HIPAA Compliant',
-      description: 'Built with healthcare privacy regulations and compliance standards',
-      highlight: 'Healthcare grade'
+      title: t('auth.features.hipaa.title'),
+      description: t('auth.features.hipaa.desc'),
+      highlight: t('auth.features.hipaa.highlight')
     }
   ];
 
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Your data is protected</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-2">{t('auth.features.headerTitle')}</h3>
         <p className="text-sm text-muted-foreground">
-          PULSE uses cutting-edge security to protect your health information
+          {t('auth.features.headerSubtitle')}
         </p>
       </div>
       <div className="space-y-3">
@@ -58,10 +61,10 @@ const SecurityFeatures = () => {
       <div className="mt-6 p-4 rounded-lg bg-clinical-green/5 border border-clinical-green/20">
         <div className="flex items-center space-x-2 mb-2">
           <Icon name="CheckCircle" size={16} className="text-clinical-green" />
-          <span className="text-sm font-medium text-clinical-green">Healthcare Certified</span>
+          <span className="text-sm font-medium text-clinical-green">{t('auth.features.healthcareCertified')}</span>
         </div>
         <p className="text-xs text-clinical-green/80">
-          PULSE meets all major healthcare compliance standards including HIPAA, GDPR, and SOC 2 Type II.
+          {t('auth.features.healthcareCertifiedBody')}
         </p>
       </div>
     </div>

@@ -7,8 +7,10 @@ import AnalysisHistory from './components/AnalysisHistory';
 import ProcessingIndicator from './components/ProcessingIndicator';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
+import { useI18n } from '../../i18n/I18nProvider';
 
 const AIHealthAssistantAnalysis = () => {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState('chat');
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStage, setProcessingStage] = useState('analyzing');
@@ -243,17 +245,17 @@ const AIHealthAssistantAnalysis = () => {
   // Emergency banner/actions are handled in their dedicated pages
 
   const tabs = [
-    { id: 'chat', label: 'AI Assistant', icon: 'MessageCircle' },
-    { id: 'summaries', label: 'Health Summaries', icon: 'FileText' },
-    { id: 'permissions', label: 'AI Permissions', icon: 'Shield' },
-    { id: 'history', label: 'Analysis History', icon: 'History' }
+    { id: 'chat', label: t('ai.tabs.chat'), icon: 'MessageCircle' },
+    { id: 'summaries', label: t('ai.tabs.summaries'), icon: 'FileText' },
+    { id: 'permissions', label: t('ai.tabs.permissions'), icon: 'Shield' },
+    { id: 'history', label: t('ai.tabs.history'), icon: 'History' }
   ];
 
   return (
     <>
       <Helmet>
-        <title>AI Health Assistant & Analysis - PULSE</title>
-        <meta name="description" content="AI-powered medical insights and interactive health consultations with complete transparency about data usage" />
+  <title>{t('ai.seo.title') || 'AI Health Assistant & Analysis - PULSE'}</title>
+  <meta name="description" content={t('ai.seo.description') || 'AI-powered medical insights and interactive health consultations with complete transparency about data usage'} />
       </Helmet>
   <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
           <div className="max-w-7xl mx-auto">
@@ -264,9 +266,9 @@ const AIHealthAssistantAnalysis = () => {
                   <Icon name="Brain" size={24} className="text-primary" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-semibold text-foreground">AI Health Assistant</h1>
+                  <h1 className="text-2xl font-semibold text-foreground">{t('ai.header.title')}</h1>
                   <p className="text-muted-foreground">
-                    Get AI-powered insights from your medical data with complete transparency
+                    {t('ai.header.subtitle')}
                   </p>
                 </div>
               </div>
@@ -275,15 +277,15 @@ const AIHealthAssistantAnalysis = () => {
               <div className="flex items-center space-x-4 text-sm">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-clinical-green rounded-full" />
-                  <span className="text-muted-foreground">AI Assistant Active</span>
+                  <span className="text-muted-foreground">{t('ai.status.active')}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Icon name="Shield" size={14} className="text-clinical-green" />
-                  <span className="text-muted-foreground">End-to-End Encrypted</span>
+                  <span className="text-muted-foreground">{t('ai.status.encrypted')}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Icon name="Database" size={14} className="text-primary" />
-                  <span className="text-muted-foreground">IPFS Stored</span>
+                  <span className="text-muted-foreground">{t('ai.status.ipfs')}</span>
                 </div>
               </div>
             </div>
