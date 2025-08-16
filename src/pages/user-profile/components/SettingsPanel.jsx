@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Checkbox } from '../../../components/ui/Checkbox';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
@@ -6,16 +6,26 @@ import { useToast } from '../../../components/ui/ToastProvider';
 
 const SettingsPanel = () => {
   const toast = useToast?.() ?? { success(){}, error(){}, info(){}, warning(){}, show(){}, hide(){} };
-  const [notifications, setNotifications] = useState({
-    email: true,
-    sms: false,
-    product: true,
+  const [notifications, setNotifications] = useState(() => {
+    try {
+      const raw = localStorage.getItem('pulse.profile.notifications');
+      return raw ? JSON.parse(raw) : { email: true, sms: false, product: true };
+    } catch { return { email: true, sms: false, product: true }; }
   });
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState(() => localStorage.getItem('pulse.profile.lang') || 'en');
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    try { localStorage.setItem('pulse.profile.notifications', JSON.stringify(notifications)); } catch {}
+  }, [notifications]);
+  useEffect(() => {
+    try { localStorage.setItem('pulse.profile.lang', language); } catch {}
+  }, [language]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.success('Settings updated');
+    setSaving(true);
+    setTimeout(() => { setSaving(false); toast.success('Settings saved'); }, 600);
   };
 
   return (
@@ -60,8 +70,8 @@ const SettingsPanel = () => {
         </div>
 
         <div className="flex items-center justify-end gap-2">
-          <Button variant="outline" type="button">Cancel</Button>
-          <Button type="submit">Save Settings</Button>
+          <Button variant="outline" type="button" onClick={() => { setNotifications({ email: true, sms: false, product: true }); setLanguage('en'); }}>Reset</Button>
+          <Button type="submit" disabled={saving} iconName={saving ? 'Loader2' : undefined} className={saving ? 'opacity-90' : ''}>{saving ? 'Saving...' : 'Save'}</Button>
         </div>
       </form>
     </section>

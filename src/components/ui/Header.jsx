@@ -30,6 +30,13 @@ const Header = ({
 
   // Connection state
   const [navOpen, setNavOpen] = useState(false); // mobile
+  // Close mobile nav automatically on route change (ensures state stays in sync)
+  useEffect(() => {
+    setNavOpen(false);
+  }, [location?.pathname]);
+
+  // Feature flag: off-canvas vs inline fallback (inline is more bulletproof if styling issues occur)
+  const useOffCanvas = false; // set true to re-enable drawer version
   const [walletOpen, setWalletOpen] = useState(false);
   const [isWalletConnecting, setIsWalletConnecting] = useState(false);
 
@@ -180,6 +187,16 @@ const Header = ({
     };
   }, [walletOpen, navOpen]);
 
+  // Lock body scroll when mobile nav is open
+  useEffect(() => {
+    if (navOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = prev; };
+    }
+    return undefined;
+  }, [navOpen]);
+
   // Subcomponents (kept inline for a single file, but now clearly separated)
 
   const Brand = () => (
@@ -203,7 +220,7 @@ const Header = ({
             className={[
               'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-clinical',
               active
-                ? 'bg-primary bg-opacity-80 backdrop-blur-md text-primary-foreground'
+                ? 'text-black dark:text-foreground font-semibold border border-border bg-transparent'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted',
             ].join(' ')}
           >
@@ -341,64 +358,52 @@ const Header = ({
     </div>
   );
 
-  const MobileMenu = () => (
-    navOpen ? (
-      <div
-        ref={mobileMenuRef}
-        className="md:hidden py-3 border-t border-border bg-background/95 backdrop-blur-sm rounded-b-xl"
-      >
-        {/* Wallet quick actions on mobile */}
-        <div className="px-3 sm:px-4 pb-3">
-          <div className="bg-card border border-border rounded-lg p-3">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-foreground">Wallet</span>
-              <span className={`w-2 h-2 rounded-full ${walletConnected ? 'bg-clinical-green' : 'bg-clinical-red'}`} />
+  const MobileMenu = () => {
+    if (!navOpen) return null;
+    if (useOffCanvas) {
+      // (Off-canvas retained but currently disabled by flag)
+      return (
+        <div className="fixed inset-0 z-[1600] flex md:hidden">
+          <button aria-hidden onClick={() => setNavOpen(false)} className="absolute inset-0 bg-black/40 backdrop-blur-sm z-[1550]" />
+          <aside
+            ref={mobileMenuRef}
+            role="dialog"
+            aria-modal="true"
+            className="relative w-80 max-w-full bg-background border-r border-border shadow-lg p-4 overflow-y-auto z-[1601]"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <Brand />
+              <button onClick={() => setNavOpen(false)} className="p-2 rounded-md text-muted-foreground hover:text-foreground">
+                <Icon name="X" size={18} />
+              </button>
             </div>
-            {walletConnected ? (
-              <div className="space-y-2">
-                <div className="text-xs text-muted-foreground">Network</div>
-                <div className="text-sm font-mono text-foreground">{currentNetwork || 'Unknown'}</div>
-                <div className="text-xs text-muted-foreground mt-2">Address</div>
-                <div className="flex items-center justify-between gap-2">
-                  <div className="text-sm font-mono text-foreground truncate max-w-[200px]">{shortAddress}</div>
-                  {address && (
-                    <button
-                      onClick={() => copyToClipboard(address, 'Address copied')}
-                      className="text-xs text-muted-foreground hover:text-foreground"
-                      title="Copy address"
-                    >
-                      <Icon name="Copy" size={14} />
-                    </button>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 gap-2 pt-2">
-                  <Button variant="outline" size="sm" onClick={handleNetworkSwitch}>Network</Button>
-                  <Button variant="destructive" size="sm" onClick={handleLogout}>Logout</Button>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Connect your wallet to access PULSE</p>
-                {isWalletConnecting ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button variant="outline" size="sm" onClick={handleCancelConnect}>Cancel</Button>
-                    <Button variant="default" size="sm" disabled>
-                      <span className="inline-flex items-center gap-2">
-                        <Icon name="Loader2" size={16} className="animate-spin" />
-                        Connecting...
-                      </span>
-                    </Button>
-                  </div>
-                ) : (
-                  <Button variant="default" size="sm" onClick={handleWalletConnect} className="w-full">Connect Wallet</Button>
-                )}
-              </div>
-            )}
-          </div>
+            <nav className="space-y-2" aria-label="Mobile primary navigation">
+              {navigationItems.map((item) => {
+                const active = isActivePath(item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setNavOpen(false)}
+                    className={[
+                      'flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-clinical w-full',
+                      active ? 'text-black dark:text-foreground font-semibold border border-border bg-transparent' : 'text-muted-foreground hover:text-foreground hover:bg-muted',
+                    ].join(' ')}
+                  >
+                    <Icon name={item.icon} size={16} />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+          </aside>
         </div>
-
-        {/* Navigation links */}
-        <nav className="space-y-2 px-2 max-h-[75vh] overflow-y-auto" aria-label="Mobile">
+      );
+    }
+    // Inline fallback menu under header (simple & reliable)
+    return (
+      <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm">
+        <nav className="space-y-1 px-3 py-3" aria-label="Mobile navigation">
           {navigationItems.map((item) => {
             const active = isActivePath(item.path);
             return (
@@ -407,10 +412,8 @@ const Header = ({
                 to={item.path}
                 onClick={() => setNavOpen(false)}
                 className={[
-                  'flex items-center gap-3 px-3 sm:px-4 py-3 rounded-lg text-sm font-medium transition-clinical',
-                  active
-                    ? 'bg-primary/80 backdrop-blur-md text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted',
+                  'flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-clinical',
+                  active ? 'text-black dark:text-foreground font-semibold border border-border bg-transparent' : 'text-muted-foreground hover:text-foreground hover:bg-muted',
                 ].join(' ')}
               >
                 <Icon name={item.icon} size={16} />
@@ -420,8 +423,8 @@ const Header = ({
           })}
         </nav>
       </div>
-    ) : null
-  );
+    );
+  };
 
   return (
     <header className="sticky top-0 z-header bg-background/95 backdrop-blur-sm border-b border-border safe-t">
@@ -440,13 +443,22 @@ const Header = ({
 
             {/* Mobile hamburger */}
             <button
-              onClick={() => setNavOpen((v) => !v)}
-              aria-label="Toggle menu"
+              onClick={() => setNavOpen(v => !v)}
+              aria-label={navOpen ? 'Close navigation' : 'Open navigation'}
               aria-expanded={navOpen}
               aria-controls="mobile-menu"
-              className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-clinical"
+              className="md:hidden relative w-11 h-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black z-50"
             >
-              <Icon name={navOpen ? 'X' : 'Menu'} size={20} />
+              {/* Hamburger / Close icon constructed with spans */}
+              <span
+                className={`absolute left-1/2 top-[30%] -translate-x-1/2 h-0.5 w-7 rounded bg-black transition-all duration-300 ${navOpen ? 'translate-y-2 rotate-45' : ''}`}
+              />
+              <span
+                className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-0.5 w-7 rounded bg-black transition-all duration-300 ${navOpen ? 'opacity-0' : 'opacity-100'}`}
+              />
+              <span
+                className={`absolute left-1/2 bottom-[30%] -translate-x-1/2 h-0.5 w-7 rounded bg-black transition-all duration-300 ${navOpen ? '-translate-y-2 -rotate-45' : ''}`}
+              />
             </button>
           </div>
         </div>

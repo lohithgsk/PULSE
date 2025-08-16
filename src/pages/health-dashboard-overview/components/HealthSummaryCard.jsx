@@ -31,16 +31,31 @@ const HealthSummaryCard = ({ healthSummary, onRefresh, isRefreshing = false }) =
             )}
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onRefresh}
-          loading={isRefreshing}
-          iconName="RefreshCw"
-          iconPosition="left"
-        >
-          Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          {/* Mobile: icon-only circular button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onRefresh}
+            loading={isRefreshing}
+            iconName="RefreshCw"
+            className="sm:hidden h-10 w-10 p-0 rounded-full"
+            aria-label={isRefreshing ? 'Refreshing' : 'Refresh summary'}
+          />
+
+          {/* Desktop: compact labeled button */}
+          <Button
+            variant="ghost"
+            size="xs"
+            onClick={onRefresh}
+            loading={isRefreshing}
+            iconName="RefreshCw"
+            iconPosition="left"
+            className="hidden sm:inline-flex h-8 px-2 max-w-[96px]"
+          >
+            Refresh
+          </Button>
+        </div>
       </div>
       {/* Content */}
       <div className="p-4 sm:p-6">
