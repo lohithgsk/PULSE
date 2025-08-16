@@ -436,6 +436,8 @@ const Header = ({
           {/* Right: Emergency + Wallet + Mobile toggle */}
           <div className="flex items-center gap-2 sm:gap-3">
             <EmergencyIndicator />
+            {/* Notifications */}
+            
             <WalletControl />
 
             {/* Mobile hamburger */}
