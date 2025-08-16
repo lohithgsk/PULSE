@@ -83,7 +83,7 @@ const RecentActivityFeed = ({ activities, onViewAll, isLoading = false }) => {
   return (
     <div className="bg-card rounded-lg border border-border shadow-medical-card">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-border">
+  <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border">
         <div className="flex items-center space-x-3">
           <div className="flex items-center justify-center w-10 h-10 bg-secondary/10 rounded-lg">
             <Icon name="Activity" size={20} className="text-secondary" />
@@ -104,9 +104,9 @@ const RecentActivityFeed = ({ activities, onViewAll, isLoading = false }) => {
         </Button>
       </div>
       {/* Activity List */}
-      <div className="divide-y divide-border">
+    <div className="divide-y divide-border">
         {isLoading ? (
-          <div className="p-6 space-y-4">
+      <div className="p-4 sm:p-6 space-y-4">
             {Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="flex items-start space-x-4">
                 <Skeleton className="w-10 h-10 rounded-lg" />
@@ -119,7 +119,7 @@ const RecentActivityFeed = ({ activities, onViewAll, isLoading = false }) => {
             ))}
           </div>
         ) : activities?.length === 0 ? (
-          <div className="p-8 text-center">
+      <div className="p-6 sm:p-8 text-center">
             <div className="flex items-center justify-center w-16 h-16 bg-muted/50 rounded-lg mx-auto mb-4">
               <Icon name="Activity" size={24} className="text-muted-foreground" />
             </div>

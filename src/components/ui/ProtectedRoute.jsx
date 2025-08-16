@@ -42,7 +42,7 @@ const ProtectedRoute = ({ children }) => {
             timeoutId = setTimeout(() => {
               toast.error('WalletConnect connection timed out.');
               reject(new Error('WalletConnect cancelled or timed out.'));
-            }, 30000);
+            }, 300000);
           });
 
           const info = await Promise.race([connectPromise, timeoutPromise]);

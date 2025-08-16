@@ -173,7 +173,7 @@ const WalletConnectionAuthentication = () => {
   <div className="min-h-screen bg-[var(--color-bg)]">
       {/* Header */}
   <div className="sticky top-0 z-10 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-border)]">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
               <div className="flex items-center justify-center w-8 h-8 bg-[var(--color-primary)] rounded-lg">
@@ -200,10 +200,10 @@ const WalletConnectionAuthentication = () => {
           </div>
         </div>
       </div>
-      <div className="flex-1 flex">
+  <div className="flex-1 flex">
         {/* Main Content */}
         <div className="flex-1 flex items-center justify-center p-4 lg:p-8">
-          <div className="w-full max-w-md lg:max-w-lg">
+          <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg">
             {connectionState === 'connected' ? (
               <ConnectedWalletInfo
                 walletAddress={walletInfo?.address}

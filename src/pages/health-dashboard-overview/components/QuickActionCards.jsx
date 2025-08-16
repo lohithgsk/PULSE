@@ -79,10 +79,10 @@ const QuickActionCards = ({ onEmergencyAccess, isLoading = false }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
       {isLoading
         ? Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="p-6 rounded-lg border border-border bg-muted/50">
+      <div key={i} className="p-4 sm:p-6 rounded-lg border border-border bg-muted/50">
               <div className="flex items-center justify-between mb-4">
                 <Skeleton className="h-12 w-12" />
                 <Skeleton className="h-4 w-6" />

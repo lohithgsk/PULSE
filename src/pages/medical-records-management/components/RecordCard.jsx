@@ -70,7 +70,7 @@ const RecordCard = ({
       isSelected ? 'ring-2 ring-primary' : ''
     }`}>
       {/* Header */}
-      <div className="flex items-start justify-between mb-3">
+  <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex items-start space-x-3 flex-1">
           {/* Selection Checkbox */}
           <button
@@ -110,7 +110,7 @@ const RecordCard = ({
                 </div>
               )}
             </div>
-            <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
               <span>{formatDate(record?.date)}</span>
               <span>{record?.provider}</span>
               <div className="flex items-center space-x-1">
@@ -165,8 +165,8 @@ const RecordCard = ({
           )}
 
           {/* Actions */}
-          <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-between pt-2 gap-2">
+            <div className="flex items-center flex-wrap gap-2">
               <Button
                 variant="outline"
                 size="sm"

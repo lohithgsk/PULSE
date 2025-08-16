@@ -17,7 +17,7 @@ const HealthSummaryCard = ({ healthSummary, onRefresh, isRefreshing = false }) =
   return (
     <div className="bg-card rounded-lg border border-border shadow-medical-card">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-border">
+      <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border">
         <div className="flex items-center space-x-3">
           <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
             <Icon name="Brain" size={20} className="text-primary" />
@@ -43,7 +43,7 @@ const HealthSummaryCard = ({ healthSummary, onRefresh, isRefreshing = false }) =
         </Button>
       </div>
       {/* Content */}
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         {/* Risk Level Indicator */}
         {isRefreshing ? (
           <Skeleton className="h-9 w-52 mb-4" />
@@ -90,13 +90,13 @@ const HealthSummaryCard = ({ healthSummary, onRefresh, isRefreshing = false }) =
         )}
 
         {/* Health Metrics */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           {isRefreshing ? (
             Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="p-3 rounded-lg bg-muted/50">
-                <Skeleton className="h-4 w-20 mb-2" />
-                <Skeleton className="h-6 w-24 mb-1" />
-                <Skeleton className="h-3 w-16" />
+                <Skeleton className="h-4 w-24 sm:w-20 mb-2" />
+                <Skeleton className="h-6 w-28 sm:w-24 mb-1" />
+                <Skeleton className="h-3 w-20 sm:w-16" />
               </div>
             ))
           ) : (
