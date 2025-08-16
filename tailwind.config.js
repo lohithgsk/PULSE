@@ -168,6 +168,7 @@ export default {
         auto: 'auto',
         base: '0',
         docked: '10',
+  header: '1250',
         dropdown: '1000',
         sticky: '1100',
         banner: '1200',

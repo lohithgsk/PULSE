@@ -13,6 +13,37 @@ html, body {
   line-height: 1.5;
   background-color: var(--color-background);
   color: var(--color-text-primary);
+  /* Reserve scrollbar space to prevent horizontal layout shift between routes */
+  overflow-y: scroll;
+  /* Reserve scrollbar width on the right side only (avoids extra left gutter) */
+  scrollbar-gutter: stable;
+  /* Prevent accidental horizontal scrollbars that can nudge layout */
+  overflow-x: hidden;
+}
+
+/* Ensure the app root always spans the viewport height (consistent scroll container) */
+#root {
+  min-height: 100vh;
+}
+
+/* (Removed utility for scrollbar padding to avoid double-compensation) */
+
+/* Hide scrollbars while keeping scroll functionality (for horizontal navs) */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Safe area paddings for devices with display cutouts */
+.safe-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+.safe-t {
+  padding-top: env(safe-area-inset-top);
 }
 
 /* ========= Design System Tokens ========= */
@@ -41,7 +72,7 @@ html, body {
 
   --color-accent: #059669;            /* emerald-600 */
   --color-warning: #F59E0B;           /* amber-500 */
-  --color-error: #DC2626;             /* red-600 */
+  --color-error: #ee2c2c;             /* red-600 */
   --color-success: #16A34A;           /* secondary success */
 
   /* Foregrounds for Contrast */

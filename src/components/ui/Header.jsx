@@ -143,7 +143,7 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
     <div className="relative" ref={walletDropdownRef}>
       <button
         onClick={() => setIsWalletDropdownOpen(!isWalletDropdownOpen)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted transition-clinical"
+        className="flex items-center space-x-2 px-2 sm:px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted transition-clinical"
       >
         <div className={`w-2 h-2 rounded-full ${walletConnected ? 'bg-clinical-green' : 'bg-clinical-red'}`} />
         <span className="text-sm font-medium text-foreground hidden sm:inline">
@@ -153,7 +153,7 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
       </button>
 
       {isWalletDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-64 border border-border rounded-lg shadow-medical-modal z-dropdown bg-popover/80 backdrop-blur-md">
+        <div className="absolute right-0 mt-2 w-[calc(100vw-1.5rem)] max-w-xs sm:max-w-sm md:w-64 border border-border rounded-lg shadow-medical-modal z-dropdown bg-popover/80 backdrop-blur-md">
           <div className="p-4">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium text-popover-foreground">Wallet Status</span>
@@ -279,9 +279,9 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
   }, [isMenuOpen, isWalletDropdownOpen]);
 
   return (
-    <header className="sticky top-0 z-header bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-nav">
+    <header className="sticky top-0 z-header bg-background/95 backdrop-blur-sm border-b border-border safe-t">
+      <div className="w-full px-3 sm:px-4 lg:px-8">
+        <div className="flex items-center justify-between h-16 gap-2">
           {/* Logo */}
           <Link to="/health-dashboard-overview" className="flex items-center space-x-3">
             <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
@@ -293,14 +293,14 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-1">
             {navigationItems?.map((item) => (
               <Link
                 key={item?.path}
                 to={item?.path}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-clinical ${
                   isActivePath(item?.path)
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-primary bg-opacity-80 backdrop-blur-md text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
                 title={item?.tooltip}
@@ -330,7 +330,7 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
                         onClick={() => setIsMenuOpen(false)}
                         className={`flex items-center space-x-3 px-4 py-2 text-sm transition-clinical ${
                           isActivePath(item?.path)
-                            ? 'bg-accent text-accent-foreground'
+                            ? 'bg-accent bg-opacity-80 backdrop-blur-md text-accent-foreground'
                             : 'text-popover-foreground hover:bg-muted'
                         }`}
                         title={item?.tooltip}
@@ -346,14 +346,14 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
           </nav>
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <EmergencyIndicator />
             <WalletStatus />
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-clinical"
+              className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-clinical"
             >
               <Icon name={isMenuOpen ? "X" : "Menu"} size={20} />
             </button>
@@ -362,16 +362,16 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border">
-            <nav className="space-y-2">
+          <div className="md:hidden py-3 border-t border-border bg-background/95 backdrop-blur-sm rounded-b-xl">
+            <nav className="space-y-2 px-2">
               {[...navigationItems, ...secondaryItems]?.map((item) => (
                 <Link
                   key={item?.path}
                   to={item?.path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-clinical ${
+                  className={`flex items-center space-x-3 px-3 sm:px-4 py-3 rounded-lg text-sm font-medium transition-clinical ${
                     isActivePath(item?.path)
-                      ? 'bg-primary text-primary-foreground'
+                      ? 'bg-primary/80 backdrop-blur-md text-primary-foreground'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}
                 >

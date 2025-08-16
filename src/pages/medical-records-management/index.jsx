@@ -344,7 +344,7 @@ const MedicalRecordsManagement = () => {
       <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar - Filters */}
-          <div className="lg:w-80 flex-shrink-0">
+          <div className="lg:w-80 lg:flex-none lg:sticky lg:top-16 self-start">
             <RecordFilters
               filters={filters}
               onFiltersChange={setFilters}
