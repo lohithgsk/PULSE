@@ -10,6 +10,7 @@ import HealthDashboardOverview from './pages/health-dashboard-overview';
 import ConsentAccessManagement from './pages/consent-access-management';
 import MedicalRecordsManagement from './pages/medical-records-management';
 import UserProfilePage from './pages/user-profile';
+import PatientRecordsView from './pages/patient-records-view';
 import AppLayout from './components/ui/AppLayout';
 import ProtectedRoute from './components/ui/ProtectedRoute';
 
@@ -30,6 +31,7 @@ const Routes = () => {
     <Route path="/health-dashboard-overview" element={<HealthDashboardOverview />} />
     <Route path="/consent-access-management" element={<ConsentAccessManagement />} />
     <Route path="/medical-records-management" element={<MedicalRecordsManagement />} />
+  <Route path="/patient-records-view" element={<PatientRecordsView />} />
   <Route path="/profile" element={<UserProfilePage />} />
   </Route>
         <Route path="*" element={<NotFound />} />
