@@ -19,10 +19,10 @@ const ConsentHistoryCard = ({ historyItem, onViewTransaction }) => {
   const getActionColor = (action) => {
     switch (action) {
       case 'granted': return 'text-clinical-green';
-      case 'revoked': return 'text-error';
+      case 'revoked': return 'text-error/1000';
       case 'expired': return 'text-clinical-amber';
       case 'modified': return 'text-primary';
-      case 'emergency_access': return 'text-error';
+      case 'emergency_access': return 'text-error/1000';
       default: return 'text-muted-foreground';
     }
   };
@@ -162,7 +162,7 @@ const ConsentHistoryCard = ({ historyItem, onViewTransaction }) => {
       {/* Details Modal */}
       {showDetailsModal && (
         <div className="fixed inset-0 z-modal bg-black/50 flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-popover rounded-lg shadow-medical-modal max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-lg bg-popover/80 backdrop-blur-md rounded-lg shadow-medical-modal max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-border">
               <div>
                 <h3 className="text-lg font-semibold text-popover-foreground">Consent History Details</h3>

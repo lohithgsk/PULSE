@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
 import { useSession } from '../../context/SessionContext';
 import { blockchainService } from '../../utils/blockchainService';
 import { connectWithWalletConnect, disconnectWalletConnect } from '../../utils/walletConnectService';
+import { useToast } from './ToastProvider';
 
 const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwork: currentNetworkProp = undefined, emergencyConfigured = false, onWalletConnect, onNetworkSwitch, onEmergencyActivate }) => {
   const location = useLocation();
@@ -14,11 +15,25 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
   const currentWalletRef = useRef(null);
   const cancelRejectRef = useRef(null);
   const session = (() => { try { return useSession(); } catch { return null; } })();
+  const toast = (() => { try { return useToast(); } catch { return { success(){}, error(){}, info(){}, warning(){}, show(){}, hide(){} }; } })();
+  const menuRef = useRef(null);
+  const walletDropdownRef = useRef(null);
 
   const walletConnected = typeof walletConnectedProp === 'boolean'
     ? walletConnectedProp
     : !!session?.isAuthenticated;
   const currentNetwork = currentNetworkProp || session?.wallet?.network || 'Unknown';
+  const address = session?.wallet?.address;
+  const shortAddress = address ? `${address.slice(0,6)}...${address.slice(-4)}` : 'N/A';
+  const balance = session?.wallet?.balance;
+  const did = session?.wallet?.did;
+
+  const copyToClipboard = async (text, label = 'Copied') => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.info(`${label} to clipboard`);
+    } catch (_) {}
+  };
 
   const navigationItems = [
     { label: 'Dashboard', path: '/health-dashboard-overview', icon: 'Activity', tooltip: 'Health overview and recent activity' },
@@ -108,6 +123,9 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
       if (ok && session) {
         const status = await blockchainService.getNetworkStatus();
         session.updateWallet({ network: status?.name, chainId: status?.chainId });
+        toast.success('Switched to Sepolia');
+      } else {
+        toast.error('Failed to switch network.');
       }
     } finally {
       setIsWalletDropdownOpen(false);
@@ -122,20 +140,20 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
   };
 
   const WalletStatus = () => (
-    <div className="relative">
+    <div className="relative" ref={walletDropdownRef}>
       <button
         onClick={() => setIsWalletDropdownOpen(!isWalletDropdownOpen)}
         className="flex items-center space-x-2 px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted transition-clinical"
       >
         <div className={`w-2 h-2 rounded-full ${walletConnected ? 'bg-clinical-green' : 'bg-clinical-red'}`} />
         <span className="text-sm font-medium text-foreground hidden sm:inline">
-          {walletConnected ? `Connected (${currentNetwork})` : 'Not Connected'}
+          {walletConnected ? `Connected (${currentNetwork || 'Unknown'})` : 'Not Connected'}
         </span>
         <Icon name="ChevronDown" size={16} className="text-muted-foreground" />
       </button>
 
       {isWalletDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-popover border border-border rounded-lg shadow-medical-modal z-dropdown">
+        <div className="absolute right-0 mt-2 w-64 border border-border rounded-lg shadow-medical-modal z-dropdown bg-popover/80 backdrop-blur-md">
           <div className="p-4">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium text-popover-foreground">Wallet Status</span>
@@ -146,12 +164,44 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
               <div className="space-y-3">
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Network</p>
-                  <p className="text-sm font-mono text-foreground">{currentNetwork}</p>
+                  <p className="text-sm font-mono text-foreground">{currentNetwork || 'Unknown'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Address</p>
-                  <p className="text-sm font-mono text-foreground">{(session?.wallet?.address && `${session.wallet.address.slice(0,6)}...${session.wallet.address.slice(-4)}`) || 'N/A'}</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <p title={address || ''} className="text-sm font-mono text-foreground truncate max-w-[180px]">{shortAddress}</p>
+                    {address && (
+                      <button
+                        onClick={() => copyToClipboard(address, 'Address copied')}
+                        className="text-xs text-muted-foreground hover:text-foreground"
+                        title="Copy address"
+                      >
+                        <Icon name="Copy" size={14} />
+                      </button>
+                    )}
+                  </div>
                 </div>
+                {did && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">DID</p>
+                    <div className="flex items-center justify-between gap-2">
+                      <p title={did} className="text-xs font-mono text-foreground truncate max-w-[180px]">{did}</p>
+                      <button
+                        onClick={() => copyToClipboard(did, 'DID copied')}
+                        className="text-xs text-muted-foreground hover:text-foreground"
+                        title="Copy DID"
+                      >
+                        <Icon name="Copy" size={14} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {balance != null && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Balance</p>
+                    <p className="text-sm font-mono text-foreground">{balance} ETH</p>
+                  </div>
+                )}
                 <div className="pt-2 border-t border-border">
                   <Button variant="outline" size="sm" onClick={handleNetworkSwitch} className="w-full">
                     Switch Network
@@ -206,6 +256,28 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
     )
   );
 
+  // Close menus on outside click
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        isMenuOpen
+      ) {
+        setIsMenuOpen(false);
+      }
+      if (
+        walletDropdownRef.current &&
+        !walletDropdownRef.current.contains(event.target) &&
+        isWalletDropdownOpen
+      ) {
+        setIsWalletDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen, isWalletDropdownOpen]);
+
   return (
     <header className="sticky top-0 z-header bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -215,6 +287,8 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
             <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
               <Icon name="Heart" size={20} className="text-primary-foreground" />
             </div>
+              {/* <img src="/assets/images/logo.png" alt="PULSE Logo" className="w-30 h-8 " /> */}
+
             <span className="text-xl font-semibold text-foreground">PULSE</span>
           </Link>
 
@@ -237,7 +311,7 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
             ))}
 
             {/* More Menu */}
-            <div className="relative">
+            <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-clinical"
@@ -247,7 +321,7 @@ const Header = ({ walletConnected: walletConnectedProp = undefined, currentNetwo
               </button>
 
               {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-popover border border-border rounded-lg shadow-medical-modal z-dropdown">
+                <div className="absolute right-0 mt-2 w-56 border border-border rounded-lg shadow-medical-modal z-dropdown bg-popover/80 backdrop-blur-md">
                   <div className="py-2">
                     {secondaryItems?.map((item) => (
                       <Link

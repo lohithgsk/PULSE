@@ -47,7 +47,7 @@ const ProcessingIndicator = ({
 
   return (
     <div className={`fixed inset-0 z-modal bg-black/50 flex items-center justify-center p-4 ${className}`}>
-      <div className="w-full max-w-md bg-popover rounded-lg shadow-medical-modal">
+      <div className="w-full max-w-md bg-popover/80 backdrop-blur-md rounded-lg shadow-medical-modal">
         <div className="p-6">
           {/* Header */}
           <div className="text-center mb-6">

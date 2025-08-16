@@ -164,7 +164,7 @@ const NFTConsentGenerator = ({ onGenerate, isGenerating = false }) => {
       {/* Generation Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-modal bg-black/50 flex items-center justify-center p-4">
-          <div className="w-full max-w-2xl bg-popover rounded-lg shadow-medical-modal max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-2xl bg-popover/80 backdrop-blur-md rounded-lg shadow-medical-modal max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-border">
               <div>
                 <h3 className="text-lg font-semibold text-popover-foreground">Generate NFT Consent</h3>

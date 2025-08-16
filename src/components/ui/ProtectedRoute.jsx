@@ -3,23 +3,17 @@ import { useSession } from '../../context/SessionContext';
 import AuthenticationGate from './AuthenticationGate';
 import { blockchainService } from '../../utils/blockchainService';
 import { connectWithWalletConnect, disconnectWalletConnect } from '../../utils/walletConnectService';
-import Toast from './Toast';
+import { useToast } from './ToastProvider';
 
 // Simple protected route wrapper for client-side gating
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, login } = useSession();
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState(null);
-  const [toast, setToast] = useState(null); // { message, type }
+  const toast = useToast();
   const currentWalletRef = useRef(null);
 
-  // Automatically clear toast after 3 seconds
-  useEffect(() => {
-    if (toast) {
-      const timer = setTimeout(() => setToast(null), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [toast]);
+  // no local toast timer needed with provider
 
   const handleWalletConnect = async (walletId) => {
     setError(null);
@@ -36,33 +30,23 @@ const ProtectedRoute = ({ children }) => {
           network: info?.network || null,
           balance: info?.balance || null,
         });
-        setToast({ message: 'Wallet connected via MetaMask', type: 'success' });
+  toast.success('Wallet connected via MetaMask');
         return;
       }
 
       if (walletId === 'walletconnect') {
         let timeoutId;
-        let info = null;
-        let connectError = null;
         try {
           const connectPromise = connectWithWalletConnect();
           const timeoutPromise = new Promise((_, reject) => {
             timeoutId = setTimeout(() => {
-              setToast({ message: 'WalletConnect connection timed out.', type: 'error' });
+              toast.error('WalletConnect connection timed out.');
               reject(new Error('WalletConnect cancelled or timed out.'));
             }, 30000);
           });
 
-          info = await Promise.race([connectPromise, timeoutPromise]);
-        } catch (err) {
-          connectError = err;
-        } finally {
+          const info = await Promise.race([connectPromise, timeoutPromise]);
           if (timeoutId) clearTimeout(timeoutId);
-          // Always disconnect to ensure session is closed
-          try { await disconnectWalletConnect(); } catch (_) {}
-        }
-
-        if (info) {
           login({
             provider: info?.type || 'WalletConnect',
             address: info?.address || null,
@@ -71,22 +55,25 @@ const ProtectedRoute = ({ children }) => {
             network: info?.network || null,
             balance: info?.balance || null,
           });
-          setToast({ message: 'Wallet connected via WalletConnect', type: 'success' });
+          toast.success('Wallet connected via WalletConnect');
           return;
-        } else {
-          const msg = connectError?.message || '';
+        } catch (err) {
+          if (timeoutId) clearTimeout(timeoutId);
+          // Ensure any dangling session closed on cancel
+          try { await disconnectWalletConnect(); } catch (_) {}
+          const msg = err?.message || '';
           if (/closed|cancel/i.test(msg)) {
-            setToast({ message: 'WalletConnect cancelled by user.', type: 'error' });
+            toast.error('WalletConnect cancelled by user.');
             throw new Error('WalletConnect cancelled by user.');
           }
-          throw connectError || new Error('WalletConnect failed.');
+          throw err || new Error('WalletConnect failed.');
         }
       }
 
       throw new Error('Provider not supported yet.');
     } catch (e) {
-      setError(e?.message || 'Failed to connect. Please try again.');
-      setToast({ message: e?.message || 'Failed to connect. Please try again.', type: 'error' });
+  setError(e?.message || 'Failed to connect. Please try again.');
+  toast.error(e?.message || 'Failed to connect. Please try again.');
     } finally {
       setIsConnecting(false);
     }
@@ -98,7 +85,7 @@ const ProtectedRoute = ({ children }) => {
     if (currentWalletRef.current === 'walletconnect') {
       try { await disconnectWalletConnect(); } catch (_) {}
     }
-    setToast({ message: 'Connection cancelled.', type: 'info' });
+    toast.info('Connection cancelled.');
   };
 
   if (!isAuthenticated) {
@@ -110,14 +97,6 @@ const ProtectedRoute = ({ children }) => {
           isConnecting={isConnecting}
           error={error}
         />
-        {/* Only render Toast once, outside of AuthenticationGate */}
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={() => setToast(null)}
-          />
-        )}
       </>
     );
   }
@@ -125,14 +104,6 @@ const ProtectedRoute = ({ children }) => {
   return (
     <>
       {children}
-      {/* Only render Toast once, outside of children */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
     </>
   );
 };

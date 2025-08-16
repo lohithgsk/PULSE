@@ -153,7 +153,7 @@ const ActiveConsentCard = ({ consent, onRevoke, onViewDetails }) => {
       {/* Revoke Confirmation Modal */}
       {showRevokeModal && (
         <div className="fixed inset-0 z-modal bg-black/50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-popover rounded-lg shadow-medical-modal">
+          <div className="w-full max-w-md bg-popover/80 backdrop-blur-md rounded-lg shadow-medical-modal">
             <div className="p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-error/10 rounded-lg flex items-center justify-center">

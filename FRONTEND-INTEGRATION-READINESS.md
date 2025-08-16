@@ -119,3 +119,80 @@ Guard missing envs with clear errors and disable dependent actions.
 - Docs updated (this file and per-page READMEs); env keys present and explained.
 
 Once backend is ready, swap mock functions with real calls behind a feature flag and remove the flag after validation.
+
+-------------------
+## Do-Now Checklist (No Backend Needed)
+
+### 1. Global UX and Infra
+- Create a config helper to read `import.meta.env` safely with defaults and user-facing warnings.
+- Centralize Toast into a lightweight provider/hook; standardize success/error/info usage.
+- Add ErrorBoundary at app root and a friendly fallback UI per page when something throws.
+- Build shared Skeleton and EmptyState components and wire them across lists/panels.
+- Add a simple feature flag switch (env/localStorage) to flip between mock vs. live services.
+
+### 2. Service Layer (Mock-First, Stable Contracts)
+- Keep `blockchainService` and `walletConnectService` as-is; add missing no-op disconnect/status helpers if needed.
+- Flesh out mocks in `utils/*`:
+  - `openaiService`: deterministic summary/chat mock with variable latency; optional “stream” via setInterval callbacks.
+  - `ipfsService`: mock add/get with in-memory map and fake CIDs.
+  - Add small mock files (if you want) for: consents, emergency, records, activity (return `Promise<{ items, nextCursor? }>`), with realistic shapes matching `BACKEND-INTEGRATION-READINESS.md`.
+  - Add a tiny “api client” shim that picks mock vs. live by flag; keep function signatures stable.
+
+### 3. Session & Wallet Polish
+- Finalize WalletConnect cancel/timeout handling (done in ProtectedRoute + Header; quickly retest).
+- Add error toasts for network switch failures and a retry action.
+- Improve address/network display (copy-to-clipboard, tooltip with full address).
+- Show DID and balance where helpful; gracefully handle “unknown network”.
+
+### 4. Accessibility & Performance
+- Add keyboard navigation and focus rings for all interactive elements (Header menu, wallet dropdown, modals).
+- ARIA labels for toasts, buttons, dialogs; ensure tab order is logical.
+- Prefetch key routes on hover; lazy-load heavy page chunks; verify no layout shift with Skeletons.
+- Optimize images and add sizes; confirm responsive breakpoints.
+
+### 5. Testing (Minimal but Useful)
+- Nav smoke test (routes render, header links work).
+- Connect flow unit/integration: render gate, trigger connect (mock success and cancel).
+- One page component test with loading + empty state (e.g., Records list).
+- Optional: a tiny Playwright e2e that visits 2-3 routes and exercises the connect cancel path.
+
+### 6. Documentation & Dev UX
+- Update `FRONTEND-INTEGRATION-READINESS.md` status markers (what’s done vs. pending).
+- Add short README notes to each page folder about mock switches and test coverage.
+- Add a Troubleshooting section (envs, WalletConnect project id required, common errors).
+
+---
+
+## Per-Page Work You Can Finish Now
+
+### AI Health Assistant
+- Chat UI with multiline input, loading state, and mock streaming; permissions panel state persists locally.
+- Summary card and history with skeletons/empty state; hook to `openaiService` (mock).
+
+### Consent & Access Management
+- Tabs, list with pagination affordances; optimistic approve/deny/revoke UI with rollback via mock error.
+- NFT consent modal with form validation and mocked async result; toast on success/error.
+
+### Emergency Access & Contacts
+- Contacts CRUD forms with masked inputs and validation; mock list and persistence.
+- Break-glass confirm dialog + result banner (mock tx hash) and audit log panel with empty state.
+
+### Health Dashboard
+- Compose summary cards, quick actions, recent activity with skeletons; use mock activity feed.
+
+### Medical Records
+- Filters (text/type/date) with debounced updates; list/grid with selection and disabled bulk actions when none.
+- Detail panel and share modal using mocked metadata; upload button with fake progress and result.
+
+### Wallet & Auth (Header + Gate)
+- Ensure “Connect Wallet” → MetaMask first, WalletConnect fallback; cancel/timeout covered.
+- “Switch Network” to Sepolia with user feedback; “Logout” clears session and returns to gate.
+
+---
+
+### Suggested Order of Work
+1. Global primitives (Skeleton, EmptyState, Toast provider, config helper)
+2. Page skeletons + empty states + loaders
+3. Mock services wired per page (records, consents, emergency, activity, AI)
+4. Accessibility pass and micro-interactions (tooltips, copy, focus states)
+5. Minimal tests and docs update

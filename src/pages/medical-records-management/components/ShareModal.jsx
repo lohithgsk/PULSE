@@ -65,7 +65,7 @@ const ShareModal = ({ record, isOpen, onClose, onShare }) => {
 
   return (
     <div className="fixed inset-0 z-modal bg-black/50 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-popover rounded-lg shadow-medical-modal">
+      <div className="w-full max-w-lg bg-popover/80 backdrop-blur-md rounded-lg shadow-medical-modal">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
           <div className="flex items-center space-x-3">

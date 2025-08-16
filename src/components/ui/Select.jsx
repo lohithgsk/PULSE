@@ -173,7 +173,7 @@ const Select = React.forwardRef(({
 
                 {/* Dropdown */}
                 {isOpen && (
-                    <div className="absolute z-50 w-full mt-1 bg-[var(--color-surface)] text-[var(--color-text-primary)] border border-border rounded-md shadow-md">
+                    <div className="absolute z-50 w-full mt-1 bg-popover/80 backdrop-blur-md text-[var(--color-text-primary)] border border-border rounded-md shadow-md">
                         {searchable && (
                             <div className="p-2 border-b">
                                 <div className="relative">

@@ -110,8 +110,8 @@ const WalletStatusCard = ({
                   {showFullAddress ? 'Hide' : 'Show Full'}
                 </button>
               </div>
-              <div className="flex items-center space-x-2 p-3 rounded-lg bg-muted/50 border border-border">
-                <code className="flex-1 text-sm font-mono text-card-foreground">
+              <div className="flex flex-wrap items-center space-x-2 p-3 rounded-lg bg-muted/50 border border-border">
+                <code className="flex-1 text-sm font-mono text-card-foreground break-all">
                   {formatAddress(walletAddress)}
                 </code>
                 <button
@@ -120,6 +120,13 @@ const WalletStatusCard = ({
                   title="Copy address"
                 >
                   <Icon name="Copy" size={14} className="text-muted-foreground" />
+                </button>
+                <button
+                  onClick={onShareDID}
+                  className="p-1 rounded hover:bg-muted transition-clinical"
+                  title="Share Address"
+                >
+                  <Icon name="Share" size={14} className="text-muted-foreground" />
                 </button>
               </div>
             </div>
@@ -137,8 +144,8 @@ const WalletStatusCard = ({
                   </button>
                 </div>
               </div>
-              <div className="flex items-center space-x-2 p-3 rounded-lg bg-muted/50 border border-border">
-                <code className="flex-1 text-sm font-mono text-card-foreground">
+              <div className="flex flex-wrap items-center space-x-2 p-3 rounded-lg bg-muted/50 border border-border">
+                <code className="flex-1 text-sm font-mono text-card-foreground break-all">
                   {formatDID(userDID)}
                 </code>
                 <button
