@@ -1,0 +1,51 @@
+{
+  "name": "medledger-contracts",
+  "version": "1.0.0",
+  "description": "MedLedger Smart Contracts using Truffle",
+  "main": "index.js",
+  "scripts": {
+    "compile": "truffle compile",
+    "test": "truffle test",
+    "migrate": "truffle migrate",
+    "migrate:ganache": "truffle migrate --network ganache",
+    "migrate:ganache-hd": "truffle migrate --network ganache_hd",
+    "migrate:development": "truffle migrate --network development",
+    "migrate:reset": "truffle migrate --reset",
+    "console": "truffle console",
+    "console:ganache": "truffle console --network ganache",
+    "clean": "rm -rf build/",
+    "verify": "truffle run verify",
+    "flatten": "truffle-flattener contracts/ConsentManagement.sol > flattened/ConsentManagement_flat.sol",
+    "size": "truffle run contract-size",
+    "coverage": "truffle run coverage",
+    "deploy": "npm run migrate:ganache",
+    "test:gas": "truffle test --show-events --verbose-rpc"
+  },
+  "keywords": [
+    "blockchain",
+    "healthcare",
+    "ethereum",
+    "smart-contracts",
+    "medical-records",
+    "truffle",
+    "consent-management"
+  ],
+  "author": "ARCHBTW Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "chai": "^4.3.10",
+    "@openzeppelin/test-helpers": "^0.5.16",
+    "truffle-plugin-verify": "^0.5.31",
+    "truffle-flattener": "^1.6.0",
+    "truffle-contract-size": "^2.0.1",
+    "solidity-coverage": "^0.8.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "web3": "^4.2.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
