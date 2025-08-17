@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+/* Tailwind core layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core Colors */
+    --color-background: #FAFBFC; /* gray-50 */
+    --color-foreground: #1E293B; /* slate-800 */
+    --color-border: rgba(148, 163, 184, 0.2); /* slate-400 with opacity */
+  --color-input: #FFFFFF; /* surface base */
+    --color-ring: #2563EB; /* blue-600 */
+    
+    /* Card Colors */
+  --color-card: #FFFFFF; /* surface card */
+    --color-card-foreground: #1E293B; /* slate-800 */
+  --color-popover: #FFFFFF; /* surface popover */
+    --color-popover-foreground: #1E293B; /* slate-800 */
+    
+    /* Muted Colors */
+    --color-muted: #F1F5F9; /* slate-100 */
+    --color-muted-foreground: #64748B; /* slate-500 */
+    
+    /* Primary Colors */
+    --color-primary: #2563EB; /* blue-600 */
+  --color-primary-foreground: #FFFFFF; /* on primary */
+    
+    /* Secondary Colors */
+    --color-secondary: #64748B; /* slate-500 */
+  --color-secondary-foreground: #FFFFFF; /* on secondary */
+    
+    /* Accent Colors */
+    --color-accent: #059669; /* emerald-600 */
+  --color-accent-foreground: #FFFFFF; /* on accent */
+    
+    /* State Colors */
+    --color-success: #10B981; /* emerald-500 */
+  --color-success-foreground: #FFFFFF; /* on success */
+    --color-warning: #F59E0B; /* amber-500 */
+  --color-warning-foreground: #111827; /* dark text on amber */
+    --color-error: #EF4444; /* red-500 */
+  --color-error-foreground: #FFFFFF; /* on error */
+    --color-destructive: #EF4444; /* red-500 */
+  --color-destructive-foreground: #FFFFFF; /* on destructive */
+    
+    /* Medical Trust Palette - Brand Colors */
+    --color-medical-trust: #2563EB; /* blue-600 */
+    --color-clinical-green: #059669; /* emerald-600 */
+  --color-surface-clean: #FFFFFF; /* clean surface */
+    --color-text-primary: #1E293B; /* slate-800 */
+    --color-text-secondary: #64748B; /* slate-500 */
+    --color-clinical-amber: #F59E0B; /* amber-500 */
+    --color-clinical-red: #EF4444; /* red-500 */
+  }
+
+  * { border-color: var(--color-border); }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  }
+}
+
+@layer components {
+  /* Medical Trust Shadows */
+  .shadow-medical-card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+  
+  .shadow-medical-modal {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Clinical Transitions */
+  .transition-clinical {
+    transition: all 200ms ease-out;
+  }
+  
+  .transition-clinical-slow {
+    transition: all 300ms ease-out;
+  }
+  
+  .transition-blockchain {
+    transition: all 500ms ease-out;
+  }
+}
