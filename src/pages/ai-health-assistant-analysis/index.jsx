@@ -8,6 +8,35 @@ import ProcessingIndicator from './components/ProcessingIndicator';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 import { useI18n } from '../../i18n/I18nProvider';
+import { ipfsService } from '../../utils/ipfsService';
+import { blockchainService } from '../../utils/blockchainService';
+import { mockHealthData } from '../../utils/mockHealthData';
+import { filterHealthDataByPermissions } from '../../utils/permissions';
+const GEMINI_API_KEY = import.meta.env?.VITE_GEMINI_API_KEY;
+async function generateHealthSummaryGemini(healthData) {
+  const systemPrompt = `You are a medical AI assistant tasked with generating a comprehensive, doctor-ready health summary. Create a professional medical summary that healthcare providers can quickly review and understand.
+The summary should include:
+1. Current Health Status Overview
+2. Key Medical History Points
+3. Current Medications and Dosages
+4. Recent Lab Results and Trends
+5. Notable Symptoms or Changes
+6. Recommended Follow-up Actions
+7. Risk Factors and Preventive Care Needs
+Format the response in a clear, clinical manner suitable for healthcare provider review.
+Return only a strict JSON object with the following keys: title, executiveSummary, currentHealthStatus, keyMedicalHistory, currentMedications, recentLabResults, notableSymptoms, recommendations, followUpActions, riskFactors, confidence, dataSources.`;
+  const body = {
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    contents: [{ role: 'user', parts: [{ text: `Please generate a comprehensive health summary based on this data:\n${JSON.stringify(healthData)}` }] }],
+    generationConfig: { temperature: 0.2, maxOutputTokens: 1500, response_mime_type: 'application/json' }
+  };
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(`Gemini error ${r.status}`);
+  const j = await r.json();
+  let t = j?.candidates?.[0]?.content?.parts?.map(p => p?.text || '')?.join('') || '';
+  t = t.trim().replace(/^```json\s*/i, '').replace(/^```/i, '').replace(/```$/i, '').trim();
+  try { return t ? JSON.parse(t) : {}; } catch(_) { return {}; }
+}
 
 const AIHealthAssistantAnalysis = () => {
   const { t } = useI18n();
@@ -56,7 +85,7 @@ const AIHealthAssistantAnalysis = () => {
   });
 
   // Mock data for health summaries
-  const [healthSummaries] = useState([
+  const [healthSummaries, setHealthSummaries] = useState([
     {
       id: 'summary_001',
       title: 'Comprehensive Health Summary',
@@ -73,7 +102,7 @@ const AIHealthAssistantAnalysis = () => {
   ]);
 
   // Mock data for analysis history
-  const [analysisHistory] = useState([
+  const [analysisHistory, setAnalysisHistory] = useState([
     {
       id: 'analysis_001',
       type: 'summary',
@@ -156,57 +185,35 @@ const AIHealthAssistantAnalysis = () => {
   }, [isProcessing]);
 
   const handleSendMessage = (message) => {
-    // Add user message
-    const userMessage = {
-      id: Date.now(),
-      sender: 'user',
-      content: message,
-      timestamp: new Date()
-    };
+    const userMessage = { id: Date.now(), sender: 'user', content: message, timestamp: new Date() };
     setMessages(prev => [...prev, userMessage]);
-
-    // Simulate AI processing
     setIsProcessing(true);
     setProcessingStage('analyzing');
-
-    // Simulate AI response after processing
-    setTimeout(() => {
-      const aiResponse = {
-        id: Date.now() + 1,
-        sender: 'ai',
-        content: generateAIResponse(message),
-        timestamp: new Date(),
-        dataAccess: message?.toLowerCase()?.includes('records') || message?.toLowerCase()?.includes('lab') || message?.toLowerCase()?.includes('medication'),
-        confidence: 0.85 + Math.random() * 0.1,
-        sources: message?.toLowerCase()?.includes('records') ? ['Lab Results', 'Medication History'] : [],
-        encrypted: true,
-        blockchainLogged: true
-      };
-      setMessages(prev => [...prev, aiResponse]);
-    }, 6000);
   };
 
-  const generateAIResponse = (userMessage) => {
-    const lowerMessage = userMessage?.toLowerCase();
-    
-    if (lowerMessage?.includes('blood pressure')) {
-      return `Based on your recent blood pressure readings, I can see positive improvements:\n\n• Your average BP over the last month is 128/82 mmHg\n• This represents a 12% improvement from your baseline\n• Your current medication (Lisinopril 10mg) appears to be working well\n\nI recommend continuing your current regimen and monitoring daily. Your next cardiology appointment is scheduled for March 15th - this would be a good time to discuss any adjustments.`;
-    }
-    
-    if (lowerMessage?.includes('medication') || lowerMessage?.includes('drugs')) {
-      return `Here are your current medications:\n\n• Lisinopril 10mg - Once daily for blood pressure\n• Atorvastatin 20mg - Once daily for cholesterol\n• Vitamin D3 2000 IU - Daily supplement\n\nAll medications are up to date with no concerning interactions detected. Your last medication review was 2 months ago. Remember to take Lisinopril at the same time each day for best results.`;
-    }
-    
-    if (lowerMessage?.includes('lab') || lowerMessage?.includes('results')) {
-      return `Your most recent lab results from January 2025 show:\n\n• Total Cholesterol: 185 mg/dL (Normal)\n• LDL: 110 mg/dL (Borderline)\n• HDL: 55 mg/dL (Good)\n• Triglycerides: 120 mg/dL (Normal)\n• Vitamin D: 45 ng/mL (Optimal)\n\nOverall, your lipid panel shows improvement from previous results. The vitamin D supplementation is working well - levels have increased from 28 to 45 ng/mL.`;
-    }
-    
-    if (lowerMessage?.includes('summary') || lowerMessage?.includes('doctor')) {
-      return `I can generate a comprehensive health summary for your doctor visit. This will include:\n\n• Current medications and dosages\n• Recent lab results and trends\n• Vital signs patterns\n• Any reported symptoms or concerns\n• Recommended follow-up actions\n\nWould you like me to create this summary now? It will be formatted for easy sharing with your healthcare provider and include all relevant data sources.`;
-    }
-    
-    return `I understand you're asking about "${userMessage}". Based on your health records, I can provide personalized insights. However, I need to access specific data categories to give you the most accurate information.\n\nCould you be more specific about what aspect of your health you'd like to discuss? I can help with:\n• Medication information\n• Lab results analysis\n• Vital signs trends\n• Health summaries for doctor visits`;
-  };
+  useEffect(() => {
+    const onAiMessage = (e) => {
+      const aiMsg = e?.detail;
+      if (!aiMsg) return;
+      setMessages(prev => [...prev, aiMsg]);
+      setAnalysisHistory(prev => [
+        {
+          id: `analysis_${Date.now()}`,
+          type: 'chat',
+          title: 'AI Conversation',
+          description: aiMsg?.content?.slice(0, 120),
+          timestamp: new Date(),
+          dataSourcesCount: aiMsg?.sources?.length || 0,
+          confidence: aiMsg?.confidence || 0,
+          ipfsHash: aiMsg?.ipfsHash
+        },
+        ...prev
+      ]);
+      setTimeout(() => { setIsProcessing(false); setProcessingProgress(0); }, 600);
+    };
+    window.addEventListener('pulse-ai-new-message', onAiMessage);
+    return () => window.removeEventListener('pulse-ai-new-message', onAiMessage);
+  }, []);
 
   const handleTogglePermission = (permissionId) => {
     setAiPermissions(prev => ({
@@ -220,10 +227,52 @@ const AIHealthAssistantAnalysis = () => {
     // Simulate export functionality
   };
 
-  const handleRegenerateSummary = (summaryId) => {
-    setIsProcessing(true);
-    setProcessingStage('analyzing');
-    console.log(`Regenerating summary ${summaryId}`);
+  const handleRegenerateSummary = async (summaryId) => {
+    try {
+      setIsProcessing(true);
+      setProcessingStage('analyzing');
+      const scoped = filterHealthDataByPermissions(mockHealthData, aiPermissions);
+  const s = await generateHealthSummaryGemini(scoped);
+      const accessEvent = { type: 'summary_regenerated', summaryId, timestamp: new Date().toISOString(), confidence: s?.confidence, sources: s?.dataSources };
+      const tx = await blockchainService.logAccessEvent(accessEvent);
+      const mapped = {
+        id: `summary_${Date.now()}`,
+        title: s?.title || 'Comprehensive Health Summary',
+        description: s?.executiveSummary || 'AI-generated health summary',
+        keyInsights: `${s?.currentHealthStatus || ''}\n\n${s?.keyMedicalHistory || ''}`.trim(),
+        recentChanges: s?.notableSymptoms || 'No notable recent symptoms reported',
+        recommendations: s?.recommendations || 'Maintain follow-up as recommended',
+        followUpActions: s?.followUpActions || 'Schedule follow-ups as noted',
+        confidence: s?.confidence ?? 0.8,
+        dataSources: s?.dataSources || [],
+        generatedAt: new Date(),
+        transactionHash: tx
+      };
+      const ipfs = await ipfsService.storeAnalysis({ type: 'summary', payload: mapped, metadata: { transactionHash: tx } });
+      setHealthSummaries(prev => [mapped, ...prev]);
+      setAnalysisHistory(prev => [
+        { id: `analysis_${Date.now()}`, type: 'summary', title: mapped.title, description: mapped.description, timestamp: new Date(), dataSourcesCount: mapped.dataSources?.length || 0, confidence: mapped.confidence, ipfsHash: ipfs?.hash },
+        ...prev
+      ]);
+    } catch (e) {
+      console.error(e);
+      const mapped = {
+        id: `summary_${Date.now()}`,
+        title: 'Comprehensive Health Summary',
+        description: 'AI-generated health summary',
+        keyInsights: 'No key insights available at this time.',
+        recentChanges: 'No notable recent symptoms reported',
+        recommendations: 'Maintain routine follow-ups as recommended',
+        followUpActions: 'Schedule follow-ups as noted',
+        confidence: 0.5,
+        dataSources: [],
+        generatedAt: new Date(),
+        transactionHash: undefined
+      };
+      setHealthSummaries(prev => [mapped, ...prev]);
+    } finally {
+      setTimeout(() => { setIsProcessing(false); setProcessingProgress(0); }, 800);
+    }
   };
 
   const handleViewAnalysis = (analysisId) => {
@@ -231,7 +280,7 @@ const AIHealthAssistantAnalysis = () => {
   };
 
   const handleDeleteAnalysis = (analysisId) => {
-    console.log(`Deleting analysis ${analysisId}`);
+    setAnalysisHistory(prev => prev.filter(a => a.id !== analysisId));
   };
 
   const handleWalletConnect = () => {
@@ -362,10 +411,7 @@ const AIHealthAssistantAnalysis = () => {
                           variant="outline"
                           iconName="Plus"
                           iconPosition="left"
-                          onClick={() => {
-                            setIsProcessing(true);
-                            setProcessingStage('analyzing');
-                          }}
+                          onClick={() => handleRegenerateSummary('new')}
                         >
                           Generate New Summary
                         </Button>

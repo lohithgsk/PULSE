@@ -6,7 +6,7 @@ This folder contains shared service clients, helpers, and mock data used across 
 
 - `blockchainService.js` — wallet/network helpers and stubs for chain interactions (connect/disconnect, switch network, status, tx logging).
 - `ipfsService.js` — helper functions to store/fetch content on IPFS (mocked; replace with a real gateway/pinning service).
-- `openaiClient.js` — initializes an OpenAI client from environment/config.
+- `openaiClient.js` — legacy placeholder for OpenAI (unused; Gemini is used).
 - `openaiService.js` — higher-level functions that call the client to generate analyses/summaries.
 - `mockHealthData.js` — sample data for health metrics, records, etc., to power the UI without a backend.
 - `cn.js` — classnames utility for composing Tailwind classes.
@@ -52,8 +52,8 @@ This folder contains shared service clients, helpers, and mock data used across 
       const data = await ipfsService.get(cid);
       ```
 
-- openaiClient/openaiService
-  - `openaiClient.js` initializes the SDK; `openaiService.js` exposes domain functions like `generateHealthSummary(input)` or `analyzeRecord(record)`.
+- openaiService (Gemini)
+  - `openaiService.js` uses Gemini SDK and exposes domain functions like `generateHealthSummary(input)` or `analyzeRecord(record)`.
   - Usage example:
     - ```js
       const summary = await openaiService.generateHealthSummary({ records: [...] });

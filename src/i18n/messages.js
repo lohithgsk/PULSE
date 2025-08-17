@@ -68,6 +68,41 @@ const en = {
         summaries: 'Health Summaries',
         permissions: 'AI Permissions',
         history: 'Analysis History'
+      },
+      chat: {
+        inputPlaceholder: 'Ask about your health data...',
+        disclaimer: 'AI responses may be inaccurate. Consult a medical professional for advice.',
+        sources: 'Sources',
+        thinking: 'Thinking...'
+      },
+      summaries: {
+        title: 'Your AI-Generated Health Summary',
+        generated: 'Summary generated on',
+        viewSource: 'View Source Document',
+        vitals: 'Vitals',
+        conditions: 'Conditions',
+        medications: 'Medications',
+        allergies: 'Allergies',
+        recentActivity: 'Recent Activity'
+      },
+      permissions: {
+        title: 'Manage AI Data Permissions',
+        description: 'You have full control over which data the AI assistant can access. Changes are recorded on the blockchain.',
+        dataClasses: 'Data Classes',
+        allowAll: 'Allow All',
+        denyAll: 'Deny All',
+        accessLog: 'AI Access Log',
+        noLogs: 'No AI access logs yet.',
+        permitted: 'Permitted',
+        denied: 'Denied'
+      },
+      history: {
+        title: 'Your Analysis History',
+        description: 'Review past AI analysis sessions and summaries.',
+        noHistory: 'No analysis history found.',
+        summary: 'Summary',
+        chat: 'Chat',
+        view: 'View'
       }
     },
     nav: {
@@ -297,6 +332,41 @@ export const messages = {
         summaries: 'Gesundheitszusammenfassungen',
         permissions: 'KI-Berechtigungen',
         history: 'Analyse-Verlauf'
+      },
+      chat: {
+        inputPlaceholder: 'Fragen Sie nach Ihren Gesundheitsdaten...',
+        disclaimer: 'KI-Antworten können ungenau sein. Konsultieren Sie einen Arzt für Ratschläge.',
+        sources: 'Quellen',
+        thinking: 'Denken...'
+      },
+      summaries: {
+        title: 'Ihre KI-generierte Gesundheitszusammenfassung',
+        generated: 'Zusammenfassung generiert am',
+        viewSource: 'Quelldokument anzeigen',
+        vitals: 'Vitalwerte',
+        conditions: 'Erkrankungen',
+        medications: 'Medikamente',
+        allergies: 'Allergien',
+        recentActivity: 'Letzte Aktivität'
+      },
+      permissions: {
+        title: 'KI-Datenberechtigungen verwalten',
+        description: 'Sie haben die volle Kontrolle darüber, auf welche Daten der KI-Assistent zugreifen kann. Änderungen werden auf der Blockchain aufgezeichnet.',
+        dataClasses: 'Datenklassen',
+        allowAll: 'Alle erlauben',
+        denyAll: 'Alle verweigern',
+        accessLog: 'KI-Zugriffsprotokoll',
+        noLogs: 'Noch keine KI-Zugriffsprotokolle.',
+        permitted: 'Erlaubt',
+        denied: 'Verweigert'
+      },
+      history: {
+        title: 'Ihr Analyse-Verlauf',
+        description: 'Überprüfen Sie vergangene KI-Analysesitzungen und Zusammenfassungen.',
+        noHistory: 'Kein Analyse-Verlauf gefunden.',
+        summary: 'Zusammenfassung',
+        chat: 'Chat',
+        view: 'Ansehen'
       }
     },
     nav: {
@@ -523,6 +593,41 @@ export const messages = {
         summaries: 'स्वास्थ्य सारांश',
         permissions: 'एआई अनुमतियाँ',
         history: 'विश्लेषण इतिहास'
+      },
+      chat: {
+        inputPlaceholder: 'अपने स्वास्थ्य डेटा के बारे में पूछें...',
+        disclaimer: 'एआई प्रतिक्रियाएं गलत हो सकती हैं। सलाह के लिए एक चिकित्सा पेशेवर से परामर्श करें।',
+        sources: 'स्रोत',
+        thinking: 'सोच रहा है...'
+      },
+      summaries: {
+        title: 'आपका एआई-जनित स्वास्थ्य सारांश',
+        generated: 'सारांश इस पर उत्पन्न हुआ',
+        viewSource: 'स्रोत दस्तावेज़ देखें',
+        vitals: 'महत्वपूर्ण संकेत',
+        conditions: 'स्थितियाँ',
+        medications: 'दवाएं',
+        allergies: 'एलर्जी',
+        recentActivity: 'हाल की गतिविधि'
+      },
+      permissions: {
+        title: 'एआई डेटा अनुमतियाँ प्रबंधित करें',
+        description: 'आपके पास इस पर पूरा नियंत्रण है कि एआई सहायक कौन सा डेटा एक्सेस कर सकता है। परिवर्तन ब्लॉकचेन पर दर्ज किए जाते हैं।',
+        dataClasses: 'डेटा वर्ग',
+        allowAll: 'सभी को अनुमति दें',
+        denyAll: 'सभी को अस्वीकार करें',
+        accessLog: 'एआई एक्सेस लॉग',
+        noLogs: 'अभी तक कोई एआई एक्सेस लॉग नहीं है।',
+        permitted: 'अनुमत',
+        denied: 'अस्वीकृत'
+      },
+      history: {
+        title: 'आपका विश्लेषण इतिहास',
+        description: 'पिछले एआई विश्लेषण सत्रों और सारांशों की समीक्षा करें।',
+        noHistory: 'कोई विश्लेषण इतिहास नहीं मिला।',
+        summary: 'सारांश',
+        chat: 'चैट',
+        view: 'देखें'
       }
     },
     nav: {
@@ -749,6 +854,41 @@ export const messages = {
         summaries: 'சுகாதாரச் சுருக்கங்கள்',
         permissions: 'AI அனுமதிகள்',
         history: 'பகுப்பாய்வு வரலாறு'
+      },
+      chat: {
+        inputPlaceholder: 'உங்கள் சுகாதாரத் தரவைப் பற்றி கேளுங்கள்...',
+        disclaimer: 'AI பதில்கள் தவறாக இருக்கலாம். ஆலோசனைக்கு மருத்துவ நிபுணரை அணுகவும்.',
+        sources: 'மூலங்கள்',
+        thinking: 'சிந்திக்கிறது...'
+      },
+      summaries: {
+        title: 'உங்கள் AI-உருவாக்கிய சுகாதாரச் சுருக்கம்',
+        generated: 'சுருக்கம் உருவாக்கப்பட்டது',
+        viewSource: 'மூல ஆவணத்தைக் காண்க',
+        vitals: 'உயிர் அறிகுறிகள்',
+        conditions: 'நிபந்தனைகள்',
+        medications: 'மருந்துகள்',
+        allergies: 'ஒவ்வாமைகள்',
+        recentActivity: 'சமீபத்திய செயல்பாடு'
+      },
+      permissions: {
+        title: 'AI தரவு அனுமதிகளை நிர்வகிக்கவும்',
+        description: 'AI உதவியாளர் எந்தத் தரவை அணுகலாம் என்பதில் உங்களுக்கு முழுமையான கட்டுப்பாடு உள்ளது. மாற்றங்கள் பிளாக்செயினில் பதிவு செய்யப்படுகின்றன.',
+        dataClasses: 'தரவு வகுப்புகள்',
+        allowAll: 'அனைத்தையும் அனுமதி',
+        denyAll: 'அனைத்தையும் மறு',
+        accessLog: 'AI அணுகல் பதிவு',
+        noLogs: 'இன்னும் AI அணுகல் பதிவுகள் இல்லை.',
+        permitted: 'அனுமதிக்கப்பட்டது',
+        denied: 'மறுக்கப்பட்டது'
+      },
+      history: {
+        title: 'உங்கள் பகுப்பாய்வு வரலாறு',
+        description: 'கடந்த AI பகுப்பாய்வு அமர்வுகள் மற்றும் சுருக்கங்களை மதிப்பாய்வு செய்யவும்.',
+        noHistory: 'பகுப்பாய்வு வரலாறு எதுவும் இல்லை.',
+        summary: 'சுருக்கம்',
+        chat: 'அரட்டை',
+        view: 'காண்க'
       }
     },
     nav: {
@@ -976,6 +1116,41 @@ export const messages = {
         summaries: 'Resúmenes de salud',
         permissions: 'Permisos de IA',
         history: 'Historial de análisis'
+      },
+      chat: {
+        inputPlaceholder: 'Pregunta sobre tus datos de salud...',
+        disclaimer: 'Las respuestas de la IA pueden ser inexactas. Consulta a un profesional médico para obtener asesoramiento.',
+        sources: 'Fuentes',
+        thinking: 'Pensando...'
+      },
+      summaries: {
+        title: 'Tu resumen de salud generado por IA',
+        generated: 'Resumen generado el',
+        viewSource: 'Ver documento fuente',
+        vitals: 'Signos vitales',
+        conditions: 'Condiciones',
+        medications: 'Medicamentos',
+        allergies: 'Alergias',
+        recentActivity: 'Actividad reciente'
+      },
+      permissions: {
+        title: 'Gestionar permisos de datos de IA',
+        description: 'Tienes control total sobre los datos a los que puede acceder el asistente de IA. Los cambios se registran en la blockchain.',
+        dataClasses: 'Clases de datos',
+        allowAll: 'Permitir todo',
+        denyAll: 'Denegar todo',
+        accessLog: 'Registro de acceso de IA',
+        noLogs: 'Aún no hay registros de acceso de IA.',
+        permitted: 'Permitido',
+        denied: 'Denegado'
+      },
+      history: {
+        title: 'Tu historial de análisis',
+        description: 'Revisa sesiones y resúmenes de análisis de IA anteriores.',
+        noHistory: 'No se encontró historial de análisis.',
+        summary: 'Resumen',
+        chat: 'Chat',
+        view: 'Ver'
       }
     },
     nav: {

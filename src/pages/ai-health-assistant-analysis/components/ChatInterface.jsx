@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
-import { getHealthAssistantResponse } from '../../../utils/openaiService';
+const GEMINI_API_KEY = import.meta.env?.VITE_GEMINI_API_KEY;
 import { blockchainService } from '../../../utils/blockchainService';
 import { ipfsService } from '../../../utils/ipfsService';
-import { mockHealthData } from '../../../utils/mockHealthData';
+import { filterHealthDataByPermissions } from '../../../utils/permissions';
 
 const ChatInterface = ({ 
   messages = [], 
@@ -15,6 +15,9 @@ const ChatInterface = ({
 }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [healthData, setHealthData] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('pulse.healthData') || '{}'); } catch { return {}; }
+  });
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -44,12 +47,56 @@ const ChatInterface = ({
         // Call parent's onSendMessage to add user message
         onSendMessage(userMessage);
 
-        // Get AI response using OpenAI
-        const aiResponse = await getHealthAssistantResponse(
-          userMessage, 
-          messages, 
-          mockHealthData
-        );
+        // If user sent JSON, persist as health data and acknowledge
+        let didStoreData = false;
+        const trimmed = userMessage.trim();
+        if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+          try {
+            const parsed = JSON.parse(trimmed);
+            localStorage.setItem('pulse.healthData', JSON.stringify(parsed));
+            setHealthData(parsed);
+            didStoreData = true;
+            const ack = {
+              id: Date.now() + 1,
+              sender: 'ai',
+              content: 'Your health data has been saved locally and will be used for future analyses.',
+              timestamp: new Date(),
+              confidence: 0.9,
+              sources: ['local:healthData'],
+              dataAccess: false,
+              encrypted: true,
+              blockchainLogged: false,
+              recommendations: [],
+              followUpActions: [],
+              requiresProviderConsultation: false
+            };
+            const evt = new CustomEvent('pulse-ai-new-message', { detail: ack });
+            window.dispatchEvent(evt);
+          } catch {}
+        }
+        if (didStoreData) return;
+        const scopedData = filterHealthDataByPermissions(healthData || {}, aiPermissions);
+        const systemPrompt = `You are a helpful, safety-conscious AI Health Assistant. Provide accurate, compassionate, and clear answers using the provided user question and scoped health data. Return a strict JSON with keys: content, confidence, sources, dataAccess, recommendations, followUpActions, requiresProviderConsultation.`;
+        const historyParts = (messages || []).slice(-10).map(m => ({role: m.sender==='user'?'user':'model', parts:[{text: m.content||''}]}));
+        const body = {
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: [
+            ...historyParts,
+            { role: 'user', parts: [{ text: `Question: ${userMessage}\nHealthData: ${JSON.stringify(scopedData)}` }] }
+          ],
+          generationConfig: { temperature: 0.2, maxOutputTokens: 800, response_mime_type: 'application/json' }
+        };
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if(!r.ok) throw new Error(`Gemini error ${r.status}`);
+        const j = await r.json();
+        let txt = j?.candidates?.[0]?.content?.parts?.map(p=>p?.text||'')?.join('') || '';
+        txt = txt.trim().replace(/^```json\s*/i,'').replace(/^```/i,'').replace(/```$/i,'').trim();
+        let aiResponse;
+        try { aiResponse = txt ? JSON.parse(txt) : null; } catch(_) { aiResponse = null; }
+        if(!aiResponse){
+          const fallbackText = txt || 'Here are insights based on your question and available health data.';
+          aiResponse = { content: fallbackText, confidence: 0.6, sources: Object.keys(scopedData||{}), dataAccess: !!scopedData, recommendations: [], followUpActions: [], requiresProviderConsultation: false };
+        }
 
         // Log interaction to blockchain
         const accessEvent = {
@@ -76,7 +123,7 @@ const ChatInterface = ({
           }
         };
 
-        const ipfsResult = await ipfsService?.storeAnalysis(conversationData);
+  const ipfsResult = await ipfsService?.storeAnalysis(conversationData);
 
         // Create AI message with blockchain and IPFS data
         const aiMessage = {
@@ -96,18 +143,13 @@ const ChatInterface = ({
           requiresProviderConsultation: aiResponse?.requiresProviderConsultation
         };
 
-        // Add AI message through parent callback
-        // Note: This is a workaround since we need to update the parent's messages state
-        setTimeout(() => {
-          // This would ideally be handled by the parent component
-          console.log('AI Response:', aiMessage);
-        }, 100);
+        const event = new CustomEvent('pulse-ai-new-message', { detail: aiMessage });
+        window.dispatchEvent(event);
 
       } catch (error) {
-        console.error('Error processing message:', error);
-        
-        // Create error message
-        const errorMessage = {
+  console.error('Error processing message:', error);
+
+  const errorMessage = {
           id: Date.now() + 1,
           sender: 'ai',
           content: `I apologize, but I'm currently unable to process your request. Please try again in a moment.\n\nError: ${error?.message}`,
@@ -120,7 +162,8 @@ const ChatInterface = ({
           error: true
         };
 
-        console.log('Error Response:', errorMessage);
+  const event = new CustomEvent('pulse-ai-new-message', { detail: errorMessage });
+  window.dispatchEvent(event);
       } finally {
         setIsProcessing(false);
       }
@@ -370,13 +413,14 @@ const ChatInterface = ({
                       <span className="text-xs text-clinical-green">Processing Securely</span>
                     </div>
                   </div>
-                  <div className="bg-card border border-border rounded-lg px-4 py-3">
+                  {/* Frosted glass effect fix */}
+                  <div className="bg-white/60 border border-white/30 rounded-lg px-4 py-3 backdrop-blur-lg shadow-lg">
                     <div className="flex items-center space-x-2">
                       <div className="animate-spin">
                         <Icon name="Loader2" size={16} className="text-primary" />
                       </div>
                       <span className="text-sm text-muted-foreground">
-                        Analyzing your health data with OpenAI...
+                        Analyzing your health data with Gemini...
                       </span>
                     </div>
                     <div className="mt-2 text-xs text-muted-foreground">
@@ -448,10 +492,7 @@ const ChatInterface = ({
               <Icon name="Link" size={12} className="text-primary" />
               <span>Blockchain logged</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <Icon name="Brain" size={12} className="text-primary" />
-              <span>Powered by OpenAI</span>
-            </div>
+            <div className="flex items-center space-x-1"><Icon name="Brain" size={12} className="text-primary" /><span>Powered by Google Gemini</span></div>
           </div>
           <span className="hidden sm:inline">Press Enter to send</span>
         </div>
