@@ -1,0 +1,2455 @@
+{
+  "ConsentManagement": {
+    "contractAddress": "0x0d751e84b57eAaA69b552f1902030414A3D7c595",
+    "abi": [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "accessor",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "granted",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "ConsentChecked",
+        "type": "event",
+        "signature": "0x87298fed805e2605c9718de9fbe98d0e3f855c6db7c8d55d9e5843881c8aa308"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "accessor",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "expiryTimestamp",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "txHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "ConsentGranted",
+        "type": "event",
+        "signature": "0x6fe570e25162fdfef74989bee790b9479533ac3e85ca0e2fa9a2063fa67e741e"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "accessor",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "txHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "ConsentRevoked",
+        "type": "event",
+        "signature": "0x0772972a4e9f7152d2c9ecbc158b60bf428a711a84ea08dcadefe67823147f96"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_accessor",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_dataType",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_expiry",
+            "type": "uint256"
+          }
+        ],
+        "name": "grantConsent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x6ebda464"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_accessor",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_dataType",
+            "type": "string"
+          }
+        ],
+        "name": "revokeConsent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xbd41ad8b"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_accessor",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_dataType",
+            "type": "string"
+          }
+        ],
+        "name": "checkConsent",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "granted",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiry",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x9eff06b4"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_accessor",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_dataType",
+            "type": "string"
+          }
+        ],
+        "name": "checkConsentView",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "granted",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiry",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x630cf6bb"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          }
+        ],
+        "name": "getPatientAccessors",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x4aace67f"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_accessor",
+            "type": "address"
+          }
+        ],
+        "name": "getGrantedDataTypes",
+        "outputs": [
+          {
+            "internalType": "string[]",
+            "name": "",
+            "type": "string[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x8eecad30"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_accessor",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_dataType",
+            "type": "string"
+          }
+        ],
+        "name": "getConsentDetails",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "grantedAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiryTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "consentHash",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x535df4c7"
+      },
+      {
+        "inputs": [],
+        "name": "revokeAllConsents",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xb6f96af2"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          }
+        ],
+        "name": "getActiveConsentCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "count",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x5ac7d77b"
+      }
+    ]
+  },
+  "MultiSignatureAccess": {
+    "contractAddress": "0xF011343a99C95946CD5f6Ca0A83206c211f1E185",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_consentContractAddress",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "proposalId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "approver",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "currentApprovals",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "requiredSignatures",
+            "type": "uint256"
+          }
+        ],
+        "name": "ProposalApproved",
+        "type": "event",
+        "signature": "0x7989491bc7c1fee580139021c9641f45f658bbfd784956c0a4ebbcc4d983a5af"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "proposalId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "proposer",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "requiredSignatures",
+            "type": "uint256"
+          }
+        ],
+        "name": "ProposalCreated",
+        "type": "event",
+        "signature": "0xde82073ae504013325847c68dfd27d7a6c50dee47f984dab7688949e9a2ad505"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "proposalId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "executor",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "success",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "executedAt",
+            "type": "uint256"
+          }
+        ],
+        "name": "ProposalExecuted",
+        "type": "event",
+        "signature": "0xc7689180a9eb98540554b675d67ad83077b40a315072f691cdefad842afbe1fa"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "proposalId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "expiredAt",
+            "type": "uint256"
+          }
+        ],
+        "name": "ProposalExpired",
+        "type": "event",
+        "signature": "0x33871a59223f267c94edcfe640935dbcfe76073123166425247b96924708043a"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "proposalId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "rejector",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "reason",
+            "type": "string"
+          }
+        ],
+        "name": "ProposalRejected",
+        "type": "event",
+        "signature": "0x3f48436048484b6ac24206d30802aaeab7eccf22c892843e1aebbd7f1c176ef2"
+      },
+      {
+        "inputs": [],
+        "name": "admin",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xf851a440"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "allProposalIds",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xc97bfe6b"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "approverHistory",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x230113a5"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "approverRoles",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x99966193"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "authorizedApprovers",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x103ee573"
+      },
+      {
+        "inputs": [],
+        "name": "consentContract",
+        "outputs": [
+          {
+            "internalType": "contract ConsentManagement",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xc7c038d6"
+      },
+      {
+        "inputs": [],
+        "name": "defaultDeadline",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x7b73c2ef"
+      },
+      {
+        "inputs": [],
+        "name": "emergencyDeadline",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x455c1c29"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "proposals",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "proposalId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "proposer",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "internalType": "enum MultiSignatureAccess.AccessType",
+            "name": "accessType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "executedAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "requiredSignatures",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum MultiSignatureAccess.ProposalStatus",
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "rejectionReason",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x32ed5b12"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "proposerHistory",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x484f3705"
+      },
+      {
+        "inputs": [],
+        "name": "signatureRequirements",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "standardAccess",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "emergencyAccess",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "researchAccess",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "legalAccess",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "insuranceAccess",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xfe2bba08"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_approver",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_role",
+            "type": "string"
+          }
+        ],
+        "name": "addApprover",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x94ffb819"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_approver",
+            "type": "address"
+          }
+        ],
+        "name": "removeApprover",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x6cf4c88f"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_standard",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_emergency",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_research",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_legal",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_insurance",
+            "type": "uint256"
+          }
+        ],
+        "name": "updateSignatureRequirements",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xa4328b01"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_dataType",
+            "type": "string"
+          },
+          {
+            "internalType": "enum MultiSignatureAccess.AccessType",
+            "name": "_accessType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "_reason",
+            "type": "string"
+          },
+          {
+            "internalType": "string[]",
+            "name": "_ipfsHashes",
+            "type": "string[]"
+          }
+        ],
+        "name": "proposeAction",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "proposalId",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xedd0cd19"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "approveAction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x62d98762"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_reason",
+            "type": "string"
+          }
+        ],
+        "name": "rejectAction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xa2b6f264"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "executeAction",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "success",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xe125ab9c"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "markExpired",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x87e0aeb2"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "enum MultiSignatureAccess.AccessType",
+            "name": "_accessType",
+            "type": "uint8"
+          }
+        ],
+        "name": "getRequiredSignatures",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xe6f460c2"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getProposalDetails",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "proposer",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "internalType": "enum MultiSignatureAccess.AccessType",
+            "name": "accessType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "requiredSignatures",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "currentApprovals",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum MultiSignatureAccess.ProposalStatus",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xe801134c"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getProposalApprovers",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "",
+            "type": "address[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xef211e05"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getProposalIPFSHashes",
+        "outputs": [
+          {
+            "internalType": "string[]",
+            "name": "",
+            "type": "string[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xd9a0b359"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "enum MultiSignatureAccess.ProposalStatus",
+            "name": "_status",
+            "type": "uint8"
+          }
+        ],
+        "name": "getProposalsByStatus",
+        "outputs": [
+          {
+            "internalType": "bytes32[]",
+            "name": "",
+            "type": "bytes32[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xa51388c8"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_proposer",
+            "type": "address"
+          }
+        ],
+        "name": "getProposalsByProposer",
+        "outputs": [
+          {
+            "internalType": "bytes32[]",
+            "name": "",
+            "type": "bytes32[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x4f3bb94e"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_approver",
+            "type": "address"
+          }
+        ],
+        "name": "getProposalsByApprover",
+        "outputs": [
+          {
+            "internalType": "bytes32[]",
+            "name": "",
+            "type": "bytes32[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xe103de46"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "_approver",
+            "type": "address"
+          }
+        ],
+        "name": "hasApproved",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x23cdc3f1"
+      },
+      {
+        "inputs": [],
+        "name": "getTotalProposals",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x1a5007dd"
+      },
+      {
+        "inputs": [],
+        "name": "getSignatureRequirements",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "standard",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "emergency",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "research",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "legal",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "insurance",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xe9aac0f5"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_proposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "isProposalExecuted",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xe456766b"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_newConsentContract",
+            "type": "address"
+          }
+        ],
+        "name": "updateConsentContract",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x654defbe"
+      }
+    ]
+  },
+  "RecordRegistry": {
+    "contractAddress": "0x76B09C3134739F16222c0DFB3b94841212b5e239",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_consentContractAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_multiSigContractAddress",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor",
+        "signature": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "recordId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "accessor",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "accessReason",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bytes32",
+            "name": "multiSigProposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "RecordAccessed",
+        "type": "event",
+        "signature": "0xbc1fccd9d329f8ee14d93d36f387972a49b370e5f84aadbbf4d2b6b3d09de029"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "recordId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "deleter",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "deleteReason",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "RecordDeleted",
+        "type": "event",
+        "signature": "0xc0b7a5e0ce2de8d51f6894e395de39625dd29ab9b621da01fb1882f8a2cd73fa"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "recordId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "provider",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "ipfsHash",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "encrypted",
+            "type": "bool"
+          }
+        ],
+        "name": "RecordRegistered",
+        "type": "event",
+        "signature": "0x965605c5e1049461a210f20f51656e29fa494c0962aba09a6fd9526efe8d7fa6"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "recordId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "sharedWith",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "shareExpiry",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "shareReason",
+            "type": "string"
+          }
+        ],
+        "name": "RecordShared",
+        "type": "event",
+        "signature": "0xadb423e2f5a58d7a126c4691d8e034f84ba9c1caf4899e0531e5528d28836382"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "recordId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "updater",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "newIpfsHash",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "updateReason",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "version",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "RecordUpdated",
+        "type": "event",
+        "signature": "0xbe36fb79863912770879cec6cd551287be9f9d8afe525e549d883ecb074d0004"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "originalRecordId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": true,
+            "internalType": "bytes32",
+            "name": "newVersionId",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "versionNumber",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "creator",
+            "type": "address"
+          }
+        ],
+        "name": "RecordVersionCreated",
+        "type": "event",
+        "signature": "0x7a7bfc99c3e93f059f651c5ee57445f0c511dc45313e862bce4933a65b947e59"
+      },
+      {
+        "inputs": [],
+        "name": "admin",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xf851a440"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "allRecordIds",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x3dd390b2"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "authorizedProviders",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x69dc3ae2"
+      },
+      {
+        "inputs": [],
+        "name": "consentContract",
+        "outputs": [
+          {
+            "internalType": "contract ConsentManagement",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xc7c038d6"
+      },
+      {
+        "inputs": [],
+        "name": "emergencyAccessWindow",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xd27bf92a"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "name": "ipfsHashToRecordId",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x2cfebe52"
+      },
+      {
+        "inputs": [],
+        "name": "multiSigContract",
+        "outputs": [
+          {
+            "internalType": "contract MultiSignatureAccess",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x8faaefc8"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "patientRecords",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x94f0df61"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "providerNames",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x88f299dd"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "providerRecords",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x0f0a0a74"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "recordAccessHistory",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "accessor",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "accessTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "multiSigProposalId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bool",
+            "name": "wasEmergencyAccess",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x62a8cb0a"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "recordShares",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "sharedWith",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sharedAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiresAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x9d4de296"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "name": "records",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "recordId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "provider",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "internalType": "enum RecordRegistry.RecordType",
+            "name": "recordType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "ipfsHash",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "encryptionKey",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "metadata",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lastModified",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "version",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum RecordRegistry.RecordStatus",
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bool",
+            "name": "isEncrypted",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isEmergencyAccessible",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x01e64725"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "recordsByType",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xd108d1b0"
+      },
+      {
+        "inputs": [],
+        "name": "totalRecords",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x125f8974"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_provider",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_name",
+            "type": "string"
+          }
+        ],
+        "name": "addProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xfc000500"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_provider",
+            "type": "address"
+          }
+        ],
+        "name": "removeProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x8a355a57"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_dataType",
+            "type": "string"
+          },
+          {
+            "internalType": "enum RecordRegistry.RecordType",
+            "name": "_recordType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "_ipfsHash",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_metadata",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "_isEncrypted",
+            "type": "bool"
+          },
+          {
+            "internalType": "string",
+            "name": "_encryptionKey",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "_isEmergencyAccessible",
+            "type": "bool"
+          }
+        ],
+        "name": "registerRecord",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "recordId",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x8feaeac9"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_recordId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_reason",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "_multiSigProposalId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "accessRecord",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "ipfsHash",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "encryptionKey",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xd8c622bb"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_recordId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_newIpfsHash",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_updateReason",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_newMetadata",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_newEncryptionKey",
+            "type": "string"
+          }
+        ],
+        "name": "updateRecord",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x2e851b0b"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_recordId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "_deleteReason",
+            "type": "string"
+          }
+        ],
+        "name": "deleteRecord",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xddfb7489"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_recordId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "_sharedWith",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_expiryDuration",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "_shareReason",
+            "type": "string"
+          }
+        ],
+        "name": "shareRecord",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xf8219385"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_patient",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "_dataType",
+            "type": "string"
+          }
+        ],
+        "name": "getPatientRecords",
+        "outputs": [
+          {
+            "internalType": "bytes32[]",
+            "name": "",
+            "type": "bytes32[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x73e7ae2e"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_recordId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRecordDetails",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "patient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "provider",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "dataType",
+            "type": "string"
+          },
+          {
+            "internalType": "enum RecordRegistry.RecordType",
+            "name": "recordType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "metadata",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lastModified",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "version",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum RecordRegistry.RecordStatus",
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bool",
+            "name": "isEncrypted",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isEmergencyAccessible",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x10ff362d"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_recordId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRecordAccessHistory",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "accessors",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "accessTimes",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "reasons",
+            "type": "string[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xf4338d04"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_ipfsHash",
+            "type": "string"
+          }
+        ],
+        "name": "getRecordByIPFSHash",
+        "outputs": [
+          {
+            "internalType": "bytes32",
+            "name": "recordId",
+            "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0xcb502f30"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "enum RecordRegistry.RecordStatus",
+            "name": "_status",
+            "type": "uint8"
+          }
+        ],
+        "name": "getRecordsByStatus",
+        "outputs": [
+          {
+            "internalType": "bytes32[]",
+            "name": "",
+            "type": "bytes32[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x31a5240e"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_recordId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRecordShares",
+        "outputs": [
+          {
+            "internalType": "address[]",
+            "name": "sharedWith",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "sharedAt",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "expiresAt",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "bool[]",
+            "name": "isActive",
+            "type": "bool[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x988a02a0"
+      },
+      {
+        "inputs": [],
+        "name": "getTotalRecords",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x0aeacb5e"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "_recordId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "_viewer",
+            "type": "address"
+          }
+        ],
+        "name": "isAuthorizedToView",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true,
+        "signature": "0x59fbef7d"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_newConsentContract",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_newMultiSigContract",
+            "type": "address"
+          }
+        ],
+        "name": "updateContractReferences",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0xc39fca7d"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_windowInSeconds",
+            "type": "uint256"
+          }
+        ],
+        "name": "setEmergencyAccessWindow",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x308969e7"
+      }
+    ]
+  },
+  "network": "ganache",
+  "deployedAt": "2025-08-16T15:19:15.263Z",
+  "description": "Complete MedLedger System - Consent Management + Multi-Signature Access + Record Registry"
+}

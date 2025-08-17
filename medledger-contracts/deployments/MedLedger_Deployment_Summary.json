@@ -1,0 +1,31 @@
+{
+  "system": "MedLedger - Decentralized Healthcare Records",
+  "version": "1.0.0",
+  "network": "ganache",
+  "deployedAt": "2025-08-16T15:19:15.264Z",
+  "contracts": {
+    "ConsentManagement": {
+      "address": "0x0d751e84b57eAaA69b552f1902030414A3D7c595",
+      "description": "Patient consent management with expiry and revocation"
+    },
+    "MultiSignatureAccess": {
+      "address": "0xF011343a99C95946CD5f6Ca0A83206c211f1E185",
+      "description": "Multi-signature approval system for record access"
+    },
+    "RecordRegistry": {
+      "address": "0x76B09C3134739F16222c0DFB3b94841212b5e239",
+      "description": "IPFS-based medical record storage and management"
+    }
+  },
+  "features": [
+    "Patient-controlled consent management",
+    "Multi-signature approval workflows",
+    "IPFS-based decentralized storage",
+    "Emergency access protocols",
+    "Complete audit trail",
+    "Cross-contract integration",
+    "Role-based access control"
+  ],
+  "gasUsage": "Optimized for production deployment",
+  "security": "Enterprise-grade with multiple authorization layers"
+}
