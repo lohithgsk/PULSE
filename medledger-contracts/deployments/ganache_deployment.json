@@ -1,0 +1,352 @@
+{
+  "network": "ganache",
+  "contractAddress": "0x0d751e84b57eAaA69b552f1902030414A3D7c595",
+  "deployerAddress": "0xC368AD9B744364804391e247D107F115e3c635Ba",
+  "deploymentTime": "2025-08-16T15:19:10.568Z",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "patient",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "accessor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "dataType",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "granted",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "ConsentChecked",
+      "type": "event",
+      "signature": "0x87298fed805e2605c9718de9fbe98d0e3f855c6db7c8d55d9e5843881c8aa308"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "patient",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "accessor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "dataType",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "expiryTimestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "txHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "ConsentGranted",
+      "type": "event",
+      "signature": "0x6fe570e25162fdfef74989bee790b9479533ac3e85ca0e2fa9a2063fa67e741e"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "patient",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "accessor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "dataType",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "txHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "ConsentRevoked",
+      "type": "event",
+      "signature": "0x0772972a4e9f7152d2c9ecbc158b60bf428a711a84ea08dcadefe67823147f96"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_accessor",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_dataType",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_expiry",
+          "type": "uint256"
+        }
+      ],
+      "name": "grantConsent",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x6ebda464"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_accessor",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_dataType",
+          "type": "string"
+        }
+      ],
+      "name": "revokeConsent",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0xbd41ad8b"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_accessor",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_dataType",
+          "type": "string"
+        }
+      ],
+      "name": "checkConsent",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "granted",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "expiry",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x9eff06b4"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_accessor",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_dataType",
+          "type": "string"
+        }
+      ],
+      "name": "checkConsentView",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "granted",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "expiry",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true,
+      "signature": "0x630cf6bb"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        }
+      ],
+      "name": "getPatientAccessors",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true,
+      "signature": "0x4aace67f"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_accessor",
+          "type": "address"
+        }
+      ],
+      "name": "getGrantedDataTypes",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "",
+          "type": "string[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true,
+      "signature": "0x8eecad30"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_accessor",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_dataType",
+          "type": "string"
+        }
+      ],
+      "name": "getConsentDetails",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isActive",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "grantedAt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "expiryTimestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "consentHash",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true,
+      "signature": "0x535df4c7"
+    },
+    {
+      "inputs": [],
+      "name": "revokeAllConsents",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0xb6f96af2"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        }
+      ],
+      "name": "getActiveConsentCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "count",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true,
+      "signature": "0x5ac7d77b"
+    }
+  ]
+}
