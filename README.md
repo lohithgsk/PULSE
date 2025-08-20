@@ -1,4 +1,4 @@
-# Pulse – Reclaiming Patient Health Records  
+# PULSE - Privacy Universal Ledger for E-Health
 
 # Demo
 https://pulse-archbtw.vercel.app/ 
