@@ -1,8 +1,5 @@
 # PULSE - Privacy Universal Ledger for E-Health
 
-# Demo
-https://pulse-archbtw.vercel.app/ 
-
 ![image](https://assets.devfolio.co/content/8a9ec2f227e44bb480e4140abb8cd042/72b43345-52a3-49e0-b6d6-38cb5c56c82f.png)
 
 ## The Problem  
